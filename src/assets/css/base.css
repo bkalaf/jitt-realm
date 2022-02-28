@@ -1,0 +1,28 @@
+@import 'tailwindcss/base';
+
+@layer base {
+    /* input[type="text"] {
+        font-family: "Patrick Hand" !important;
+    } */
+    /* details {
+        @apply border border-black rounded-md shadow-md;
+    } */
+    /* summary {
+        @apply text-lg font-bold uppercase list-item;
+    } */
+
+    caption {
+        caption-side: top;
+    }
+
+    /* details[open] summary {
+        @apply mb-2 border border-b border-l border-r;
+    } */
+    /* th {
+        @apply text-base font-bold tracking-wide text-center capitalize;
+    } */
+
+    input {
+        @apply read-only:text-white read-only:rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
+    }
+}

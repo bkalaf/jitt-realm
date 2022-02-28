@@ -1,0 +1,12 @@
+{
+    "realm": {
+        "appID": "junkyard-gjgce",
+        "localRealmPath": "/home/bobby/.config/jitt/junkyard.realm",
+        "partitionValue": "jitt",
+        "credentials": "Realm.Credentials.anonymous()"
+    },
+    "smtp": {
+        "user": "bobby.kalaf.jr@gmail.com",
+        "password": "uvuloxnqeflmwcon"
+    }
+}

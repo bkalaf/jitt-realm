@@ -1,0 +1,48 @@
+{
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "semi": true,
+    "trailingComma": "none",
+    "endOfLine": "lf",
+    "jsxBracketSameLine": true,
+    "jsxSingleQuote": true,
+    "singleQuote": true,
+    "useTabs": false,
+    "tabWidth": 4,
+    "parser": "typescript",
+    "printWidth": 130,
+    "quoteProps": "as-needed",
+    "htmlWhitespaceSensitivity": "css",
+    "overrides": [
+        {
+            "files": "*.css",
+            "options": {
+                "parser": "css"
+            }
+        },
+        {
+            "files": ["*.ts", "*.tsx"],
+            "options": {
+                "parser": "typescript"
+            }
+        },
+        {
+            "files": ["*.js", "*.jsx"],
+            "options": {
+                "parser": "babel"
+            }
+        },
+        {
+            "files": "*.html",
+            "options": {
+                "parser": "html"
+            }
+        },
+        {
+            "files": "*.json",
+            "options": {
+                "parser": "json"
+            }
+        }
+    ]
+}

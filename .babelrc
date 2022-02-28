@@ -1,0 +1,62 @@
+{
+    "presets": ["@babel/env", "@babel/react", "@babel/typescript"],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": ["./"],
+                "alias": {
+                    // "assets/*": "./src/assets/*",
+                    // "css/*": "./src/assets/css/*",
+                    // "fonts/*": "./src/assets/fonts/*",
+                    // "images/*": "./src/assets/images/*",
+                    // "logos/*": "./src/assets/logos/*",
+                    // "@/*": "./src/common/*",
+                    // "@monads/*": "./src/common/monads/*",
+                    // "@@/*": "./src/main/*",
+                    "@renderer/*": "./src/renderer/*",
+                    "@root/*": "./src/*",
+                    "@common/*": "./src/common/*",
+                    "@main/*": "./src/main/*",
+                    "@css/*": "./src/css/*"
+
+                    // "$$/*": "./src/renderer/features/*",
+                    // "$components/*": "./src/renderer/components/*",
+                    // "$types/*": "./src/renderer/types/*",
+                    // "$contexts/*": "./src/renderer/contexts/*",
+                    // "$providers/*": "./src/renderer/providers/*",
+                    // "$hooks/*": "./src/renderer/hooks/*",
+                    // "$stores/*": "./src/renderer/stores/*",
+                    // "$routes/*": "./src/renderer/routes/*",
+                    // "$utils/*": "./src/renderer/utils/*",
+                    // "@types/*": "./src/common/types/*"
+                }
+            }
+        ],
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": false,
+                "decoratorsBeforeExport": true
+            }
+        ],
+        ["@babel/plugin-proposal-class-properties"],
+        ["@babel/plugin-proposal-async-do-expressions"],
+        ["@babel/plugin-proposal-do-expressions"],
+        ["@babel/plugin-proposal-export-default-from"],
+        ["@babel/plugin-proposal-partial-application"],
+        ["@babel/plugin-proposal-function-bind"],
+        ["@babel/plugin-proposal-function-sent"],
+        [
+            "@babel/plugin-proposal-pipeline-operator",
+            {
+                "proposal": "fsharp"
+            }
+        ],
+        ["@babel/plugin-proposal-private-methods"],
+        ["@babel/plugin-proposal-throw-expressions"],
+        ["@babel/plugin-proposal-export-namespace-from"],
+        ["@babel/plugin-proposal-nullish-coalescing-operator"],
+        ["@babel/plugin-proposal-optional-chaining"]
+    ]
+}
