@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { toTitleCase } from '../../common/text/toTitleCase';
 import { $$Schema } from '../db';
+import { Logger } from "./Logger";
 
 export type ColumnInfoMap<T extends DataEntryElement> = Map<string, PropertyProps<T>>;
 
 export function useRealmSchema(realm: Realm) {
+    Logger.enter('useRealmSchema');
     const typeMap = useMemo(
         () =>
             new Map(
@@ -66,7 +68,7 @@ export function useRealmSchema(realm: Realm) {
         <T extends DataEntryElement>(typeName: string, propertyName: string): IPropertyInfo<T> => {
             const [head, ...tail] = propertyName.split('.');
             if (tail.length === 0) {
-                const info: IPropertyInfo<T> = propertiesMap[typeName][head];
+                const info: IPropertyInfo<T> = propertiesMap[typeName][head] ?? { name: head, displayName: $$Schema[typeName].columnMap[head][0], attributes: $$Schema[typeName].columnMap[head][1], datatype: 'string', kind: 'primitive' };
                 return {
                     ...info
                 };
@@ -141,11 +143,31 @@ export function useRealmSchema(realm: Realm) {
             .reduce((pv, cv) => [...pv, ...cv], []);
         return result;
     }, []);
+    const getFieldInfos = useCallback(<T extends DataEntryElement>(type: string) => {
+        const fields = getFields(type).map((x, ix) => x.includes('.') ? getFields(type)[ix - 1].split('.')[0] === x.split('.')[0] ? [x] : [x.split('.')[0], x] : [x]).reduce((pv, cv) => [...pv, ...cv], []);
+        console.log('FIELDS', fields);
+        return fields.map((fieldName, ix) => {
+            function inner(dotNotation: string, propertyType: string): PropertyProps<T> {
+                const [head, ...tail] = dotNotation.split('.');
+                const nextInfo = getColumnsInfo(propertyType).get(head)
+                if (tail.length === 0) {
+                    if (nextInfo == null) {
+                        return { ordinal: ix, columnName: fieldName, readOnly: false, displayName: $$Schema[type].columnMap[fieldName][0], kind: 'fieldset', datatype: 'fieldset', attributes: {} as Attributes<T>, propertyName: fieldName, optional: false }
+                        
+                    }
+                    return nextInfo as PropertyProps<T>
+                }
+                return inner(tail.join('.'), nextInfo?.datatype ?? '');
+            }
+            return inner(fieldName, type);
+        })
+    }, [])
     return {
         getPropertyInfo,
         getTypeInfo,
         getColumnsList,
         getColumnsInfo,
-        getFields
+        getFields,
+        getFieldInfos
     };
 }

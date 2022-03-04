@@ -61,7 +61,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 0,
         '@typescript-eslint/no-unsafe-return': 0,
         '@typescript-eslint/no-unsafe-assignment': 0,
-        '@typescript-eslint/no-unsafe-arguments': 0,
+        '@typescript-eslint/no-unsafe-argument': "off",
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/restrict-template-access': 0,
         'dot-notation': 'error',
@@ -87,9 +87,10 @@ module.exports = {
             allowTernary: true
         }],
         'no-unused-labels': ['error'],
-        'no-unused-vars': ['error'],
+        'no-unused-vars': ['off'],
         'no-use-before-define': 'off',
         "react/display-name": "off",
+        'react/prop-types': 'off',
         // 'node/no-missing-import': ['error', {
         //     tryExtensions: ['.ts', '.tsx', '.js', '.jsx']
         // }],

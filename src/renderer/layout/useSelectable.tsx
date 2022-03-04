@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { ObjectId } from 'bson';
-import { getBetween } from './getBetween';
+import { getBetween } from '../../common/array/getBetween';
 import { Selectable } from './Window';
 
 export function useSelectable(value: boolean = false): Selectable {

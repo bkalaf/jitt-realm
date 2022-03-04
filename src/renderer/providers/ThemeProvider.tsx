@@ -1,6 +1,3 @@
-import { useContext, useMemo } from 'react';
-import { cn } from '../util/cn';
-
 export type ThemeValue = string | [light: string, dark: string];
 export type CSSSettingKey = 'bg' | 'text' | 'border' | 'fw' | 'fs' | 'font';
 export type ThemeSetting<T> = Record<string, ThemeValue | T>;
@@ -9,31 +6,6 @@ export type IThemeContext = Record<string, ThemeSet>;
 
 export const ThemeContext = React.createContext<IThemeContext | undefined>(undefined);
 
-export function useThemeSetting(setting: Partial<Record<CSSSettingKey, ThemeValue>>, obj?: Record<string, boolean>, className?: string) {
-    console.log('themeSetting', setting);
-    const value = Object.values(setting)
-        .map((x) => {
-            if (Array.isArray(x)) {
-                const [light, dark] = x;
-                return [light, `dark:${dark}`].join(' ');
-            }
-            if (typeof x === 'string') {
-                return x;
-            }
-            return null;
-        })
-        .filter((x) => x != null)
-        .join(' ');
-    const $className = useMemo(() => cn(obj ?? {}, [className, value].join(' ').trim()), [obj, className, value]);
-    return $className;
-}
-export function useTheme(obj?: Record<string, boolean>, className?: string, ...path: string[]) {
-    const theme = useContext(ThemeContext)!;
-    const setting = useMemo(() => path.reduce((pv, cv) => pv[cv], theme as Record<string, any>), [path]);
-    console.log('theme:path', path.join('.'), setting);
-    const result = useThemeSetting(setting, obj, className);
-    return result;
-}
 export function ThemeProvider({ children }: { children?: Children }) {
     const value: IThemeContext = {
         form: {
@@ -43,19 +15,36 @@ export function ThemeProvider({ children }: { children?: Children }) {
                 border: 'border-2 border-black',
                 bg: 'bg-yellow-minimal/50',
                 text: 'text-black',
-                font: 'font-raleway',
-                field: {
-                    label: {
-                        font: 'font-raleway',
+                font: 'font-firaSans',
+                fieldset: {
+                    bg: 'bg-amber/75',
+                    padding: 'pb-4',
+                    span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
+                    grid: 'grid xs:grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
+                    justify: 'justify-center mx-8',
+                    legend: {
+                        font: 'font-firaSans',
                         fs: 'text-xl',
                         fw: 'font-bold',
-                        left: 'ml-3',
+                        margin: 'px-2 py-1 pl-10',
+                        bg: 'bg-black',
+                        text: 'text-white',
+                        width: 'w-full',
+                        rounded: 'rounded-xl shadow-xl'
+                    }
+                },
+                field: {
+                    label: {
+                        font: 'font-firaSans',
+                        fs: 'text-xl',
+                        fw: 'font-bold',
+                        left: 'ml-3 order-first',
                         after: 'peer-required:after:content-["_(*)_"] peer-required:after:text-red after:font-extrabold'
                     },
-                    input: {
+                    control: {
                         font: 'font-firaSans',
                         fs: 'text-base',
-                        fw: 'font-medium',
+                        fw: 'font-medium order-last',
                         padding: 'py-1 px-3',
                         before: 'whitespace-pre before:content-["_"]',
                         border: 'border border-neutral/75',
@@ -65,21 +54,31 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         hover: 'hover:ring hover:ring-red',
                         flex: 'flex w-full',
                         peer: 'peer'
-                    }
+                    },
+                    feedback: {
+                        hidden: 'hidden'
+                    },
+                    margin: 'px-2',
+                    full: 'w-full',
+                    col: 'flex flex-col'
                 },
+                select: {},
                 buttonGroup: {
-                    width: 'flex w-full',
+                    width: 'grid grid-cols-3 mx-auto w-full',
                     span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
                     padding: 'px-2 py-1',
+                    bg: 'mx-auto bg-white',
+                    center: 'items-center',
+                    spacing: 'gap-x-6',
                     button: {
                         flex: 'flex w-full',
                         bg: 'bg-blue-dark/75',
                         text: 'text-white',
                         pad: 'px-2 py-0.5',
                         fw: 'font-bold',
-                        align: 'text-center',
+                        align: 'text-center items-center justify-center mx-auto',
                         rounded: 'rounded-md',
-                        border: 'border border-white/50',
+                        border: 'border-2 border-black/50',
                         hover: 'hover:ring hover:ring-red',
                         disabled: 'disabled:bg-black/25 disabled:text-white/25',
                         opacity: 'disabled:opacity-25',
@@ -95,7 +94,7 @@ export function ThemeProvider({ children }: { children?: Children }) {
                 border: 'border-white',
                 fs: 'text-2xl',
                 fw: 'font-bold',
-                font: 'font-raleway'
+                font: 'font-firaSans'
             },
             table: {
                 gap: 'space-x-2 space-y-1',
@@ -112,7 +111,7 @@ export function ThemeProvider({ children }: { children?: Children }) {
                     thickness: 'border-2 border-double',
                     fs: 'text-base',
                     fw: 'font-normal',
-                    font: 'font-raleway',
+                    font: 'font-firaSans',
                     even: 'even:bg-sky even:text-white',
                     odd: 'odd:bg-white odd:text-black',
                     hover: 'hover:ring hover:ring-red',
@@ -121,7 +120,7 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         shadow: 'shadow-xl',
                         margin: 'ml-3 p-1',
                         rounded: 'rounded-md',
-                        font: 'font-raleway',
+                        font: 'font-firaSans',
                         hover: 'hover:ring hover:ring-offset-amber'
                     }
                 }

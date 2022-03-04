@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
 import { ObjectId } from 'bson';
 import { useObjectClass } from './Window';
-import { useTheme } from '../providers/ThemeProvider';
+import { useTheme } from "../providers/useTheme";
 
 export function RecordsHeader({ realm, isInsert }: { realm: Realm; isInsert: boolean }) {
     const { type, id } = useParams();

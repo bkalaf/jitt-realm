@@ -3,11 +3,12 @@ import { LookupCell } from './LookupCell';
 import { ListCell } from './ListCell';
 import { IntCell } from './IntCell';
 import { StringCell } from './StringCell';
-import { EnumCell } from "./EnumCell";
+import { EnumCell } from './EnumCell';
 import { FloatCell } from './FloatCell';
 import { IDCell } from './IDCell';
 import { EmbeddedCell } from './EmbeddedCell';
 import { BoolCell } from './BoolCell';
+import { CalculatedCell } from './CalculatedCell';
 
 export function CellSwitcher<
     T extends
@@ -19,9 +20,20 @@ export function CellSwitcher<
     name,
     datatype,
     enumMap,
+    calculated,
     func
-}: { func?: string; data: Realm.Object & Record<string, any>; name: string; datatype: DataTypes; enumMap?: Record<string, string> } & T) {
+}: {
+    func?: string;
+    calculated: boolean;
+    data: Realm.Object & Record<string, any>;
+    name: string;
+    datatype: DataTypes;
+    enumMap?: Record<string, string>;
+} & T) {
     console.log('DataCell: ', datatype, name);
+    if (calculated) {
+        return <CalculatedCell data={data} func={func ?? 'x => identity(x)'} />;
+    }
     switch (datatype as DataTypes) {
         case 'string':
             if (enumMap != null && Object.keys(enumMap).length !== 0) {

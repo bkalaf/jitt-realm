@@ -1,6 +1,7 @@
 import { faBox } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme, useThemeSetting } from '../providers/ThemeProvider';
+import { useTheme } from "../providers/useTheme";
+import { useThemeSetting } from "../hooks/useThemeSetting";
 import { HeaderCell } from './HeaderCell';
 
 export function RecordSetHeader({ isSelectable, headers }: { isSelectable: boolean; headers: string[] }) {

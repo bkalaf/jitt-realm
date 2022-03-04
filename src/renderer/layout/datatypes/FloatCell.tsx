@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { getAssocPath } from '../../common/obj/getAssocPath';
+import { getAssocPath } from '../../../common/obj/getAssocPath';
 import { Cell } from "../Cell";
 
 export function FloatCell({ data, name, scale }: { data: Realm.Object & Record<string, number>; name: string; scale?: number; }) {

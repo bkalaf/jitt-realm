@@ -2,7 +2,7 @@ import { faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { faSquare } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo } from 'react';
-import { getAssocPath } from '../../common/obj/getAssocPath';
+import { getAssocPath } from '../../../common/obj/getAssocPath';
 import { Cell } from "../Cell";
 
 export function BoolCell({ data, name }: { data: Realm.Object & Record<string, boolean>; name: string }) {

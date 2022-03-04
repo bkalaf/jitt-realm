@@ -10,7 +10,7 @@ import { cn } from '../util/cn';
 import { Cell } from './Cell';
 import { CellSwitcher } from './datatypes/CellSwitcher';
 import { DropdownCell } from './datatypes/DropdownCell';
-import { useTheme } from '../providers/ThemeProvider';
+import { useTheme } from "../providers/useTheme";
 
 export function TableRow<T extends Objects, TElement extends DataEntryElement>({
     infos,
@@ -64,10 +64,13 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
             )}
             {cells.map((columnName, index) => {
                 const key = isSelectable ? index + 1 : index;
-                const { name, datatype, enumMap, ...props } = toPropertyProps(infos.get(columnName)!) as IPropertyProps<TElement>;
-                if (enumMap != null) {
+                const { name, datatype, enumMap, func, calculated, ...props } = toPropertyProps(
+                    infos.get(columnName)!
+                ) as IPropertyProps<TElement>;
+                if (enumMap != null && Object.keys(enumMap).length > 0) {
                     return (
                         <DropdownCell
+                            key={key}
                             data={data}
                             realm={realm}
                             name={columnName}
@@ -84,6 +87,8 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
                             key={key}
                             data={data as any}
                             name={name}
+                            func={func}
+                            calculated={calculated ?? false}
                             {...(props as Partial<React.InputHTMLAttributes<HTMLInputElement>>)}
                         />
                     );
@@ -95,6 +100,8 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
                             key={key}
                             data={data as any}
                             name={name}
+                            func={func}
+                            calculated={calculated ?? false}
                             {...(props as Partial<React.InputHTMLAttributes<HTMLInputElement>>)}
                         />
                     );
@@ -105,6 +112,8 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
                         key={key}
                         data={data as any}
                         name={name}
+                        func={func}
+                        calculated={calculated ?? false}
                         {...(props as Partial<React.InputHTMLAttributes<HTMLInputElement>>)}
                     />
                 );
@@ -112,4 +121,3 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
         </tr>
     );
 }
-    

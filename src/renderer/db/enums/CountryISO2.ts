@@ -7,6 +7,6 @@ export const countryMap = {
     CN: 'China',
     IN: 'Indonesia',
     ID: 'India'
-}
+};
 
 export type CountryISO2 = keyof typeof countryMap;

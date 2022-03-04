@@ -14,7 +14,7 @@ export default class ErrorBoundary extends React.Component<
         
     }
     override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        process.stderr.write(`ERROR: ${error.name}\n\tMESSAGE: ${error.message}\n\tSTACK: ${error.stack ? error.stack[0] : ''}\n\t${error.stack ? error.stack[1] : ''}\n`);
+        process.stderr.write(`ERROR: ${error.name}\n\tMESSAGE: ${error.message}\n\tSTACK: ${error.stack ? error.stack : ''}\n`);
         this.setState({
             hasError: true,
             error,

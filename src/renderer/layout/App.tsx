@@ -7,6 +7,7 @@ import { RealmProvider } from '../providers/RealmProvider';
 import { useMemo } from 'react';
 import './../../assets/css/app.css';
 import { ThemeProvider } from '../providers/ThemeProvider';
+import { DataListProvider } from '../providers/DataListContext';
 
 export function Loading() {
     return (
@@ -22,11 +23,13 @@ export default function App() {
     return (
         <Boundary fallback={fallback}>
             <HashRouter>
-                <RealmProvider>
-                    <ThemeProvider>
-                        <Window />
-                    </ThemeProvider>
-                </RealmProvider>
+                <DataListProvider>
+                    <RealmProvider>
+                        <ThemeProvider>
+                            <Window />
+                        </ThemeProvider>
+                    </RealmProvider>
+                </DataListProvider>
             </HashRouter>
         </Boundary>
     );

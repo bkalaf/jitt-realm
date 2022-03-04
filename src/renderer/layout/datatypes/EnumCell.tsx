@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { getAssocPath } from '../../common/obj/getAssocPath';
+import { getAssocPath } from '../../../common/obj/getAssocPath';
 import { Cell } from '../Cell';
 
 export function EnumCell({

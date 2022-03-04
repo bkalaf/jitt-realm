@@ -1,7 +1,3 @@
-import { ObjectSchemaProperty } from 'realm';
-import { SelectHTMLAttributes } from 'react';
-import { faBookJournalWhills } from '@fortawesome/pro-regular-svg-icons';
-import { domainToASCII } from 'url';
 import { $SelfStorage, SelfStorage } from './SelfStorage';
 import { $Address, Address } from './Address';
 import { $Facility, Facility } from './Facility';

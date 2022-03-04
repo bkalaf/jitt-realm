@@ -1,11 +1,11 @@
 import { ObjectId } from 'bson';
 import { Selectable } from './Window';
 import { useRealmSchema } from './useRealmSchema';
-import { useRecordType } from './useRecordType';
+import { useRecordType } from '../hooks/useRecordType';
 import { useMemo } from 'react';
 import { TableRow } from './TableRow';
 import { RecordSetHeader } from './RecordSetHeader';
-import { useTheme } from '../providers/ThemeProvider';
+import { useTheme } from "../providers/useTheme";
 
 export function RecordSet<T extends Objects, TElement extends DataEntryElement>({
     realm,
