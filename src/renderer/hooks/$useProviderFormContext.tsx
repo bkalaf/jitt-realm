@@ -74,7 +74,6 @@ export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc e
     const showFeedback = React.useCallback(() => setIsFeedbacking(true), []);
     const hideFeedback = React.useCallback(() => setIsFeedbacking(false), []);
 
-
     return React.useMemo(
         () => ({
             createGetterSetter,

@@ -6,7 +6,6 @@ import { Selectable } from './Window';
 import { toPropertyProps } from './toPropertyProps';
 import { ColumnInfoMap } from './useRealmSchema';
 import { useCallback, useMemo } from 'react';
-import { cn } from '../util/cn';
 import { Cell } from './Cell';
 import { CellSwitcher } from './datatypes/CellSwitcher';
 import { DropdownCell } from './datatypes/DropdownCell';
@@ -29,9 +28,9 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
     const record = data as any as { _id: ObjectId };
 
     console.log('id', record._id, record._id.toHexString(), data._objectId());
-    const id = useMemo(() => new ObjectId(record._id), [data._objectId]);
+    const id = useMemo(() => new ObjectId(record._id), [record._id]);
     const selected = useMemo(() => isSelected(id), [isSelected, id]);
-    const selectIcon = useMemo(() => (selected ? faCheckSquare : faSquare), [isSelected, id]);
+    const selectIcon = useMemo(() => (selected ? faCheckSquare : faSquare), [selected]);
 
     const className = useTheme(
         {
@@ -66,7 +65,7 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
                 const key = isSelectable ? index + 1 : index;
                 const { name, datatype, enumMap, func, calculated, ...props } = toPropertyProps(
                     infos.get(columnName)!
-                ) as IPropertyProps<TElement>;
+                ) ;
                 if (enumMap != null && Object.keys(enumMap).length > 0) {
                     return (
                         <DropdownCell

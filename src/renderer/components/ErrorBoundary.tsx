@@ -5,12 +5,12 @@ import { ErrorInfo } from 'react';
 export default class ErrorBoundary extends React.Component<
     // eslint-disable-next-line @typescript-eslint/ban-types
     {},
-    { hasError: boolean; error?: Error; errorInfo?: ErrorInfo }
+    { hasError: boolean; error?: Error; errorInfo?: ErrorInfo, message: string }
 > {
     // eslint-disable-next-line @typescript-eslint/ban-types
     constructor(props: {}) {
         super(props);
-        this.state = { hasError: false };
+        this.state = { message: '', hasError: false, error: undefined };
         
     }
     override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -18,6 +18,7 @@ export default class ErrorBoundary extends React.Component<
         this.setState({
             hasError: true,
             error,
+            message: error.message,
             errorInfo
         });
     }

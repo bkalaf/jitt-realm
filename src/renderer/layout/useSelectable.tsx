@@ -3,7 +3,7 @@ import { ObjectId } from 'bson';
 import { getBetween } from '../../common/array/getBetween';
 import { Selectable } from './Window';
 
-export function useSelectable(value: boolean = false): Selectable {
+export function useSelectable(value = false): Selectable {
     const [isSelectable, setSelectable] = useState(value);
     const [selected, setSelected] = useState<ObjectId[]>([]);
     const isSelected = useCallback(

@@ -1,6 +1,6 @@
 import Realm from 'realm';
 import { ObjectId } from 'bson';
-import { $SelfStorage, SelfStorage } from './SelfStorage';
+import { $SelfStorage, ID, SelfStorage } from './SelfStorage';
 import { $Address, Address } from './Address';
 import { ifEmpty } from './index';
 import { faKey } from '@fortawesome/pro-regular-svg-icons';
@@ -8,9 +8,9 @@ import { Boundary } from '../components/Boundary';
 import { ObjectIdControlElement } from '../components/forms/Controls/ObjectIdControlElement';
 import { CalculatedControlElement } from './CalculatedControlElement';
 import { LookupControl } from './LookupControl';
-import { ControlBase } from '../components/forms';
-import { InputBaseElement } from '../components/forms/InputBaseElement';
 import { identity } from '../../common/identity';
+import { TextField } from './TextField';
+import { LookupField } from './LookupField';
 
 export const $Facility: $Facility = 'Facility';
 
@@ -41,13 +41,18 @@ export const Stringify = {
 };
 export class Facility {
     static schema: Realm.ObjectSchema = {
-        name: $Facility,
+        name: 'Facility',
         primaryKey: '_id',
         properties: {
             _id: 'objectId',
-            selfStorage: $SelfStorage,
+            selfStorage: {
+                type: 'SelfStorage',
+                optional: true
+            },
             facilityNumber: 'string?',
-            address: $Address,
+            address: {
+                type: 'Address'
+            },
             email: 'string?',
             phoneNumber: 'string?'
         }
@@ -59,7 +64,11 @@ export class Facility {
     phoneNumber: string | undefined;
     address: Address = new Address();
     get name(): string {
-        return [this.selfStorage?.name, this.address.cityState, this.address.streetOnly].join(' - ');
+        return [
+            this.selfStorage?.name,
+            [this.address.city, this.address.state].join(','),
+            this.address.street?.split(' ').slice(1).join(' ')
+        ].join(' - ');
     }
     static sort: [string, boolean | undefined][] = [
         ['address.state', false],
@@ -114,34 +123,21 @@ export class Facility {
         email: '',
         facilityNumber: ''
     });
-    static Insert = ({
-        realm
-    }: {
-        realm: Realm;
-    }) => (
+    static Insert = ({ realm }: { realm: Realm }) => (
         <Boundary fallback={<div>Loading...</div>}>
-            <ObjectIdControlElement />
-            <CalculatedControlElement
+            <ID />
+            <LookupField realm={realm} name='selfStorage' />
+            <TextField name='facilityNumber' type='text' />
+            <Address.Insert prefix='address' realm={realm} />
+            <TextField name='email' display='E-mail' type='email' />
+            <TextField name='phoneNumber' type='tel' />
+
+            {/* <CalculatedControlElement
                 name='name'
                 deps={['address.street', 'address.city', 'address.state', 'selfStorage.name']}
                 calc='name.value = [selfStorage.name.value, [address.city.value, address.state.value].join(", "), address.street.value.split(" ").slice(1).join(" ")].join(" - ")'
             />
-            <LookupControl name='selfStorage' displayName='Company' realm={realm} />
-            <Address.Insert prefix='address' />
-            <InputBaseElement
-                toOutput={(x: string) => x.trim()}
-                toBacking={(x: string) => x.trim()}
-                name='email'
-                displayName='E-mail'
-                type='email'
-            />
-            <InputBaseElement
-                toOutput={(x: string) => x.trim()}
-                toBacking={(x: string) => x.trim()}
-                name='phoneNumber'
-                displayName='Phone Number'
-                type='tel'
-            />
+            <LookupControl name='selfStorage' displayName='Company' realm={realm} /> */}
         </Boundary>
     );
 }

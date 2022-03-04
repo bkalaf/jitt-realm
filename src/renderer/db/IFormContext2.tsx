@@ -15,5 +15,5 @@ export type IFormContext2<T, TCalc> = {
     clearErrors: () => void;
     isFeedbacking: boolean;
     showFeedback: () => void;
-    hideFeedback: () => void;
+    hideFeedback: () => void;   
 };

@@ -18,7 +18,8 @@ import { unzip } from './unzip';
 import { ignore } from '../../common/ignore';
 import { InsertForm } from "./InsertForm";
 import { useRecordType } from '../hooks/useRecordType';
-import { FormContextProvider } from '../components/forms/FormContext';
+import { FormProvider } from '../db/FormProvider';
+import React from 'react';
 
 export function toMap<T, U>(obj: T[], keyFunc: (x: T) => string, valueFunc: (x: T) => U): Record<string, U> {
     return obj.map((v) => ({ [keyFunc(v)]: valueFunc(v) })).reduce((pv, cv) => ({ ...pv, ...cv }), {});
@@ -111,11 +112,11 @@ export function Records({
     const body = isGrid ? (
         <RecordSet realm={realm} {...selectable} />
     ) : isInsert ? (
-        <FormContextProvider realm={realm}>
+        <FormProvider canSubmit realm={realm}>
             <InsertForm realm={realm}>
-                {<Ctor.Insert realm={realm} />}
+                <PassThruComponent Component={Ctor.Insert} realm={realm} saveOnBlur={false} />
             </InsertForm>
-        </FormContextProvider>
+        </FormProvider>
     ) : (
         <>Single</>
     );
@@ -126,4 +127,9 @@ export function Records({
             {body}
         </div>
     );
+}
+
+export function PassThruComponent(props: { children?: Children, Component: React.FunctionComponent } & Record<string, any> ) {
+    const { Component, children, ...remain } = props;
+    return <Component {...remain}>{children}</Component>;
 }

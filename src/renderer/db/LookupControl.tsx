@@ -7,7 +7,6 @@
 // import { LookupOptions } from "./LookupOptions";
 
 import { BSON } from 'realm';
-import { ControlBase } from '../components/forms';
 import { DbOutputType } from '../components/forms/DbFieldValue';
 import { useRecordType } from '../hooks/useRecordType';
 
@@ -55,18 +54,19 @@ export function LookupControl<T extends DbOutputType & { _id: BSON.ObjectId }>({
         .map((x) => [x._id.toHexString(), Ctor.toDisplayName(x)] as [string, string])
         .map(([key, value], index) => <option key={index} value={key} label={value} />);
     return (
-        <ControlBase
-            controlTag='select'
-            labelTag='label'
-            containerTag='div'
-            initial={() => ''}
-            name={name}
-            displayName={displayName}
-            feedbackTag='div'
-            toBacking={((x: string) => realm.objectForPrimaryKey(type, new BSON.ObjectId(x))) as any}
-            toOutput={((x: T) => x._id.toHexString()) as any}
-            validators={[]}>
-            {options}
-        </ControlBase>
+        <></>
+        // <ControlBase
+        //     controlTag='select'
+        //     labelTag='label'
+        //     containerTag='div'
+        //     initial={() => ''}
+        //     name={name}
+        //     displayName={displayName}
+        //     feedbackTag='div'
+        //     toBacking={((x: string) => realm.objectForPrimaryKey(type, new BSON.ObjectId(x))) as any}
+        //     toOutput={((x: T) => x._id.toHexString()) as any}
+        //     validators={[]}>
+        //     {options}
+        // </ControlBase>
     );
 }

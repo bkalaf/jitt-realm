@@ -28,7 +28,8 @@ declare global {
         init: () => any;
         Insert: React.FunctionComponent<{
             prefix?: string;
-            realm: Realm;
+            saveOnBlur?: boolean;
+            realm?: Realm;
         }>;
     };
     export type JittClass<T> = Realm.ObjectClass & JittObjectClass<T>;
@@ -51,7 +52,7 @@ declare global {
     export type Primitive = 'string' | 'bool' | 'int' | 'double' | 'float' | 'decimal128' | 'objectId' | 'uuid' | 'data' | 'date';
     export type Collection = 'list' | 'set' | 'dictionary';
     export type Reference = 'object' | 'linkingObjects';
-    export type $SelfStorage = 'Self-Storage';
+    export type $SelfStorage = 'SelfStorage';
     export type $Address = 'Address';
     export type $Facility = 'Facility';
     export type Objects = $SelfStorage | $Address | $Facility;
@@ -99,7 +100,7 @@ declare global {
     } & Attributes<T>;
 
     export type PropertyProps<T extends DataEntryElement> = IColumnPosition & IPropertyInfo<T>;
-    export type ClassObject<T extends Object> = T extends $SelfStorage
+    export type ClassObject<T extends string> = T extends $SelfStorage
         ? SelfStorage
         : T extends $Address
         ? Address
@@ -107,11 +108,14 @@ declare global {
         ? Facility
         : never;
     export type GetValue<T> = (name: string, stringify?: Stringify<T>) => () => T;
-    export type SetValue<T, TElement> = (name: string, convert: (s: string) => T) => (ev: React.ChangeEvent<TElement>) => void;f
+    export type SetValue<T, TElement> = (name: string, convert: (s: string) => T) => (ev: React.ChangeEvent<TElement>) => void;
     export type Convert<T> = (x: string) => T;
     export type Stringify<T> = (x: T) => string;
     export type IUnsubscribe = () => void;
     export type CalculationUpdate<T> = (setter: StateSetter<string>) => (x: T) => string;
-    export type Initializer<T> = T | (() => T)
+    export type Initializer<T> = T | (() => T);
+    export type ConversionOrCalculation<T, U> =
+    | [convertFrom: ((x: T, realm?: Realm) => U), convertTo: (x: U, realm?: Realm) => T]
+    | string;
 }
 export const i = 1;

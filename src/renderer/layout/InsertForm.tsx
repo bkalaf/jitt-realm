@@ -7,6 +7,7 @@ import { useTheme } from "../providers/useTheme";
 import { ButtonGroup } from '../components/forms/footer/ButtonGroup';
 import { FormButton } from '../components/forms/footer/FormButton';
 import { useForm2 } from '../hooks/useForm2';
+import { Boundary } from '../components/Boundary';
 
 export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>, TFormData extends Record<string, any>>({
     realm,
@@ -24,10 +25,11 @@ export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>
 
     console.log('Children', React.Children.toArray(children)[0]);
     return (
-        <div className=''>
+        <Boundary fallback={<div>Loading...</div>}>
             <form className={className} id='insert-form' onReset={prevent} onSubmit={prevent} onInput={onInput}>
                 <section className='contents'>
-                    {React.cloneElement(React.Children.toArray(children)[0] as React.ReactElement, {...(React.Children.toArray(children)[0] as React.ReactElement).props as Record<string, any>, realm })}
+                    {children}
+                    {/* {React.cloneElement(React.Children.toArray(children)[0] as React.ReactElement, {...(React.Children.toArray(children)[0] as React.ReactElement).props as Record<string, any>, realm })} */}
                 </section>
                 <hr className='w=full col-span-4' />
                 <footer className='w-full col-span-4'>
@@ -42,6 +44,6 @@ export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>
                     </ButtonGroup>
                 </footer>
             </form>
-        </div>
+        </Boundary>
     );
 }

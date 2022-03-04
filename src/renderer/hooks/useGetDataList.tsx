@@ -1,7 +1,7 @@
 import React from 'react';
-import { IDataListContext, DataListContext } from '../providers/DataListContext';
+import { DataListContext } from '../providers/DataListContext';
 
-export function useGetDataList(key: keyof IDataListContext) {
+export function useGetDataList(key: string) {
     const lists = React.useContext(DataListContext)!;
     return lists[key];
 }

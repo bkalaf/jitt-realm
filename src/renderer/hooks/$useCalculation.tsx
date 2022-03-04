@@ -1,5 +1,5 @@
+import { $useSubscribe } from './$useSubscribe';
 import { useForm } from './useForm';
-import { useSubscribe } from './$useSubscribe';
 
 /**
  * 
@@ -8,5 +8,5 @@ import { useSubscribe } from './$useSubscribe';
  */
 export function $useCalculation(calculation: string) {
     const { subscribeCalculation, unsubscribeCalculation } = useForm();
-    useSubscribe(subscribeCalculation, unsubscribeCalculation, calculation);
+    $useSubscribe(subscribeCalculation, unsubscribeCalculation, calculation);
 }

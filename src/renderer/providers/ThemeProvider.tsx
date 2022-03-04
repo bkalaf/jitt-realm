@@ -16,35 +16,47 @@ export function ThemeProvider({ children }: { children?: Children }) {
                 bg: 'bg-yellow-minimal/50',
                 text: 'text-black',
                 font: 'font-firaSans',
-                fieldset: {
-                    bg: 'bg-amber/75',
-                    padding: 'pb-4',
-                    span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
-                    grid: 'grid xs:grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
-                    justify: 'justify-center mx-8',
+                field: {
+                    container: {
+                        bg: 'bg-amber/75',
+                        padding: 'pb-4',
+                        justify: 'justify-center mx-8',
+                        margin: 'px-2',
+                        full: 'w-full',
+                        col: 'flex flex-col-reverse',
+                        relative: 'relative'
+                    },
+                    fieldset: {
+                        relative: 'relative',
+                        bg: 'bg-amber/75',
+                        padding: 'pb-4',
+                        span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
+                        grid: 'grid xs:grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
+                        justify: 'justify-center mx-8',
+                        margin: 'mx-auto',
+                        full: 'w-full',
+                        col: 'flex flex-col-reverse',
+                        minwidth: 'min-w-full'
+                    },
                     legend: {
-                        font: 'font-firaSans',
-                        fs: 'text-xl',
-                        fw: 'font-bold',
-                        margin: 'px-2 py-1 pl-10',
                         bg: 'bg-black',
                         text: 'text-white',
-                        width: 'w-full',
-                        rounded: 'rounded-xl shadow-xl'
-                    }
-                },
-                field: {
+                        rounded: 'rounded-xl shadow-xl',
+                        minwidth: 'min-w-full'
+                    },
                     label: {
                         font: 'font-firaSans',
                         fs: 'text-xl',
                         fw: 'font-bold',
-                        left: 'ml-3 order-first',
-                        after: 'peer-required:after:content-["_(*)_"] peer-required:after:text-red after:font-extrabold'
+                        left: 'ml-8',
+                        bottom: 'mb-2.5',
+                        width: 'min-w-full text-left',
+                        after: 'peer-required:after:font-openSans peer-required:after:content-["__(*)_"] peer-required:after:text-red-dark after:font-extrabold'
                     },
                     control: {
                         font: 'font-firaSans',
                         fs: 'text-base',
-                        fw: 'font-medium order-last',
+                        fw: 'font-medium',
                         padding: 'py-1 px-3',
                         before: 'whitespace-pre before:content-["_"]',
                         border: 'border border-neutral/75',
@@ -53,16 +65,18 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         transition: 'transition-all duration-700 delay-75 ease-in-out',
                         hover: 'hover:ring hover:ring-red',
                         flex: 'flex w-full',
-                        peer: 'peer'
+                        peer: 'peer',
+                        width: 'min-w-full',
+                        select: {},
+                        input: {},
+                        textarea: {}
                     },
                     feedback: {
-                        hidden: 'hidden'
-                    },
-                    margin: 'px-2',
-                    full: 'w-full',
-                    col: 'flex flex-col'
+                        text: 'text-red',
+                        font: 'font-monteserrat font-extrabold text-lg text-center',
+                        flex: 'inline-flex place-self-center'
+                    }
                 },
-                select: {},
                 buttonGroup: {
                     width: 'grid grid-cols-3 mx-auto w-full',
                     span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',

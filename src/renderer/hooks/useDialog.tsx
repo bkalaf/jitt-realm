@@ -1,6 +1,7 @@
 import { getCurrentWindow } from '@electron/remote';
 import { dialog } from 'electron';
-import { DialogType } from './useProvideFormContext';
+
+export type DialogType = 'info' | 'question';
 
 export function useDialog<T extends any[] = never[]>(message: string, title: string, type: DialogType, ...buttons: string[]) {
     return function (...actions: Array<(...args: T) => void>) {

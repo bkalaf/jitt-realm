@@ -62,7 +62,7 @@ export function CellSwitcher<
             return <EmbeddedCell data={data} name={name} schema={obj} />;
         }
         case 'Facility':
-        case 'Self-Storage': {
+        case 'SelfStorage': {
             const obj = $$Schema[datatype];
             return <LookupCell data={data as any} name={name} schema={obj} />;
         }

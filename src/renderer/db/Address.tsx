@@ -2,17 +2,16 @@ import Realm from 'realm';
 import { provinceMap, Provinces } from './enums/Provinces';
 import { CountryISO2, countryMap } from './enums/CountryISO2';
 import { ifEmpty } from '.';
-import { identity } from '../../common/identity';
-import { $provinces, $countries, ControlBase } from '../components/forms';
-import { trim } from '../../common/text/trim';
-import { InputControl } from '../components/forms/InputControl';
-import { useDataList } from '../hooks/useDataList';
+import { DataListField, TextField } from './TextField';
+import { Field } from './Field';
+import { ForwardComponents } from './$$Elements';
+import { ContainerComponent, LabelComponent } from './SelfStorage';
 
 export const $Address: $Address = 'Address';
 
 export class Address {
     static schema: Realm.ObjectSchema = {
-        name: $Address,
+        name: 'Address',
         embedded: true,
         properties: {
             street: 'string?',
@@ -29,12 +28,12 @@ export class Address {
     postal: string | undefined = '';
     state: Provinces = 'CA';
     country: CountryISO2 = 'US';
-    get streetOnly() {
-        return this.street?.split(' ').slice(1).join(' ');
-    }
-    get cityState() {
-        return [this.city, this.state].join(',');
-    }
+    // get streetOnly() {
+    //     return this.street?.split(' ').slice(1).join(' ');
+    // }
+    // get cityState() {
+    //     return [this.city, this.state].join(',');
+    // }
     static columns: string[] = ['street', 'suite', 'city', 'state', 'country', 'postal'];
     static columnMap: ColumnMap = {
         street: ['Street', { type: 'text' }],
@@ -75,21 +74,46 @@ export class Address {
         country: 'US',
         postal: ''
     });
-    static Insert = function <T, TElement extends DataEntryElement>(props: { prefix: string }) {
+    static Insert = function <T, TElement extends DataEntryElement>(props: { prefix: string; realm: Realm }) {
         return (
-            <ControlBase
-                containerTag='fieldset'
-                labelTag='legend'
-                displayName='Address'
+            <Field
                 name='address'
-                toBacking={identity}
-                toOutput={identity}
-                validators={[]}
-                initial={
-                    ((): Record<string, string> => {
-                        return {} as any;
-                    }) as any
-                }></ControlBase>
+                display='Address'
+                converts={[Address.convertFrom, Address.convertTo] as ConversionOrCalculation<Address, Record<string, string>>}
+                labelLabel='legend'
+                containerLabel='fieldset'
+                Container={ForwardComponents.div as ContainerComponent}
+                Label={ForwardComponents.label as LabelComponent}
+                Feedback={ForwardComponents.small}>
+                <TextField name='street' type='text' />
+                <TextField name='suite' type='text' />
+                <TextField name='city' type='text' />
+                <DataListField name='state' display='State/Province' list='provinces-datalist' map={provinceMap} />
+                <DataListField
+                    name='country'
+                    list='datalist-countries'
+                    map={{
+                        US: 'United States',
+                        CA: 'Canada',
+                        MX: 'Mexico',
+                        GB: 'United Kingdom'
+                    }}
+                />
+                <TextField name='postal' type='text' pattern={/[0-9]{5}(-?[0-9]{4})?/.toString()} />
+            </Field>
+            // <ControlBase
+            //     containerTag='fieldset'
+            //     labelTag='legend'
+            //     displayName='Address'
+            //     name='address'
+            //     toBacking={identity}
+            //     toOutput={identity}
+            //     validators={[]}
+            //     initial={
+            //         ((): Record<string, string> => {
+            //             return {} as any;
+            //         }) as any
+            //     }></ControlBase>
         );
 
         // <FieldSetControl label='Address' name='address' id='address-fieldset' aria-labelledby='address-fieldset-legend'>

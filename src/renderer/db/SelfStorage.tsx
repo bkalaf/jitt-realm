@@ -1,22 +1,24 @@
+/* eslint-disable react/boolean-prop-naming */
 import Realm, { BSON } from 'realm';
 import { ObjectId } from 'bson';
-import { Facility } from './Facility';
+import { $Facility, Facility } from './Facility';
 import { faKey } from '@fortawesome/pro-regular-svg-icons';
 import { ifEmpty } from '.';
 import { identity } from '../../common/identity';
-import { InputBaseElement } from '../components/forms/InputBaseElement';
 import { useTheme } from '../providers/useTheme';
-import { toTitleCase } from '../../common/text/toTitleCase';
-import { useRef, useState } from 'react';
+import { HTMLInputTypeAttribute, useDebugValue, useRef, useState } from 'react';
+import { ObjectIdField } from './ObjectIdField';
+import { TextField } from './TextField';
+import { InsertFormFields } from './InsertFormFields';
 
-export const $SelfStorage: $SelfStorage = 'Self-Storage';
+export const $SelfStorage: $SelfStorage = 'SelfStorage';
 
 export class SelfStorage {
     constructor() {
         this._id = new ObjectId();
     }
     static schema: Realm.ObjectSchema = {
-        name: $SelfStorage,
+        name: 'SelfStorage',
         primaryKey: '_id',
         properties: {
             _id: 'objectId',
@@ -47,71 +49,63 @@ export class SelfStorage {
     static convertFrom = (obj: SelfStorage): Record<string, any> => ({
         _id: obj._id.toHexString(),
         name: obj.name,
-        website: obj.website ?? ''
+        website: obj.website ?? '',
+        facilities: obj.facilities.map((x) => x._id)
     });
     static convertTo = (obj: Record<string, any>, realm?: Realm) => {
         return {
             _id: new ObjectId(obj._id),
             name: obj.name,
-            website: ifEmpty(obj.website)
+            website: ifEmpty(obj.website),
+            facilities: obj.facilities.map((x: ObjectId) => realm?.objectForPrimaryKey($Facility, x))
         };
     };
     static init = () => ({
         _id: new ObjectId(),
         name: '',
         website: '',
-        facilities: [] as Facility[]
+        facilities: [] as ObjectId[]
     });
-    static TabularForm: React.FunctionComponent<{ realm: Realm }> = function<T>({ realm, init, outFunc, inFunc, name, displayName }: { name: string; displayName?: string; realm: Realm, init: Initializer<T>, outFunc: (x: T) => string, inFunc: (x: string) => T }) {
-        const title = displayName ?? toTitleCase(name);
-        const [formData, setFormData] = useState(init);
-        const memoized = useRef(value);
-    }
+    static TabularForm: React.FunctionComponent<{ realm: Realm }> = function <T>({ realm }: { realm: Realm }) {
+        return <></>;
+    };
     static Insert: React.FunctionComponent<{
-        realm: Realm
-    }> = function <T, TElement extends DataEntryElement>({ realm }: { realm: Realm }) {
+        realm: Realm;
+        saveOnBlur?: boolean;
+        prefix: string;
+    }> = function <T, TElement extends DataEntryElement>({ realm, prefix }: { realm: Realm; prefix?: string }) {
         return (
             <>
-                <InputBaseElement
-                    type='text'
-                    name='_id'
-                    displayName='ID'
-                    readOnly
-                    required
-                    toBacking={identity}
-                    toOutput={(x: BSON.ObjectId) => x.toHexString()}></InputBaseElement>
-                <InputBaseElement
-                    type='text'
-                    name='name'
-                    displayName='Name'
-                    toBacking={identity}
-                    toOutput={(x: string) => identity(x)}
-                    readOnly={false}
-                    required
-                />
-                <InputBaseElement
-                    type='url'
-                    name='website'
-                    displayName='Website'
-                    toBacking={identity}
-                    toOutput={(x: string) => x.trim()}
-                    readOnly={false}
-                    required={false}></InputBaseElement>
+                <ID />
+                <TextField name='name' type='text' required />
+                <TextField name='website' type='url' />
             </>
         );
     };
 }
 
-export function ObjectIdControl() {
-    const className = useTheme({}, '', 'form', 'insert', 'control');
-    return React.createElement('input', {
-        className,
-        type: 'text',
-        readOnly: true,
-        required: true,
-        init: () => new ObjectId(),
-        toOutput: (x: BSON.ObjectId) => x.toHexString(),
-        toBacking: (x: BSON.ObjectId) => x,
-        displayName: 'Name'
-    })
+export function ID() {
+    useDebugValue('ID');
+    return <ObjectIdField name='_id' display='ID' type='text' required readOnly />;
 }
+export type ContainerComponent = React.FunctionComponent<React.ComponentPropsWithRef<'div' | 'fieldset'>>;
+export type LabelComponent =
+    | React.FunctionComponent<React.ComponentPropsWithRef<'label'>>
+    | React.FunctionComponent<React.ComponentPropsWithRef<'legend'>>;
+export type ControlComponent = React.FunctionComponent<React.ComponentPropsWithRef<'input' | 'select' | 'textarea' | 'output'>>;
+export type FeedbackComponent = React.FunctionComponent<React.ComponentPropsWithRef<'small'>>;
+export function $useThemeClassNames(...remain: string[]) {
+    return useTheme({}, '', 'form', 'insert', 'field', ...remain);
+}
+
+export type TextFieldProps<T> = {
+    name: string;
+    display?: string;
+    validators?: string[];
+    children?: Children;
+    type?: HTMLInputTypeAttribute;
+    required?: boolean;
+    readOnly?: boolean;
+    disabled?: boolean;
+    converts?: ConversionOrCalculation<T, T>;
+};

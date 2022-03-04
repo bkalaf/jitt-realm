@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { Outlet, useLocation, useParams } from 'react-router';
-import { DataReader } from '../../common/resource';
+import { Outlet, useParams } from 'react-router';
 import { Boundary } from '../components/Boundary';
 import { $$Schema, schema } from '../db';
 import { Loading } from './App';
@@ -9,8 +8,7 @@ import { ObjectId } from 'bson';
 import { stringify } from 'querystring';
 import { type } from 'os';
 import { unique } from '../../common/array/unique';
-import { Menu } from './Menu';
-import { Viewport } from './Viewport';
+import { Frame } from './Frame';
 
 export type PropertyInfo = {
     index: number;
@@ -43,7 +41,7 @@ export function handleProperties(pt: Realm.PropertyType | Realm.ObjectSchemaProp
         return 'string';
     }
     if (typeof pt === 'string') {
-        return pt
+        return pt;
     }
     if ('type' in pt) {
         return pt.type;
@@ -54,12 +52,12 @@ export function getColumnType(name: string, type: string): string {
     if (name.includes('.')) {
         const [head, ...tail] = name.split('.');
         if (tail.length === 0) {
-            return handleProperties($$Schema[type].schema.properties[head])
+            return handleProperties($$Schema[type].schema.properties[head]);
         }
-        const next = handleProperties($$Schema[type].schema.properties[head])
+        const next = handleProperties($$Schema[type].schema.properties[head]);
         return getColumnType(tail.join('.'), next);
     }
-    return handleProperties($$Schema[type].schema.properties[name])
+    return handleProperties($$Schema[type].schema.properties[name]);
 }
 export function getRealmObjectPropertyType(oc: JittClass<any>, name: string): [string, string?] {
     console.log('oc', oc, 'name', name);
@@ -86,22 +84,6 @@ export function useGetPropertyType() {
         [objectClass]
     );
     return getPropertyType;
-}
-export function Frame({ realm }: { realm: DataReader<Realm> }) {
-    const location = useLocation();
-    return (
-        <div className='flex flex-col w-screen h-screen'>
-            <Menu />
-            <div className='flex flex-grow p-3 bg-yellow-light'>
-                <Viewport realm={realm.read()} />
-            </div>
-            <div className='flex bg-pink-light'>
-                <span className='inline-flex py-0.5 px-2 bg-red text-white'>
-                    {location.pathname}
-                </span>
-            </div>
-        </div>
-    );
 }
 export default function Window() {
     const realm = useRealm();

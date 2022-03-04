@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { $provinces, $countries } from '../components/forms';
 import { useDataList } from './useDataList';
 
+const $provinces = 'datalist-provinces';
+const $countries = 'datalist-countries';
 export function useProvideDataLists() {
     const provinces = useDataList(
         $provinces,
