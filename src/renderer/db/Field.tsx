@@ -3,9 +3,8 @@ import { camelToTitleCase, toTitleCase } from '../../common/text/toTitleCase';
 import { $useControl } from '../components/forms/$useControl';
 import { ContainerComponent, LabelComponent, ControlComponent, FeedbackComponent, $useThemeClassNames } from './SelfStorage';
 import React from 'react';
-import { faBan, faPenNibSlash, faShieldBlank, IconDefinition } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { cn } from '../util/cn';
+import { faBan, faPenNibSlash, faShieldBlank } from '@fortawesome/pro-solid-svg-icons';
+import { Indicator } from './Indicator';
 
 export function Field<T, U = string>({
     Container,
@@ -42,6 +41,7 @@ export function Field<T, U = string>({
     required?: boolean;
     readOnly?: boolean;
     disabled?: boolean;
+    list?: string;
 }) {
     const displayName = React.useMemo(() => (display == null ? camelToTitleCase(name.split('.').reverse()[0]) : display), [display, name]);
     const { backing, containerID, controlID, feedback, feedbackID, labelID, onBlur, onChange, ref, isFeedbacking } = $useControl(
@@ -91,18 +91,5 @@ export function Field<T, U = string>({
                 <Indicator icon={faBan} title='Field is disabled.' isFlag={disabled} />
             </span>
         </Container>
-    );
-}
-
-export function Indicator({ icon, isFlag, title }: { icon: IconDefinition; isFlag?: boolean; title: string }) {
-    const flag = isFlag ?? false;
-    const className = cn(
-        { hidden: !flag, 'inline-flex': flag },
-        'inline-flex p-1 bg-red border-2 border-black rounded-2xl shadow-lg text-white'
-    );
-    return (
-        <span className={className} title={title}>
-            <FontAwesomeIcon size='lg' icon={icon} className=''></FontAwesomeIcon>
-        </span>
     );
 }

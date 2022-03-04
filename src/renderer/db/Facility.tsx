@@ -124,7 +124,7 @@ export class Facility {
         facilityNumber: ''
     });
     static Insert = ({ realm }: { realm: Realm }) => (
-        <Boundary fallback={<div>Loading...</div>}>
+        <>
             <ID />
             <LookupField realm={realm} name='selfStorage' />
             <TextField name='facilityNumber' type='text' />
@@ -138,6 +138,6 @@ export class Facility {
                 calc='name.value = [selfStorage.name.value, [address.city.value, address.state.value].join(", "), address.street.value.split(" ").slice(1).join(" ")].join(" - ")'
             />
             <LookupControl name='selfStorage' displayName='Company' realm={realm} /> */}
-        </Boundary>
+        </>
     );
 }

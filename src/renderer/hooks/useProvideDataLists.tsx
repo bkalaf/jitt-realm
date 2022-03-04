@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useDataList } from './useDataList';
 
-const $provinces = 'datalist-provinces';
-const $countries = 'datalist-countries';
+export const $provinces = 'datalist-provinces';
+export const $countries = 'datalist-countries';
 export function useProvideDataLists() {
     const provinces = useDataList(
         $provinces,
-        <>
+        <datalist id={$provinces}>
             <option value='' label='' />
             <optgroup label='States'>
                 <option value='AK' label='Alaska' />
@@ -76,11 +76,11 @@ export function useProvideDataLists() {
                 <option value='SK' label='Saskatchewan' />
                 <option value='YT' label='Yukon' />
             </optgroup>
-        </>
+        </datalist>
     );
     const countries = useDataList(
         $countries,
-        <>
+        <datalist id={$countries}>
             <option value='' label='' />
             <option label='Argentina' value='AR' />
             <option label='Australia' value='AU' />
@@ -231,7 +231,7 @@ export function useProvideDataLists() {
             <option label='Yemen' value='YE' />
             <option label='Zambia' value='ZM' />
             <option label='Zimbabwe' value='ZW' />
-        </>
+        </datalist>
     );
     return React.useMemo(
         () => ({

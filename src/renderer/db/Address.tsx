@@ -6,6 +6,8 @@ import { DataListField, TextField } from './TextField';
 import { Field } from './Field';
 import { ForwardComponents } from './$$Elements';
 import { ContainerComponent, LabelComponent } from './SelfStorage';
+import { useDataListPortal } from '../hooks/$useDataListPortal';
+import { $countries, $provinces } from '../hooks/useProvideDataLists';
 
 export const $Address: $Address = 'Address';
 
@@ -75,6 +77,8 @@ export class Address {
         postal: ''
     });
     static Insert = function <T, TElement extends DataEntryElement>(props: { prefix: string; realm: Realm }) {
+        const provinces = useDataListPortal($provinces);
+        const countries = useDataListPortal($countries);
         return (
             <Field
                 name='address'
@@ -82,9 +86,10 @@ export class Address {
                 converts={[Address.convertFrom, Address.convertTo] as ConversionOrCalculation<Address, Record<string, string>>}
                 labelLabel='legend'
                 containerLabel='fieldset'
-                Container={ForwardComponents.div as ContainerComponent}
-                Label={ForwardComponents.label as LabelComponent}
-                Feedback={ForwardComponents.small}>
+                Container={ForwardComponents.fieldset as ContainerComponent}
+                Label={ForwardComponents.legend as LabelComponent}>
+                {countries}
+                {provinces}
                 <TextField name='street' type='text' />
                 <TextField name='suite' type='text' />
                 <TextField name='city' type='text' />

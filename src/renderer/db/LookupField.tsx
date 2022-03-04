@@ -26,7 +26,7 @@ export function LookupField<T extends { _id: ObjectId; }>({
             display={display}
             name={name}
             labelLabel='label'
-            containerLabel='div'
+            containerLabel='container'
             Container={ForwardComponents.div as ContainerComponent}
             Label={ForwardComponents.label as LabelComponent}
             Feedback={ForwardComponents.small}

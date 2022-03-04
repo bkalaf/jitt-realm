@@ -13,36 +13,35 @@ export function ThemeProvider({ children }: { children?: Children }) {
                 grid: 'grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4',
                 gap: 'gap-x-4 gap-y-2',
                 border: 'border-2 border-black',
-                bg: 'bg-yellow-minimal/50',
+                bg: 'bg-lime-minimal/50',
                 text: 'text-black',
                 font: 'font-firaSans',
                 field: {
                     container: {
-                        bg: 'bg-amber/75',
+                        bg: 'bg-white/75',
                         padding: 'pb-4',
-                        justify: 'justify-center mx-8',
-                        margin: 'px-2',
-                        full: 'w-full',
+                        justify: 'justify-center',
+                        margin: 'p-1',
                         col: 'flex flex-col-reverse',
                         relative: 'relative'
                     },
                     fieldset: {
                         relative: 'relative',
                         bg: 'bg-amber/75',
-                        padding: 'pb-4',
+                        padding: 'pb-2',
+                        margin: 'px-1 py-0.5',
                         span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
-                        grid: 'grid xs:grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
-                        justify: 'justify-center mx-8',
-                        margin: 'mx-auto',
-                        full: 'w-full',
-                        col: 'flex flex-col-reverse',
+                        grid: 'grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-3',
+                        justify: 'justify-center',
                         minwidth: 'min-w-full'
                     },
                     legend: {
                         bg: 'bg-black',
                         text: 'text-white',
                         rounded: 'rounded-xl shadow-xl',
-                        minwidth: 'min-w-full'
+                        minwidth: 'min-w-full',
+                        padding: 'px-2 py-1.5',
+                        fs: 'text-xl font-firaSans font-bold'
                     },
                     label: {
                         font: 'font-firaSans',
@@ -64,9 +63,10 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         rounded: 'rounded-lg',
                         transition: 'transition-all duration-700 delay-75 ease-in-out',
                         hover: 'hover:ring hover:ring-red',
-                        flex: 'flex w-full',
+                        flex: 'flex',
                         peer: 'peer',
                         width: 'min-w-full',
+                        textopts: 'placeholder:bg-red',
                         select: {},
                         input: {},
                         textarea: {}

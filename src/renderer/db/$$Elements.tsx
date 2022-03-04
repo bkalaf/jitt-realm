@@ -51,7 +51,7 @@ export const $$Elements: Record<string, (props: React.PropsWithChildren<any>, re
     },
     select: ({ children, ref: _ref, ...remain }: { children?: Children; ref?: any }, ref?: React.ForwardedRef<HTMLElement>) => {
         return ref ? (
-            <select ref={ref as React.ForwardedRef<HTMLSelectElement>} {...remain}>
+            <select ref={ref as React.ForwardedRef<HTMLSelectElement>} placeholder='Choose...' {...remain}>
                 {children}
             </select>
         ) : (

@@ -22,6 +22,7 @@ export function DataListField(props: TextFieldProps<string> & { list: string, ma
         <Field
             converts={[(x: string) => map[x], (x: string) => new Map(Array.from(Object.entries(map))).get(x)!] as ConversionOrCalculation<string, string>}
             {...remain}
+            list={list}
             containerLabel='container'
             Container={ForwardComponents.div as ContainerComponent}
             Label={ForwardComponents.label as LabelComponent}
