@@ -13,7 +13,7 @@ export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc e
     const [type, { convertTo, init }] = useRecordType();
     const [formData, setFormData] = React.useState(initializer ?? init());
     const [calcObject, setCalcObject] = React.useState({} as TCalc);
-    const [calculations, setCalculations] = React.useState<string[]>([]);
+    const calculations = React.useRef<Map<string, (x: T, y: TCalc) => string>>(new Map());
     const [errors, setErrors] = React.useState<[propertyName: string, error: string][]>([]);
     const clearErrors = React.useCallback(() => setErrors([]), []);
     const appendError = React.useCallback((propertyName: string, message: string) => {
@@ -23,21 +23,26 @@ export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc e
         return errors.filter(([k, v]) => name === k).map(([k, v]) => v);
     }, [errors]);
     const isValid = React.useMemo(() => errors.length === 0, [errors]);
-    const subscribeCalculation = React.useCallback((add: string) => {
-        setCalculations((prev) => [...prev, add]);
+    const subscribeCalculation = React.useCallback((name: string, add: (x: T, y: TCalc) => string) => {
+        calculations.current.set(name, add);
     }, []);
-    const unsubscribeCalculation = React.useCallback((item: string) => {
-        setCalculations((prev) => prev.filter((x) => x !== item));
+    const unsubscribeCalculation = React.useCallback((name: string, add: (x: T,y: TCalc) => string) => {
+        calculations.current.delete(name);
     }, []);
     const onInput = React.useCallback(() => {
+        console.log('onInput');
         setCalcObject((prev) => {
-            const copy = { ...prev };
-            calculations.forEach((item: string) => {
-                eval(item)(copy);
+            let copy: TCalc = { ...prev };
+            Array.from(calculations.current.entries()).forEach(([name, func]) => {
+                if (func) {
+                    const result = func(formData, prev);
+                    console.log(`calculation result`, result);
+                    copy = setAssocPath(name, copy, func(formData, prev)) as TCalc;
+                }
             });
             return copy;
         });
-    }, [calculations]);
+    }, [calculations, formData]);
     const memoized = React.useRef(formData);
     const navigate = useNavigate();
     const getField = React.useCallback(

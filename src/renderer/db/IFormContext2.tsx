@@ -8,8 +8,8 @@ export type IFormContext2<T, TCalc> = {
     onInput: () => void;
     calcObject: TCalc;
     realm: Realm;
-    subscribeCalculation: (item: string) => void;
-    unsubscribeCalculation: (item: string) => void;
+    subscribeCalculation: (name: string, calculation: (x: T, y: TCalc) => string) => void;
+    unsubscribeCalculation: (name: string, calculation: (x: T, y: TCalc) => string) => void;
     isValid: boolean;
     appendError: (propertyName: string, message: string) => void;
     clearErrors: () => void;

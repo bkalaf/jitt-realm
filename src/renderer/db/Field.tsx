@@ -1,6 +1,6 @@
 import { useTheme } from '../providers/useTheme';
 import { camelToTitleCase, toTitleCase } from '../../common/text/toTitleCase';
-import { $useControl } from '../components/forms/$useControl';
+import { $useControl } from '../hooks/$useControl';
 import { ContainerComponent, LabelComponent, ControlComponent, FeedbackComponent, $useThemeClassNames } from './SelfStorage';
 import React from 'react';
 import { faBan, faPenNibSlash, faShieldBlank } from '@fortawesome/pro-solid-svg-icons';
@@ -44,7 +44,7 @@ export function Field<T, U = string>({
     list?: string;
 }) {
     const displayName = React.useMemo(() => (display == null ? camelToTitleCase(name.split('.').reverse()[0]) : display), [display, name]);
-    const { backing, containerID, controlID, feedback, feedbackID, labelID, onBlur, onChange, ref, isFeedbacking } = $useControl(
+    const { backing, containerID, controlID, feedback, feedbackID, labelID, onBlur, onChange, ref, isFeedbacking, onInput } = $useControl(
         name,
         converts,
         saveOnBlur ?? false,
@@ -70,6 +70,7 @@ export function Field<T, U = string>({
                     id={controlID}
                     onBlur={onBlur}
                     onChange={onChange}
+                    onInput={onInput}
                     value={toOutput == null ? backing : toOutput(backing)}
                     aria-labelledby={labelID}
                     aria-errormessage={feedbackID}

@@ -37,7 +37,7 @@ export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>
                         <FormButton type='button' onClick={onCancel}>
                             Cancel
                         </FormButton>
-                        <FormButton type='button'>Reset</FormButton>
+                        <FormButton type='button' onClick={onReset}>Reset</FormButton>
                         <FormButton type='button' onClick={onSubmit}>
                             Submit
                         </FormButton>

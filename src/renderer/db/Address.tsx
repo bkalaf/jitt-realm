@@ -8,6 +8,9 @@ import { ForwardComponents } from './$$Elements';
 import { ContainerComponent, LabelComponent } from './SelfStorage';
 import { useDataListPortal } from '../hooks/$useDataListPortal';
 import { $countries, $provinces } from '../hooks/useProvideDataLists';
+import { useForm } from '../hooks/useForm';
+import { useTheme } from '../providers/useTheme';
+import { CalculatedField } from './CalculatedField';
 
 export const $Address: $Address = 'Address';
 
@@ -52,7 +55,14 @@ export class Address {
             [[obj.city, obj.state].join(', '), obj.country, obj.postal].join(',')
         ].join('\n');
     }
-    static convertFrom = (obj: Address) => ({
+    static convertFrom = (obj: Address): {
+        street: string,
+        suite: string,
+        city: string,
+        state: string,
+        country: string,
+        postal: string
+    } => ({
         street: obj.street ?? '',
         suite: obj.suite ?? '',
         city: obj.city ?? '',
@@ -60,14 +70,16 @@ export class Address {
         country: obj.country,
         postal: obj.postal ?? ''
     });
-    static convertTo = (obj: Record<string, any>, realm?: Realm) => ({
-        street: ifEmpty(obj.street),
-        suite: ifEmpty(obj.suite),
-        city: ifEmpty(obj.city),
-        state: ifEmpty(obj.state),
-        country: ifEmpty(obj.country),
-        postal: ifEmpty(obj.postal)
-    });
+    static convertTo = (obj: Record<string, string>, realm?: Realm): Address => {
+        const result = new Address();
+        result.street = ifEmpty(obj.street);
+        result.suite = ifEmpty(obj.suite);
+        result.city = ifEmpty(obj.city);
+        result.state = (ifEmpty(obj.state) ?? 'CA') as Provinces;
+        result.country = (ifEmpty(obj.country) ?? 'US') as CountryISO2;
+        result.postal = ifEmpty(obj.postal);
+        return result;
+    };
     static init = () => ({
         street: '',
         suite: '',
@@ -83,7 +95,7 @@ export class Address {
             <Field
                 name='address'
                 display='Address'
-                converts={[Address.convertFrom, Address.convertTo] as ConversionOrCalculation<Address, Record<string, string>>}
+                converts={[Address.convertFrom, Address.convertTo]}
                 labelLabel='legend'
                 containerLabel='fieldset'
                 Container={ForwardComponents.fieldset as ContainerComponent}
@@ -93,10 +105,10 @@ export class Address {
                 <TextField name='street' type='text' />
                 <TextField name='suite' type='text' />
                 <TextField name='city' type='text' />
-                <DataListField name='state' display='State/Province' list='provinces-datalist' map={provinceMap} />
+                <DataListField name='state' display='State/Province' list={$provinces} map={provinceMap} />
                 <DataListField
                     name='country'
-                    list='datalist-countries'
+                    list={$countries}
                     map={{
                         US: 'United States',
                         CA: 'Canada',

@@ -1,8 +1,8 @@
 import React from 'react';
-import { identity } from '../../../common/identity';
-import { $useSubscribe } from '../../hooks/$useSubscribe';
-import { useForm } from '../../hooks/useForm';
-import { $useControlRef } from '../../hooks/$useControlRef';
+import { identity } from '../../common/identity';
+import { $useSubscribe } from './$useSubscribe';
+import { useForm } from './useForm';
+import { $useControlRef } from './$useControlRef';
 
 export interface IPass<T> {
     kind: 'pass';
@@ -32,13 +32,19 @@ export function evalValidator<T>(str: string, value: any) {
     return result;
 }
 
-export function $useControl<T, U>(name: string, converts: ConversionOrCalculation<T, U>, saveOnBlur = false, ...validators: string[]): $ControlProps {
-    const { createGetterSetter, onSubmit, appendError, subscribeCalculation, unsubscribeCalculation, isFeedbacking, realm } = useForm();
+export function $useControl<T extends Record<string, any>, U, V extends Record<string, string>>(
+    name: string,
+    converts: ConversionOrCalculation<T, U, V>,
+    saveOnBlur = false,
+    ...validators: string[]
+): $ControlProps {
+    const { createGetterSetter, onSubmit, appendError, subscribeCalculation, unsubscribeCalculation, isFeedbacking, realm, onInput } = useForm();
     const [getter, setter, getFeedback] = React.useMemo(() => createGetterSetter(name), [createGetterSetter, name]);
-    const [isComputed, convertFrom, convertTo, calcFunction] = Array.isArray(converts)
+    const [isComputed, convertFrom, convertTo, calcFunction] = React.useMemo(() => typeof converts !== 'function' 
         ? [false, converts[0] as (x: T, realm?: Realm) => U, converts[1] as (x: U, realm?: Realm) => T, undefined]
-        : ([true, identity, identity, converts] as [boolean, (x: string) => string, (x: string) => string, string]);
-    $useSubscribe(subscribeCalculation, unsubscribeCalculation, calcFunction);
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        : ([true, identity, identity, converts] as [boolean, (x: string) => string, (x: string) => string, (a: T, b: V) => U]), [converts]);
+    $useSubscribe<[string, (x: T, y: V) => U]>(subscribeCalculation as any, unsubscribeCalculation as any, name, calcFunction! as (x: T, y: V) => U);
     const [backing, setBacking] = React.useState(convertFrom(getter()));
     const ref = $useControlRef();
     const validate = React.useCallback(
@@ -79,8 +85,10 @@ export function $useControl<T, U>(name: string, converts: ConversionOrCalculatio
         }
     }, [backing, convertTo, isComputed, onSubmit, realm, saveOnBlur, setter, validate]);
     const onChange = React.useCallback((ev: React.ChangeEvent<DataEntryElement>) => {
-        setBacking(ev.target.value);
-    }, []);
+        if (!isComputed) {
+            setBacking(ev.target.value);
+        }
+    }, [isComputed]);
     const feedback = React.useMemo(() => getFeedback().join('\n'), [getFeedback]);
     const names = React.useMemo(
         () => ({
@@ -98,11 +106,12 @@ export function $useControl<T, U>(name: string, converts: ConversionOrCalculatio
                 backing,
                 feedback,
                 onBlur,
+                onInput,
                 isFeedbacking,
                 ref,
                 ...names
             } as $ControlProps),
-        [backing, feedback, isFeedbacking, names, onBlur, onChange, ref]
+        [backing, feedback, onInput, isFeedbacking, names, onBlur, onChange, ref]
     );
 }
 
@@ -110,6 +119,7 @@ export type $ControlProps = {
     onChange: (ev: React.ChangeEvent<DataEntryElement>) => void;
     backing: string;
     feedback: string;
+    onInput: () => void;
     onBlur: () => void;
     ref: React.RefObject<DataEntryElement | undefined>;
     feedbackID: string;

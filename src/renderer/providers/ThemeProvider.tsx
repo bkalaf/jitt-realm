@@ -71,6 +71,13 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         input: {},
                         textarea: {}
                     },
+                    output: {
+                        font: 'font-firaSans',
+                        text: 'text-base font-medium py-1 px-3',
+                        border: 'border border-neutral/75 shadow-lg rounded-lg',
+                        bg: 'bg-cyan-light',
+                        peer: 'peer min-w-full'
+                    },
                     feedback: {
                         text: 'text-red',
                         font: 'font-monteserrat font-extrabold text-lg text-center',

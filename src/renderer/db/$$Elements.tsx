@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactText } from 'react';
 import { identity } from '../../common/identity';
 import { objectMap } from '../../common/object/objectMap';
+import { ContainerComponent } from './SelfStorage';
 
 export const $$Elements: Record<string, (props: React.PropsWithChildren<any>, ref: React.ForwardedRef<HTMLElement>) => JSX.Element> = {
     fieldset: ({ children, ref: _ref, ...remain }: { children?: Children; ref?: any }, ref?: React.ForwardedRef<HTMLElement>) => {

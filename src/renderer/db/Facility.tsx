@@ -1,16 +1,12 @@
 import Realm from 'realm';
 import { ObjectId } from 'bson';
 import { $SelfStorage, ID, SelfStorage } from './SelfStorage';
-import { $Address, Address } from './Address';
+import { Address } from './Address';
 import { ifEmpty } from './index';
 import { faKey } from '@fortawesome/pro-regular-svg-icons';
-import { Boundary } from '../components/Boundary';
-import { ObjectIdControlElement } from '../components/forms/Controls/ObjectIdControlElement';
-import { CalculatedControlElement } from './CalculatedControlElement';
-import { LookupControl } from './LookupControl';
-import { identity } from '../../common/identity';
 import { TextField } from './TextField';
 import { LookupField } from './LookupField';
+import { CalculatedField } from './CalculatedField';
 
 export const $Facility: $Facility = 'Facility';
 
@@ -128,6 +124,7 @@ export class Facility {
             <ID />
             <LookupField realm={realm} name='selfStorage' />
             <TextField name='facilityNumber' type='text' />
+            <CalculatedField name='name' calculationFunction={(x: Facility, y: { name: string }) => [x.selfStorage?.name ?? '', [x.address.city, x.address.state].join(','), x.address.street?.split(' ').slice(1).join(' ') ?? ''].join(' - ')} /> 
             <Address.Insert prefix='address' realm={realm} />
             <TextField name='email' display='E-mail' type='email' />
             <TextField name='phoneNumber' type='tel' />

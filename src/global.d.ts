@@ -114,8 +114,10 @@ declare global {
     export type IUnsubscribe = () => void;
     export type CalculationUpdate<T> = (setter: StateSetter<string>) => (x: T) => string;
     export type Initializer<T> = T | (() => T);
-    export type ConversionOrCalculation<T, U> =
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    export type ConversionOrCalculation<T, U, V extends Record<string, string> = {}> =
     | [convertFrom: ((x: T, realm?: Realm) => U), convertTo: (x: U, realm?: Realm) => T]
-    | string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    | ((x: T, y: V) => U)
 }
 export const i = 1;
