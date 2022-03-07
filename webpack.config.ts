@@ -93,7 +93,7 @@ export const ctorConfig: (scope: 'main' | 'renderer') => (webpack.Configuration 
                     ]
                 },
                 { test: /\.(png|jpe?g|gif|webp|svg|woff2?|otf|ttf)$/, type: 'asset/resource' },
-                { test: /\.tsx?$/, use: 'ts-loader' },
+                { test: /\.tsx?$/, use: 'babel-loader' },
                 { test: /\.jsx?$/, use: 'babel-loader' }
             ]
         },

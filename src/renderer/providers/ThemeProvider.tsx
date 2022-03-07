@@ -40,22 +40,22 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         text: 'text-white',
                         rounded: 'rounded-xl shadow-xl',
                         minwidth: 'min-w-full',
-                        padding: 'px-2 py-1.5',
+                        padding: 'px-2',
                         fs: 'text-xl font-firaSans font-bold'
                     },
                     label: {
                         font: 'font-firaSans',
                         fs: 'text-xl',
                         fw: 'font-bold',
-                        left: 'ml-8',
-                        bottom: 'mb-2.5',
+                        left: 'ml-4',
+                        bottom: 'mb-0.5',
                         width: 'min-w-full text-left',
-                        after: 'peer-required:after:font-openSans peer-required:after:content-["__(*)_"] peer-required:after:text-red-dark after:font-extrabold'
+                        // after: 'peer-required:after:font-openSans peer-required:after:content-["__(*)_"] peer-required:after:text-red-dark after:font-extrabold'
                     },
                     control: {
                         font: 'font-firaSans',
                         fs: 'text-base',
-                        fw: 'font-medium',
+                        fw: 'font-semibold',
                         padding: 'py-1 px-3',
                         before: 'whitespace-pre before:content-["_"]',
                         border: 'border border-neutral/75',
@@ -66,7 +66,7 @@ export function ThemeProvider({ children }: { children?: Children }) {
                         flex: 'flex',
                         peer: 'peer',
                         width: 'min-w-full',
-                        textopts: 'placeholder:bg-red',
+                        textopts: 'placeholder:text-pink-light/50',
                         select: {},
                         input: {},
                         textarea: {}

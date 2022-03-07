@@ -30,7 +30,4 @@ export type DbDataType = DbPrimitive | DbList<DbPrimitive> | DbSet<DbPrimitive> 
 
 export type DbOutputType = string | readonly string[] | boolean | number;
 
-export type BackingFunction<TChanging extends DbOutputType, TBacking extends DbDataType> = (x: TChanging) => TBacking;
-
-export type OutputFunction<TChanging extends DbOutputType, TOutput extends DbOutputType> = (x: TChanging) => TOutput;
 

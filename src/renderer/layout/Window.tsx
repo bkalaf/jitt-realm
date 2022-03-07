@@ -1,22 +1,11 @@
-import { useCallback, useMemo, useRef } from 'react';
-import { Outlet, useParams } from 'react-router';
-import { Boundary } from '../components/Boundary';
+import { useCallback, useMemo } from 'react';
+import { useParams } from 'react-router';
 import { $$Schema, schema } from '../db';
-import { Loading } from './App';
+import { Loading } from "./Loading";
 import { useRealm } from '../hooks/useRealm';
 import { ObjectId } from 'bson';
-import { stringify } from 'querystring';
-import { type } from 'os';
-import { unique } from '../../common/array/unique';
 import { Frame } from './Frame';
-
-export type PropertyInfo = {
-    index: number;
-    title: React.ReactNode;
-    attributes: ColumnAttributes;
-} & Realm.ObjectSchemaProperty;
-export type PropertyMap = Map<string, PropertyInfo>;
-export type ColumnMap = [{ isEmbedded: boolean; isLookup: boolean }, PropertyMap];
+import { Boundary } from '../components/suspense/Boundary';
 
 export interface Selectable {
     // data: Realm.Object & {

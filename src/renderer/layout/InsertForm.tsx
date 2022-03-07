@@ -4,13 +4,12 @@ import { useRecordType } from '../hooks/useRecordType';
 import { useCallback } from 'react';
 import { ObjectId } from 'bson';
 import { useTheme } from "../providers/useTheme";
-import { ButtonGroup } from '../components/forms/footer/ButtonGroup';
-import { FormButton } from '../components/forms/footer/FormButton';
+import { ButtonGroup } from '../components/footer/ButtonGroup';
+import { FormButton } from '../components/footer/FormButton';
 import { useForm2 } from '../hooks/useForm2';
-import { Boundary } from '../components/Boundary';
+import { Boundary } from '../components/suspense/Boundary';
 
 export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>, TFormData extends Record<string, any>>({
-    realm,
     children
 }: {
     realm: Realm;
@@ -18,10 +17,7 @@ export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>
 }) {
     const prevent = usePreventDefault();
     const { onCancel, onReset, onInput, onSubmit } = useForm2();
-
-    const [type, Ctor] = useRecordType();
     const className = useTheme({}, '', 'form', 'insert');
-    const navigate = useNavigate();
 
     console.log('Children', React.Children.toArray(children)[0]);
     return (

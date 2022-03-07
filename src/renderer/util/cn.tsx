@@ -1,6 +1,6 @@
 import { unique } from '../../common/array/unique';
 
-export function cn(flags: ClassNameFlags, baseName: string = '') {
+export function cn(flags: ClassNameFlags, baseName = '') {
     const truthy = Object.entries(flags)
         .filter(([k, v]) => v)
         .map(([k, v]) => k);

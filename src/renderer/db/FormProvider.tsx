@@ -1,5 +1,5 @@
 import React from 'react';
-import { Boundary } from '../components/Boundary';
+import { Boundary } from '../components/suspense/Boundary';
 import { $useProvideFormContext } from '../hooks/$useProviderFormContext';
 import { useRecordType } from '../hooks/useRecordType';
 import { IFormContext2 } from './IFormContext2';

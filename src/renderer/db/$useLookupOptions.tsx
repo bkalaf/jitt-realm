@@ -1,6 +1,5 @@
 import Realm from 'realm';
 import { ObjectId } from 'bson';
-import { Boundary } from '../components/Boundary';
 
 export function $useLookupOptions(realm: Realm, typeName: string, stringify: (x: any) => string) {
     console.log('useLookupOptions', typeName);

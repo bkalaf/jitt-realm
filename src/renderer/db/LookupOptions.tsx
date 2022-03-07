@@ -1,7 +1,7 @@
 import Realm from 'realm';
 import { ObjectId } from 'bson';
-import { Boundary } from '../components/Boundary';
 import { useMemo } from 'react';
+import { Boundary } from '../components/suspense/Boundary';
 
 export function LookupOptions<T extends { _id: ObjectId; }>({
     type, realm, getLabel

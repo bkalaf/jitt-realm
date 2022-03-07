@@ -1,5 +1,6 @@
 import { useTheme } from '../providers/useTheme';
-import { camelToTitleCase, toTitleCase } from '../../common/text/toTitleCase';
+import { toTitleCase } from '../../common/text/toTitleCase';
+import { camelToTitleCase } from "../../common/text/camelToTitleCase";
 import { $useControl } from '../hooks/$useControl';
 import { ContainerComponent, LabelComponent, ControlComponent, FeedbackComponent, $useThemeClassNames } from './SelfStorage';
 import React from 'react';
