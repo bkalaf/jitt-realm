@@ -1,10 +1,10 @@
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
-import { dt, routeNames } from '../../../constants';
+import { $$datatypes, $$names } from '@controls/constants';
 import { InputControl } from '../../../controls/InputControl';
 import { InsertForm } from '../../../forms/InsertForm';
 import { Grid } from '../../../Grid';
-import { RowID } from '../facility/RowID';
+import { RowID } from '@controls/RowID';
 import { Lot } from '../lot';
 
 export type AuctionSite = {
@@ -15,15 +15,15 @@ export type AuctionSite = {
 };
 export class AuctionSiteDTO {
     static schema: ObjectSchema = {
-        name: routeNames.auctions.auctionSite,
+        name: $$names.auctions.auctionSite,
         primaryKey: '_id',
         properties: {
-            _id: dt.objectId,
-            name: dt.string,
-            website: dt.opt.string,
+            _id: $$datatypes.objectId,
+            name: $$datatypes.string,
+            website: $$datatypes.opt.string,
             lots: {
-                type: dt.linkingObjects,
-                objectType: routeNames.auctions.lot,
+                type: $$datatypes.linkingObjects,
+                objectType: $$names.auctions.lot,
                 property: 'auctionSite'
             }
         }
@@ -66,7 +66,7 @@ export function AuctionSiteRow({ data, index, typeName }: { typeName: string; in
 export function AuctionSiteGrid({ realm }: { realm: Realm }) {
     return (
         <Grid
-            typeName={routeNames.auctions.auctionSite}
+            typeName={$$names.auctions.auctionSite}
             realm={realm}
             sort={[['name', false]]}
             GridHeaders={AuctionSiteHeaders}
@@ -76,7 +76,7 @@ export function AuctionSiteGrid({ realm }: { realm: Realm }) {
 }
 export function AuctionSiteInsertForm({ realm }: { realm: Realm }) {
     return (
-        <InsertForm realm={realm} type={routeNames.auctions.auctionSite} initial={auctionSiteInitial}>
+        <InsertForm realm={realm} type={$$names.auctions.auctionSite} initial={auctionSiteInitial}>
             <InputControl name='name' inputType='text' required />
             <InputControl name='website' inputType='url' />
         </InsertForm>

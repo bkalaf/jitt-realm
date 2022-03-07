@@ -1,15 +1,23 @@
-import { ObjectId } from 'bson';
-import { ObjectSchema } from 'realm';
-import { dt, routeNames } from '../../../constants';
-import { FieldSetControl } from '../../../controls/FieldSetControl';
-import { InputControl } from '../../../controls/InputControl';
+import {
+    FieldSetControl,
+    OutputControl,
+    InputControl,
+    SelectControl,
+    $$datatypes,
+    $$names,
+    ObjectId,
+    ObjectSchema,
+    RowID
+} from '@controls/index';
+import { Results } from 'realm';
 import { InsertForm } from '../../../forms/InsertForm';
 import { Grid } from '../../../Grid';
-import { Facility, FacilityDTO, facilityInitial } from '../facility';
-import { Output } from '../facility/Output';
-import { RowID } from '../facility/RowID';
+import { Facility, facilityInitial } from '../facility';
 import { AuctionSite } from '../site';
-import { asCurrency } from './asCurrency';
+import { asCurrency, fromCurrency } from './asCurrency';
+import { asPercentage, fromPercentage } from './asPercentage';
+import { toDateString } from './toDateString';
+import { toHexString } from './toHexString';
 
 export type Cost = {
     depositAmount: number;
@@ -22,13 +30,13 @@ export type Cost = {
 };
 export class CostDTO {
     static schema: Realm.ObjectSchema = {
-        name: routeNames.embedded.cost,
+        name: $$names.embedded.cost,
         embedded: true,
         properties: {
-            depositAmount: dt.double,
-            bid: dt.double,
-            premiumPercent: dt.double,
-            salesTaxPercent: dt.double
+            depositAmount: $$datatypes.double,
+            bid: $$datatypes.double,
+            premiumPercent: $$datatypes.double,
+            salesTaxPercent: $$datatypes.double
         }
     };
     get premium(): number {
@@ -48,49 +56,36 @@ export class CostDTO {
     }
 }
 export const costInitial = (): Cost => {
-    const ret: Cost = new CostDTO() as any;
-    ret.bid = 0;
-    ret.depositAmount = 0;
-    ret.premiumPercent = 0;
-    ret.salesTaxPercent = 0;
-    return ret;
+    const cost: Cost = {} as any;
+    cost.bid = 0;
+    cost.depositAmount = 0;
+    cost.premiumPercent = 0;
+    cost.salesTaxPercent = 0;
+    Object.defineProperties(cost, {
+        total: {
+            get: function (this: Cost) {
+                return this.bid + this.premium + this.salesTax;
+            }
+        },
+        salesTax: {
+            get: function (this: Cost) {
+                return this.salesTaxPercent * this.bid;
+            }
+        },
+        premium: {
+            get: function (this: Cost) {
+                return this.premiumPercent * this.bid;
+            }
+        }
+    });
+    return cost;
 };
 
-// export type Lot = {
-//     _id: ObjectId;
-//     facility: Facility;
-//     auctionSite: AuctionSite;
-//     auctionID?: string;
-//     size?: string;
-//     unitNumber?: string;
-//     cleanoutTime?: number;
-//     cost?: Cost;
-// }
-// export class LotDTO {
-//     static schema: ObjectSchema = {
-//         name: routeNames.auctions.lot,
-//         primaryKey: '_id',
-//         properties: {
-//             _id: dt.objectId,
-//             auctionID: dt.opt.string,
-//             size: dt.opt.string,
-//             auctionSite: routeNames.auctions.auctionSite,
-//             cost: routeNames.embedded.cost
-//         }
-//     }
-// }
-
-export function toDateString(date: Date): string {
-    const m = date.getMonth().toFixed(0).padStart(2, '0');
-    const d = date.getDay().toFixed(0).padStart(2, '0');
-    const y = date.getFullYear();
-    return `${m}/${d}/{y}`;
-}
 export type Lot = {
     _id: ObjectId;
     auctionID: string;
-    auctionSite: AuctionSite;
-    facility: Facility;
+    auctionSite?: AuctionSite;
+    facility?: Facility;
     closeDate: Date;
     cost: Cost;
     unit?: string;
@@ -100,18 +95,18 @@ export type Lot = {
 };
 export class LotDTO {
     static schema: ObjectSchema = {
-        name: routeNames.auctions.lot,
+        name: $$names.auctions.lot,
         primaryKey: '_id',
         properties: {
-            _id: dt.objectId,
-            auctionID: dt.string,
-            auctionSite: routeNames.auctions.auctionSite,
-            facility: routeNames.auctions.facility,
-            closeDate: dt.date,
-            cost: routeNames.embedded.cost,
-            unit: dt.opt.string,
-            unitSize: dt.opt.string,
-            cleanout: dt.opt.int
+            _id: $$datatypes.objectId,
+            auctionID: $$datatypes.opt.string,
+            auctionSite: $$names.auctions.auctionSite,
+            facility: $$names.auctions.facility,
+            closeDate: $$datatypes.date,
+            cost: $$names.embedded.cost,
+            unit: $$datatypes.opt.string,
+            unitSize: $$datatypes.opt.string,
+            cleanout: $$datatypes.opt.int
         }
     };
     toLookup(): string {
@@ -119,19 +114,23 @@ export class LotDTO {
     }
     get name(): string {
         const dto = this as any as Lot;
-        return `${toDateString(dto.closeDate)}: ${dto.facility.name}`;
+        return `${toDateString(dto.closeDate)}: ${dto.facility?.name ?? ''}`;
     }
 }
 export const lotInitial = () => {
-    const result = new LotDTO() as any as Lot;
+    const result: Lot = {} as any;
     result._id = new ObjectId();
     result.auctionID = '';
-    result.facility = facilityInitial();
     result.closeDate = new Date(Date.now());
     result.cost = costInitial();
     result.unit = '';
     result.unitSize = '';
     result.cleanout = 72;
+    Object.defineProperty(result, 'name', {
+        get: function (this: Lot) {
+            return `${toDateString(this.closeDate)}: ${this.facility?.name ?? ''}`;
+        }
+    });
     return result;
 };
 
@@ -158,9 +157,9 @@ export function LotRow({ data, index, typeName }: { typeName: string; index: num
         <tr key={index} data-id={data._id.toHexString()}>
             <RowID data={data} />
             <td>{data.name}</td>
-            <td>{data.auctionSite.name}</td>
-            <td>{data.auctionID}</td>        
-            <td>{data.facility.name}</td>
+            <td>{data.auctionSite?.name}</td>
+            <td>{data.auctionID}</td>
+            <td>{data.facility?.name}</td>
             <td>{toDateString(data.closeDate)}</td>
             <td>{data.cost.total}</td>
             <td>{data.unit}</td>
@@ -172,33 +171,59 @@ export function LotRow({ data, index, typeName }: { typeName: string; index: num
 }
 
 export function LotGrid({ realm }: { realm: Realm }) {
-    return <Grid typeName={routeNames.auctions.lot} realm={realm} sort={[['name', false]]} GridHeaders={LotHeaders} TableRow={LotRow} />;
-}
-export function asPercentage(n: number) {
-    return `${(n * 100).toFixed(2)}%`;
+    return <Grid typeName={$$names.auctions.lot} realm={realm} sort={[['closeDate', true]]} GridHeaders={LotHeaders} TableRow={LotRow} />;
 }
 export function LotInsertForm({ realm }: { realm: Realm }) {
     return (
-        <InsertForm realm={realm} type={routeNames.auctions.lot} initial={lotInitial}>
-            <Output name='name' span={2} />
-            <InputControl name='auctionID' inputType='text' required />
-            <InputControl name='facility' inputType='url' required />
-            <InputControl name='closeDate' inputType='date' required />
+        <InsertForm realm={realm} type={$$names.auctions.lot} initial={lotInitial}>
+            <OutputControl name='name' span={2} />
+            <SelectControl name='auctionSite' lookup={$$names.auctions.auctionSite} toOutput={toHexString} />
+            <InputControl name='auctionID' display='Auction ID' inputType='text' />
+            <SelectControl name='facility' required lookup={$$names.auctions.facility} toOutput={toHexString} />
+            <InputControl name='closeDate' inputType='text' required valueAs='date'/>
             <FieldSetControl name='cost'>
-                <InputControl name='bid' inputType='number' required toOutput={asCurrency} placeholder='$150.00' />
-                <Output name='total' /> 
-                <InputControl name='premiumPercent' inputType='text' required toOutput={asPercentage} placeholder='5.00% enter as (0.05)' />
-                <Output name='premium' /> 
-                <InputControl name='salesTaxPercent' inputType='text' required toOutput={asPercentage} placeholder='7.75% enter as 0.0775' />
-                <Output name='salesTax' />
-                <InputControl name='depositAmount' inputType='text' required toOutput={asCurrency} placeholder='$100.00' /> 
+                <InputControl
+                    name='bid'
+                    inputType='text'
+                    required
+                    toOutput={asCurrency}
+                    toDatabase={fromCurrency}
+                    placeholder='$150.00'
+                    valueAs='number'
+                />
+                <OutputControl name='total' />
+                <InputControl
+                    name='premiumPercent'
+                    inputType='text'
+                    required
+                    toOutput={asPercentage}
+                    toDatabase={fromPercentage}
+                    placeholder='5.00% enter as (0.05)'
+                    valueAs='number'
+                />
+                <OutputControl name='premium' />
+                <InputControl
+                    name='salesTaxPercent'
+                    inputType='text'
+                    required
+                    toDatabase={fromPercentage}
+                    toOutput={asPercentage}
+                    placeholder='7.75% enter as 0.0775'
+                    valueAs='number'
+                />
+                <OutputControl name='salesTax' />
+                <InputControl
+                    name='depositAmount'
+                    inputType='text'
+                    toOutput={asCurrency}
+                    toDatabase={fromCurrency}
+                    placeholder='$100.00'
+                    valueAs='number'
+                />
             </FieldSetControl>
-            <InputControl name='cost' inputType='url' />
             <InputControl name='unit' inputType='text' placeholder='#' />
             <InputControl name='unitSize' inputType='text' placeholder='5 x 5' />
-            <InputControl name='cleanout' inputType='number' /> 
-            
-            unit: string; unitSize: string; cleanout: string; name: string;
+            <InputControl name='cleanout' inputType='number' />
         </InsertForm>
     );
 }

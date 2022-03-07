@@ -1,7 +1,7 @@
 import { provinceMap } from '../../../../db/enums/Provinces';
 import { countryMap } from '../../../../db/enums/CountryISO2';
 import { Facility } from './index';
-import { RowID } from './RowID';
+import { RowID } from '@controls/RowID';
 
 export function FacilityRow<T>({ data, typeName, index }: { data: Realm.Object & Facility; index: number; typeName: string }) {
     return (

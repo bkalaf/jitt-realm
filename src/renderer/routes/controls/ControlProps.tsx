@@ -25,7 +25,7 @@ export type ControlProps<T> = {
     display?: string;
     feedbacking?: boolean;
     getter?: (x: string) => T;
-    setter?: (x: keyof SelfStorage) => (ev: React.ChangeEvent<DataEntryElement>) => void;
+    setter?: (x: keyof SelfStorage, conversion?: (x: string) => any, valueAs?: 'date' | 'number') => (ev: React.ChangeEvent<DataEntryElement>) => void;
     subscribe?: (name: string, item: [RefObject<DataEntryElement>, ((x: T) => Result<any>)[]]) => void;
     unsubscribe?: (name: string) => void;
     getErrors?: (item: string) => [RefObject<DataEntryElement>, string[]];
@@ -39,6 +39,7 @@ export type ControlProps<T> = {
     calculated?: boolean;
     realm?: Realm;
     toOutput?: (x: T) => string;
+    toDatabase?: (s: string) => T;
     validators?: Array<(x: T) => Result<T>>;
     inputType?: HTMLInputTypeAttribute;
 };

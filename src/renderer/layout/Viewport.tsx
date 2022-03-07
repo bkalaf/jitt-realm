@@ -6,12 +6,14 @@ import { useSelectable } from './useSelectable';
 import { $SelfStorage } from '../db/SelfStorage';
 import { $Facility } from '../db/Facility';
 import { Boundary } from '../components/suspense/Boundary';
-import { routeNames } from '../routes/constants';
+import { $$names } from '@controls/constants';
 import { selfStorageInitial, SelfStorageInsertForm } from '../routes/data/auctions/selfStorage/SelfStorageInsertForm';
 import { SelfStorageGrid } from '../routes/data/auctions/selfStorage/SelfStorageGrid';
 import { FacilityInsertForm } from '../routes/data/auctions/facility';
 import { FacilityGrid } from '../routes/data/auctions/facility/FacilityGrid';
 import { AuctionSiteGrid, AuctionSiteInsertForm } from '../routes/data/auctions/site';
+import { useParams } from 'react-router';
+import { LotInsertForm, LotGrid } from '../routes/data/auctions/lot';
 
 type View = React.FunctionComponent<{
     realm: Realm;
@@ -57,25 +59,42 @@ export function EntityRoute<T>({
             <Route index element={<Grid realm={realm} />} />
         </Route> */
 }
+
+export function EditForm({ realm }: { realm: Realm }) {
+    const { id } = useParams();
+    return (
+        <div>
+            <span>{id}</span>
+        </div>
+    );
+}
 export function Viewport({ realm }: { realm: Realm }) {
     const selectable = useSelectable();
     return (
         <Boundary fallback={<div>Loading...</div>}>
             <Routes>
-                <Route path={routeNames.tier1.data}>
+                <Route path={$$names.tier1.data}>
                     <Route path='v1'>
-                        <Route path={routeNames.tier2.auctions}>
-                            <Route path={routeNames.auctions.selfStorage}>
+                        <Route path={$$names.tier2.auctions}>
+                            <Route path={$$names.auctions.selfStorage}>
                                 <Route path='new' element={<SelfStorageInsertForm realm={realm} />} />
+                                <Route path=':id' element={<EditForm realm={realm} />} />
                                 <Route index element={<SelfStorageGrid realm={realm} />} />
                             </Route>
-                            <Route path={routeNames.auctions.facility}>
+                            <Route path={$$names.auctions.facility}>
                                 <Route path='new' element={<FacilityInsertForm realm={realm} />} />
+                                <Route path=':id' element={<EditForm realm={realm} />} />
                                 <Route index element={<FacilityGrid realm={realm} />} />
                             </Route>
-                            <Route path={routeNames.auctions.auctionSite}>
+                            <Route path={$$names.auctions.auctionSite}>
                                 <Route path='new' element={<AuctionSiteInsertForm realm={realm} />} />
-                                <Route index element={<AuctionSiteGrid realm={realm} />} />    
+                                <Route path=':id' element={<EditForm realm={realm} />} />
+                                <Route index element={<AuctionSiteGrid realm={realm} />} />
+                            </Route>
+                            <Route path={$$names.auctions.lot}>
+                                <Route path='new' element={<LotInsertForm realm={realm} />} />
+                                <Route path=':id' element={<EditForm realm={realm} />} />
+                                <Route index element={<LotGrid realm={realm} />} />
                             </Route>
                         </Route>
                         {/* <Route path=':type'>

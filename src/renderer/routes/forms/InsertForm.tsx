@@ -8,16 +8,15 @@ import { toTitleCase } from '../../../common/text/toTitleCase';
 import { useMap } from '../../hooks/useMap';
 import { Result } from '../../hooks/$useControl';
 import { combineResult, combineResultFirst } from '../../../common/Result/combineResult';
-import { routeNames } from '../constants';
+import { $$names } from '@controls/constants';
 import { ButtonGroup } from '../../components/footer/ButtonGroup';
 import { FormButton } from '../../components/footer/FormButton';
 import { useGoPreviousOnClick } from '../../hooks/useGoPreviousOnClick';
 import { useDescendOnClick } from '../../hooks/useDescendOnClick';
 import { useDialog } from '../../hooks/useDialog';
-import { ObjectId } from 'bson';
 import React from 'react';
 import { replaceAll } from '../../../common/text/replaceAll';
-import { InputControl } from '../controls/InputControl';
+import { InputControl, ObjectId } from '../controls';
 
 export function InsertForm<T>({ initial, type, realm, children }: { initial: () => T; type: string; realm: Realm; children?: Children }) {
     const navigate = useNavigate();
@@ -46,8 +45,18 @@ export function InsertForm<T>({ initial, type, realm, children }: { initial: () 
         []
     );
     const setter = useCallback(
-        (name: keyof T) => (ev: React.ChangeEvent<DataEntryElement>) => {
-            setValue(name as any)(ev.target.value);
+        (name: string, conversion?: (x: string | number) => any, valueAs?: 'date' | 'number') => (ev: React.ChangeEvent<DataEntryElement>) => {            
+            if (valueAs) {
+                if (valueAs === 'date') {
+                    return setValue(name as any)((ev as React.ChangeEvent<HTMLInputElement>).target.valueAsDate);
+                }
+                return setValue(name as any)((ev as React.ChangeEvent<HTMLInputElement>).target.valueAsNumber);
+            }
+            if (conversion == null) {
+                setValue(name as any)(ev.target.value);
+            } else {
+                setValue(name as any)(conversion(ev.target.value));
+            }
         },
         [setValue]
     );
@@ -146,7 +155,21 @@ export function InsertForm<T>({ initial, type, realm, children }: { initial: () 
             <header className='col-span-4 ml-2 text-lg font-bold text-white bg-black border-2 rounded-t-xl border-cyan font-firaSans'>
                 {display}
             </header>
-            <InputControl key={0} inputType='text' name='_id' display='ID' validators={[]} required readOnly realm={realm} feedbacking={feedbacking} getter={(x: string) => getter(x as any, (y: ObjectId) => y.toHexString())} setter={setter as any} subscribe={subscribe} unsubscribe={unsubscribe} />
+            <InputControl
+                key={0}
+                inputType='text'
+                name='_id'
+                display='ID'
+                validators={[]}
+                required
+                readOnly
+                realm={realm}
+                feedbacking={feedbacking}
+                getter={(x: string) => getter(x as any, (y: ObjectId) => y.toHexString())}
+                setter={setter as any}
+                subscribe={subscribe}
+                unsubscribe={unsubscribe}
+            />
             {React.Children.toArray(children).map((x, ix) =>
                 React.cloneElement(x as React.ReactElement, {
                     ...(x as React.ReactElement).props,

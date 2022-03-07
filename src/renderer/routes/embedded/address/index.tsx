@@ -1,6 +1,6 @@
 import { CountryISO2 } from '../../../db/enums/CountryISO2';
 import { Provinces } from '../../../db/enums/Provinces';
-import { dt, routeNames } from '../../constants';
+import { $$datatypes, $$names } from '@controls/constants';
 
 export type Address = {
     street?: string;
@@ -12,15 +12,15 @@ export type Address = {
 }
 export class AddressDTO {
     static schema: Realm.ObjectSchema = {
-        name: routeNames.embedded.address,
+        name: $$names.embedded.address,
         embedded: true,
         properties: {
-            street: dt.opt.string,
-            suite: dt.opt.string,
-            city: dt.opt.string,
-            state: { type: dt.opt.string, default: 'CA' },
-            country: { type: dt.opt.string, default: 'US' },
-            postal: dt.opt.string
+            street: $$datatypes.opt.string,
+            suite: $$datatypes.opt.string,
+            city: $$datatypes.opt.string,
+            state: { type: $$datatypes.opt.string, default: 'CA' },
+            country: { type: $$datatypes.opt.string, default: 'US' },
+            postal: $$datatypes.opt.string
         }
     };
 }

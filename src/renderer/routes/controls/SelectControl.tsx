@@ -9,6 +9,7 @@ import { ControlProps, readAutoComplete } from './ControlProps';
 import { replaceAll } from '../../../common/text/replaceAll';
 import { ObjectId } from 'bson';
 import { camelToTitleCase } from '../../../common/text/camelToTitleCase';
+import { isEmptyOrNull } from '../data/auctions/lot/asPercentage';
 
 export function SelectControl<T extends { _id: ObjectId; toLookup(): string }>({
     name: $name,
@@ -62,7 +63,7 @@ export function SelectControl<T extends { _id: ObjectId; toLookup(): string }>({
         (ev: React.ChangeEvent<HTMLSelectElement>) => {
             if (setValue == null) throw new Error('no setter');
             const value = ev.target.value;            
-            const output = lookup ? realm?.objectForPrimaryKey<T>(lookup, new ObjectId(value)) : value;
+            const output = lookup ? isEmptyOrNull(value) ? undefined : realm?.objectForPrimaryKey<T>(lookup, new ObjectId(value)) : value;
             setValue($name as any)(output);
         },
         [$name, lookup, realm, setValue]
@@ -91,7 +92,7 @@ export function SelectControl<T extends { _id: ObjectId; toLookup(): string }>({
                 className={selectCn}
                 placeholder={placeholder}
                 aria-labelledby={labelID}
-                value={value}
+                value={value ?? ''}
                 ref={ref}
                 onChange={onChange}>
                 <option key={0} label='' value='' className={optionCn} />

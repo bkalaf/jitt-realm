@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { dt, routeNames } from '../../../constants';
-import { ObjectId } from 'bson';
-import { SelfStorage, SelfStorageDTO } from '../selfStorage';
-import { Address, AddressDTO } from '../../../embedded/address';
+import { $$datatypes, $$names } from '@controls/constants';
+import { SelfStorage } from '../selfStorage';
+import { Address } from '../../../embedded/address';
 import { InsertForm } from '../../../forms/InsertForm';
 import { provinceMap, Provinces } from '../../../../db/enums/Provinces';
 import { CountryISO2, countryMap } from '../../../../db/enums/CountryISO2';
-import { InputControl } from '../../../controls/InputControl';
-import { FieldSetControl } from '../../../controls/FieldSetControl';
-import { SelectControl } from '../../../controls/SelectControl';
 import { identity } from '../../../../../common/identity';
-import { Output } from './Output';
+import { InputControl, SelectControl, FieldSetControl, OutputControl, ObjectId } from '@controls/index';
+import { toHexString } from '../lot/toHexString';
 
 export type Facility = {
     _id: ObjectId;
@@ -23,20 +20,20 @@ export type Facility = {
 };
 export class FacilityDTO {
     static schema: Realm.ObjectSchema = {
-        name: routeNames.auctions.facility,
+        name: $$names.auctions.facility,
         primaryKey: '_id',
         properties: {
-            _id: dt.objectId,
+            _id: $$datatypes.objectId,
             selfStorage: {
-                type: routeNames.auctions.selfStorage,
+                type: $$names.auctions.selfStorage,
                 optional: true
             },
-            facilityNumber: dt.opt.string,
+            facilityNumber: $$datatypes.opt.string,
             address: {
-                type: routeNames.embedded.address
+                type: $$names.embedded.address
             },
-            email: dt.opt.string,
-            phoneNumber: dt.opt.string
+            email: $$datatypes.opt.string,
+            phoneNumber: $$datatypes.opt.string
         }
     };
     get name() {
@@ -52,7 +49,7 @@ export class FacilityDTO {
 }
 
 export const facilityInitial = (): Facility => {
-    const facility = new FacilityDTO() as any as Facility;
+    const facility: Facility = { } as any;
     facility._id = new ObjectId();
     facility.phoneNumber = '';
     facility.email = '';
@@ -65,6 +62,13 @@ export const facilityInitial = (): Facility => {
         postal: ''
     };
     facility.facilityNumber = '';
+    Object.defineProperty(facility, 'name', {
+        get: function (this: any) {
+            return `${this.selfStorage?.name ?? ''} - ${this.address?.city ?? ''}, ${this.address?.state ?? ''} - ${
+                this.address?.street?.split(' ').slice(1).join(' ') ?? ''
+            }`;
+        }
+    });
     return facility;
     // const result: Facility = {
     //     _id: new ObjectId(),
@@ -81,13 +85,7 @@ export const facilityInitial = (): Facility => {
     //     facilityNumber: '',
     //     selfStorage: undefined as SelfStorage | undefined
     // } as any;
-    // Object.defineProperty(result, 'name', {
-    //     get: function (this: any) {
-    //         return `${this.selfStorage?.name ?? ''} - ${this.address?.city ?? ''}, ${this.address?.state ?? ''} - ${
-    //             this.address?.street?.split(' ').slice(1).join(' ') ?? ''
-    //         }`;
-    //     }
-    // });
+    // 
     // console.log(`result: `, result);
     // console.log(`facility.name: `, result.name);
     // return result;
@@ -95,13 +93,13 @@ export const facilityInitial = (): Facility => {
 
 export function FacilityInsertForm({ realm }: { realm: Realm }) {
     return (
-        <InsertForm realm={realm} type={routeNames.auctions.facility} initial={facilityInitial}>
-            <Output name='name' span={2} />
+        <InsertForm realm={realm} type={$$names.auctions.facility} initial={facilityInitial}>
+            <OutputControl name='name' span={2} />
             <InputControl name='facilityNumber' inputType='text' />
             <SelectControl
                 name='selfStorage'
-                lookup={routeNames.auctions.selfStorage}
-                toOutput={(x: SelfStorage) => x?._id?.toHexString()}
+                lookup={$$names.auctions.selfStorage}
+                toOutput={toHexString}
             />
             <InputControl name='phoneNumber' inputType='tel' placeholder='(619) 555-1212' />
             <InputControl name='email' inputType='email' placeholder='john.doe@example.com' />

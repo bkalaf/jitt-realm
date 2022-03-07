@@ -32,9 +32,11 @@ export function InputControl({
     inputType,
     toOutput,
     realm,
+    toDatabase,
+    valueAs,
     setValue,
     ...remain
-}: ControlProps<any> & { setValue?: any }) {
+}: ControlProps<any> & { setValue?: any; valueAs?: 'date' | 'number' }) {
     const inputCn = $useThemeClassNames('control');
     const containerCn = $useThemeClassNames('container');
     const labelCn = $useThemeClassNames('label');
@@ -56,7 +58,7 @@ export function InputControl({
         [toOutput, getter, $name]
     );
     const displayName = display ? display : name.includes('-') ? toTitleCase(replaceAll('-', ' ')(name)) : camelToTitleCase(name);
-    const onChange = useMemo(() => (setter != null ? setter($name as any) : ignore), [$name, setter]);
+    const onChange = useMemo(() => (setter != null ? toDatabase == null ? setter($name as any, undefined, valueAs) : setter($name as any, toDatabase, valueAs) : ignore), [$name, setter, toDatabase, valueAs]);
     const feedback = useMemo(() => (getErrors != null ? getErrors(name)[1].join('\n') : ''), [getErrors, name]);
     const ref: RefObject<any> = useRef(null);
     useEffect(() => {

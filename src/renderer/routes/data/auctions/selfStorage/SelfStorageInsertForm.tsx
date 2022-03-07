@@ -1,4 +1,4 @@
-import { routeNames } from '../../../constants';
+import { $$names } from '@controls/constants';
 import { InsertForm } from '../../../forms/InsertForm';
 import { InputControl } from '../../../controls/InputControl';
 import { SelfStorage } from '.';
@@ -8,7 +8,7 @@ export const selfStorageInitial = (): SelfStorage => ({ _id: new BSON.ObjectId()
 
 export function SelfStorageInsertForm({ realm }: { realm: Realm }) {
     return (
-        <InsertForm initial={selfStorageInitial} type={routeNames.auctions.selfStorage} realm={realm}>
+        <InsertForm initial={selfStorageInitial} type={$$names.auctions.selfStorage} realm={realm}>
             <InputControl inputType='text' name='name' required />
             <InputControl inputType='url' name='website' />
         </InsertForm>

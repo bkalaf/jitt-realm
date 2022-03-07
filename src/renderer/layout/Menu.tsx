@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { Boundary } from '../components/suspense/Boundary';
 import { useDescendOnClick } from '../hooks/useDescendOnClick';
 import { useRealm } from '../hooks/useRealm';
-import { routeNames } from '../routes/constants';
+import { $$names } from '@controls/constants';
 import { MenuItem } from './MenuItem';
 
 export function Empty() {
@@ -28,13 +28,13 @@ export function Menu({ realm }: { realm: Realm }) {
                 <MenuItem icon={faArrowCircleLeft} onClick={onClick} tooltip='Go back...' />
                 <MenuItem icon={faHome} onClick={onClick2} tooltip='Go to the home page' />
                 <Routes>
-                    <Route path={routeNames.tier1.api}>
+                    <Route path={$$names.tier1.api}>
                         <Route path='v1'></Route>
                         <Route index element={<Empty />} />
                     </Route>
-                    <Route path={routeNames.tier1.data}>
+                    <Route path={$$names.tier1.data}>
                         <Route path='v1'>
-                            <Route path={routeNames.tier2.auctions}>
+                            <Route path={$$names.tier2.auctions}>
                                 {/* <Route path={routeNames.auctions.auctionSite}></Route>
                                 <Route path={routeNames.auctions.facility}></Route>
                                 <Route path={routeNames.auctions.lot}></Route>
@@ -68,33 +68,33 @@ export function InsertButton() {
 export function Auctions() {
     return (
         <>
-            <MenuItem to={routeNames.auctions.auctionSite} />
-            <MenuItem to={routeNames.auctions.facility} />
-            <MenuItem to={routeNames.auctions.lot} />
-            <MenuItem to={routeNames.auctions.selfStorage} />
+            <MenuItem to={$$names.auctions.auctionSite} />
+            <MenuItem to={$$names.auctions.facility} />
+            <MenuItem to={$$names.auctions.lot} />
+            <MenuItem to={$$names.auctions.selfStorage} />
         </>
     );
 }
 export function Tier2() {
     return (
         <>
-            <MenuItem to={routeNames.tier2.auctions} />
-            <MenuItem to={routeNames.tier2.expenses} />
-            <MenuItem to={routeNames.tier2.files} />
-            <MenuItem to={routeNames.tier2.fulfillment} />
-            <MenuItem to={routeNames.tier2.inventory} />
-            <MenuItem to={routeNames.tier2.listings} />
-            <MenuItem to={routeNames.tier2.products} />
+            <MenuItem to={$$names.tier2.auctions} />
+            <MenuItem to={$$names.tier2.expenses} />
+            <MenuItem to={$$names.tier2.files} />
+            <MenuItem to={$$names.tier2.fulfillment} />
+            <MenuItem to={$$names.tier2.inventory} />
+            <MenuItem to={$$names.tier2.listings} />
+            <MenuItem to={$$names.tier2.products} />
         </>
     );
 }
 export function Tier1() {
     return (
         <>
-            <MenuItem to={routeNames.tier1.api} />
-            <MenuItem to={routeNames.tier1.data} />
-            <MenuItem to={routeNames.tier1.reports} />
-            <MenuItem to={routeNames.tier1.todos} />
+            <MenuItem to={$$names.tier1.api} />
+            <MenuItem to={$$names.tier1.data} />
+            <MenuItem to={$$names.tier1.reports} />
+            <MenuItem to={$$names.tier1.todos} />
         </>
     );
 }

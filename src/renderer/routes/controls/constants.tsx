@@ -2,7 +2,7 @@ export const $SelfStorage = 'SelfStorage';
 export const $Address = 'Address';
 export const $Facility = 'Facility';
 
-export const routeNames = {
+export const $$names = {
     tier1: {
         api: 'api',
         data: 'data',
@@ -59,7 +59,7 @@ export const routeNames = {
         squareFootage: 'square-footage'
     }
 };
-export const dt = {
+export const $$datatypes = {
     objectId: 'objectId',
     string: 'string',
     int: 'int',
