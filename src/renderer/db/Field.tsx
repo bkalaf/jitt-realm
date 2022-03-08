@@ -1,6 +1,6 @@
 import { useTheme } from '../providers/useTheme';
 import { toTitleCase } from '../../common/text/toTitleCase';
-import { camelToTitleCase } from "../../common/text/camelToTitleCase";
+import { camelToTitleCase } from '../../common/text/camelToTitleCase';
 import { $useControl } from '../hooks/$useControl';
 import { ContainerComponent, LabelComponent, ControlComponent, FeedbackComponent, $useThemeClassNames } from './SelfStorage';
 import React from 'react';
@@ -45,12 +45,7 @@ export function Field<T, U = string>({
     list?: string;
 }) {
     const displayName = React.useMemo(() => (display == null ? camelToTitleCase(name.split('.').reverse()[0]) : display), [display, name]);
-    const { backing, containerID, controlID, feedback, feedbackID, labelID, onBlur, onChange, ref, isFeedbacking, onInput } = $useControl(
-        name,
-        converts,
-        saveOnBlur ?? false,
-        ...(validators ?? [])
-    );
+    const { backing, containerID, controlID, feedback, feedbackID, labelID, onBlur, onChange, ref, isFeedbacking, onInput } = $useControl(name, converts, saveOnBlur ?? false, ...(validators ?? []));
 
     const containerCn = $useThemeClassNames(containerLabel);
     const controlCn = $useThemeClassNames('control');
@@ -78,7 +73,8 @@ export function Field<T, U = string>({
                     required={required ?? false}
                     readOnly={readOnly ?? false}
                     disabled={disabled ?? disabled}
-                    {...remain}>
+                    {...remain}
+                >
                     {children}
                 </Control>
             ) : (

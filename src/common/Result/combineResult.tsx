@@ -8,11 +8,11 @@ export function combineResult<T>(pv: Result<T>, cv: Result<T>): Result<string | 
     } else if (Result.isFail(pv)) return pv;
     return cv;
 }
-export function combineResultFirst<T>(pv: Result<T>, cv: Result<T>): Result<T> {
+export function combineResultFirst<T, U>(pv: Result<T>, cv: Result<U>): Result<T> {
     if (Result.isPass(pv) && Result.isPass(cv)) {
         return pv;
     } else if (Result.isFail(pv) && Result.isFail(cv)) {
         return Result.toFail(...pv.value, ...cv.value);
-    } else if (Result.isFail(pv)) return pv;
-    return cv;
+    } else if (Result.isFail(cv)) return cv;
+    return pv;
 }

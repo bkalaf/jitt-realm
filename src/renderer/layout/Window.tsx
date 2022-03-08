@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { $$Schema, schema } from '../db';
-import { Loading } from "./Loading";
+import { Loading } from './Loading';
 import { useRealm } from '../hooks/useRealm';
 import { ObjectId } from 'bson';
 import { Frame } from './Frame';

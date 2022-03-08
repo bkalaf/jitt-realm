@@ -89,9 +89,7 @@ export function ID() {
     return <ObjectIdField name='_id' display='ID' type='text' required readOnly />;
 }
 export type ContainerComponent = React.FunctionComponent<React.ComponentPropsWithRef<'div' | 'fieldset'>>;
-export type LabelComponent =
-    | React.FunctionComponent<React.ComponentPropsWithRef<'label'>>
-    | React.FunctionComponent<React.ComponentPropsWithRef<'legend'>>;
+export type LabelComponent = React.FunctionComponent<React.ComponentPropsWithRef<'label'>> | React.FunctionComponent<React.ComponentPropsWithRef<'legend'>>;
 export type ControlComponent = React.FunctionComponent<React.ComponentPropsWithRef<'input' | 'select' | 'textarea' | 'output'>>;
 export type FeedbackComponent = React.FunctionComponent<React.ComponentPropsWithRef<'small'>>;
 export function $useThemeClassNames(...remain: string[]) {

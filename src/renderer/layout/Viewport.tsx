@@ -24,21 +24,7 @@ type InsertView<T> = React.FunctionComponent<{
     initial: () => T;
 }>;
 
-export function EntityRoute<T>({
-    Grid,
-    Insert,
-    Edit,
-    routeName,
-    realm,
-    initial
-}: {
-    Grid: View;
-    Insert: InsertView<T>;
-    Edit: InsertView<T>;
-    routeName: string;
-    realm: Realm;
-    initial: () => T;
-}) {
+export function EntityRoute<T>({ Grid, Insert, Edit, routeName, realm, initial }: { Grid: View; Insert: InsertView<T>; Edit: InsertView<T>; routeName: string; realm: Realm; initial: () => T }) {
     const element = useRoutes([
         {
             path: routeName,

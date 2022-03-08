@@ -3,18 +3,16 @@ import { usePreventDefault } from '../hooks/usePreventDefault';
 import { useRecordType } from '../hooks/useRecordType';
 import { useCallback } from 'react';
 import { ObjectId } from 'bson';
-import { useTheme } from "../providers/useTheme";
+import { useTheme } from '../providers/useTheme';
 import { ButtonGroup } from '../components/footer/ButtonGroup';
 import { FormButton } from '../components/footer/FormButton';
 import { useForm2 } from '../hooks/useForm2';
 import { Boundary } from '../components/suspense/Boundary';
 
-export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>, TFormData extends Record<string, any>>({
-    children
-}: {
-    realm: Realm;
-    children: Children;
-}) {
+/**
+ * @deprecated
+ */
+export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>, TFormData extends Record<string, any>>({ children }: { realm: Realm; children: Children }) {
     const prevent = usePreventDefault();
     const { onCancel, onReset, onInput, onSubmit } = useForm2();
     const className = useTheme({}, '', 'form', 'insert');
@@ -33,7 +31,9 @@ export function InsertForm<T, TEvent extends React.ChangeEvent<DataEntryElement>
                         <FormButton type='button' onClick={onCancel}>
                             Cancel
                         </FormButton>
-                        <FormButton type='button' onClick={onReset}>Reset</FormButton>
+                        <FormButton type='button' onClick={onReset}>
+                            Reset
+                        </FormButton>
                         <FormButton type='button' onClick={onSubmit}>
                             Submit
                         </FormButton>

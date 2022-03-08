@@ -1,15 +1,15 @@
-import { CountryISO2 } from '../../../db/enums/CountryISO2';
-import { Provinces } from '../../../db/enums/Provinces';
+import { CountryISO2 } from '../../db/enums/CountryISO2';
+import { Provinces } from '../../db/enums/Provinces';
 import { $$datatypes, $$names } from '@controls/constants';
 
 export type Address = {
     street?: string;
     suite?: string;
-    city?: string
+    city?: string;
     state: Provinces;
     country: CountryISO2;
     postal?: string;
-}
+};
 export class AddressDTO {
     static schema: Realm.ObjectSchema = {
         name: $$names.embedded.address,
@@ -24,3 +24,13 @@ export class AddressDTO {
         }
     };
 }
+export const addressInitial = () => {
+    const address: Address = new AddressDTO() as any;
+    address.city = '';
+    address.state = 'CA';
+    address.country = 'US';
+    address.postal = '';
+    address.suite = '';
+    address.street = '';
+    return address;
+};

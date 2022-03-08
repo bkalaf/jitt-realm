@@ -1,5 +1,5 @@
 import { TextFieldProps, LabelComponent, ContainerComponent } from './SelfStorage';
-import { Field } from "./Field";
+import { Field } from './Field';
 import { $$Elements, ForwardComponents } from './$$Elements';
 
 export function TextField(props: TextFieldProps<string> & React.ComponentPropsWithoutRef<'input'>) {
@@ -12,11 +12,12 @@ export function TextField(props: TextFieldProps<string> & React.ComponentPropsWi
             Container={ForwardComponents.div as ContainerComponent}
             Label={ForwardComponents.label as LabelComponent}
             Feedback={ForwardComponents.small}
-            Control={ForwardComponents.input} />
+            Control={ForwardComponents.input}
+        />
     );
 }
 
-export function DataListField(props: TextFieldProps<string> & { list: string, map: Record<string, string> }) {
+export function DataListField(props: TextFieldProps<string> & { list: string; map: Record<string, string> }) {
     const { converts, map, list, ...remain } = props;
     return (
         <Field
@@ -27,7 +28,7 @@ export function DataListField(props: TextFieldProps<string> & { list: string, ma
             Container={ForwardComponents.div as ContainerComponent}
             Label={ForwardComponents.label as LabelComponent}
             Feedback={ForwardComponents.small}
-            Control={ForwardComponents.input}>
-        </Field>
+            Control={ForwardComponents.input}
+        ></Field>
     );
 }

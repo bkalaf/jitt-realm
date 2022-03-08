@@ -34,7 +34,7 @@ export const $$names = {
     inventory: {
         skus: 'sku',
         bins: 'bin',
-        items: 'item',
+        items: 'item'
     },
     files: {
         images: 'image',

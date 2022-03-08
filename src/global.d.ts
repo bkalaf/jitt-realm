@@ -12,16 +12,7 @@ declare global {
     export type JittObjectClass<T> = {
         toDisplayName(obj: any): string;
         columns: string[];
-        columnMap: Record<
-            string,
-            [
-                string,
-                (
-                    | React.InputHTMLAttributes<HTMLInputElement>
-                    | (React.SelectHTMLAttributes<HTMLSelectElement> & { enumMap: Record<string, string> })
-                )
-            ]
-        >;
+        columnMap: Record<string, [string, React.InputHTMLAttributes<HTMLInputElement> | (React.SelectHTMLAttributes<HTMLSelectElement> & { enumMap: Record<string, string> })]>;
         sort: Realm.SortDescriptor[];
         convertFrom: (obj: T) => Record<string, any>;
         convertTo: (obj: Record<string, any>, realm?: Realm) => Record<string, any>;
@@ -100,13 +91,7 @@ declare global {
     } & Attributes<T>;
 
     export type PropertyProps<T extends DataEntryElement> = IColumnPosition & IPropertyInfo<T>;
-    export type ClassObject<T extends string> = T extends $SelfStorage
-        ? SelfStorage
-        : T extends $Address
-        ? Address
-        : T extends $Facility
-        ? Facility
-        : never;
+    export type ClassObject<T extends string> = T extends $SelfStorage ? SelfStorage : T extends $Address ? Address : T extends $Facility ? Facility : never;
     export type GetValue<T> = (name: string, stringify?: Stringify<T>) => () => T;
     export type SetValue<T, TElement> = (name: string, convert: (s: string) => T) => (ev: React.ChangeEvent<TElement>) => void;
     export type Convert<T> = (x: string) => T;
@@ -116,8 +101,8 @@ declare global {
     export type Initializer<T> = T | (() => T);
     // eslint-disable-next-line @typescript-eslint/ban-types
     export type ConversionOrCalculation<T, U, V extends Record<string, string> = {}> =
-    | [convertFrom: ((x: T, realm?: Realm) => U), convertTo: (x: U, realm?: Realm) => T]
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    | ((x: T, y: V) => U)
+        | [convertFrom: (x: T, realm?: Realm) => U, convertTo: (x: U, realm?: Realm) => T]
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        | ((x: T, y: V) => U);
 }
 export const i = 1;

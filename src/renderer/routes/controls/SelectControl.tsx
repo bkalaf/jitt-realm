@@ -5,7 +5,7 @@ import React from 'react';
 import { ignore } from '../../../common/ignore';
 import { Indicator } from '../../db/Indicator';
 import { faCalculator, faCircleExclamationCheck, faPenAltSlash, faTextSlash } from '@fortawesome/pro-solid-svg-icons';
-import { ControlProps, readAutoComplete } from './ControlProps';
+import { ControlProps, readAutoComplete } from '@controls/_ControlProps';
 import { replaceAll } from '../../../common/text/replaceAll';
 import { ObjectId } from 'bson';
 import { camelToTitleCase } from '../../../common/text/camelToTitleCase';
@@ -57,13 +57,13 @@ export function SelectControl<T extends { _id: ObjectId; toLookup(): string }>({
         : children == null && lookup != null
         ? realm?.objects<T>(lookup).map((x, ix) => <option key={ix} value={x._id.toHexString()} label={x.toLookup()} />)
         : children;
-    const value = useMemo(() => toOutput ? toOutput(getter ? getter($name) : '') : (getter ? getter($name) : ''), [toOutput, $name, getter]);
+    const value = useMemo(() => (toOutput ? toOutput(getter ? getter($name) : '') : getter ? getter($name) : ''), [toOutput, $name, getter]);
     // const onChange = useMemo(() => (setter ? setter($name as any) : ignore), [$name, setter]);
     const onChange = useCallback(
         (ev: React.ChangeEvent<HTMLSelectElement>) => {
             if (setValue == null) throw new Error('no setter');
-            const value = ev.target.value;            
-            const output = lookup ? isEmptyOrNull(value) ? undefined : realm?.objectForPrimaryKey<T>(lookup, new ObjectId(value)) : value;
+            const value = ev.target.value;
+            const output = lookup ? (isEmptyOrNull(value) ? undefined : realm?.objectForPrimaryKey<T>(lookup, new ObjectId(value))) : value;
             setValue($name as any)(output);
         },
         [$name, lookup, realm, setValue]
@@ -94,7 +94,8 @@ export function SelectControl<T extends { _id: ObjectId; toLookup(): string }>({
                 aria-labelledby={labelID}
                 value={value ?? ''}
                 ref={ref}
-                onChange={onChange}>
+                onChange={onChange}
+            >
                 <option key={0} label='' value='' className={optionCn} />
                 {options}
             </select>

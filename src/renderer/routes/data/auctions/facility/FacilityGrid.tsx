@@ -14,6 +14,7 @@ export function FacilityGrid({ realm }: { realm: Realm }) {
                 ['address.city', false]
             ]}
             GridHeaders={FacilityHeader}
-            TableRow={FacilityRow}></Grid>
+            TableRow={FacilityRow}
+        ></Grid>
     );
 }

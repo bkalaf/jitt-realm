@@ -14,37 +14,91 @@
     caption {
         caption-side: top;
     }
-  
+
+    fieldset {
+        @apply relative bg-amber/75 pb-2 px-1 py-0.5 xs: col-span-2 md:col-span-3 xl:col-span-4 grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 justify-center min-w-full;
+    }
+
+    legend {
+        @apply min-w-full px-2 text-xl font-bold text-white bg-black shadow-xl rounded-xl font-firaSans;
+    }
+    form > header {
+        @apply text-xl font-bold leading-loose tracking-wide text-white bg-black border-white font-firaSans;
+    }
+    form.insert {
+        @apply grid grid-cols-2 text-black border-2 border-black xs: md:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-2 bg-stone-light/50 font-firaSans;
+    }
+
+    form > div.field {
+        @apply relative flex flex-col-reverse justify-center p-1 pb-4 bg-white/75;
+    }
+
+    div.field > label {
+        @apply font-firaSans tesxt-xl font-bold ml-4 mb-0.5 min-w-full text-left;
+    }
+
+    div.field > input,
+    select,
+    textarea {
+        @apply font-firaSans text-base font-semibold py-1 px-3 whitespace-pre before: content-["_"] border border-neutral/75 shadow-lg shadow-blue-dark rounded-lg transition-all duration-700 delay-75 ease-in-out hover:ring-2 hover:ring-red flex peer min-w-full placeholder:text-pink-light/50 placeholder:text-bold;
+    }
+
+    div.field > input.calculated {
+        @apply min-w-full px-3 py-1 text-base font-medium border rounded-lg shadow-lg font-firaSans border-neutral/75 shadow-sky-very-dark bg-cyan-light peer;
+    }
+
+    div.field > small {
+        @apply inline-flex text-lg font-extrabold text-center text-red font-montserrat place-self-center;
+    }
+
+    form > div.button-group {
+        @apply grid items-center w-full grid-cols-3 col-span-2 px-2 py-1 mx-auto bg-white xs: md:col-span-3 xl:col-span-4 gap-x-6;
+    }
+
+    div.button-group > button {
+        @apply flex bg-blue-dark/75 text-white px-2 py-0.5 font-bold text-center items-center justify-center rounded-md mx-auto border-2 border-black/70 hover: ring-2 hover:ring-red disabled:bg-black/25 disabled:text-white/25 disabled:opacity-25 transition-all duration-700 delay-75 ease-in-out w-1/2 transform translate-x-1/2;
+    }
+
     table {
         @apply space-x-2 space-y-1 divide-black;
     }
+
     table > thead {
         @apply text-white border border-white bg-slate-dark;
     }
+
     th {
         @apply text-lg font-extrabold leading-loose tracking-wide text-white border-2 border-white rounded-md shadow-lg font-firaSans bg-blue-dark/90;
     }
+
     th[scope='row'] {
         @apply items-center justify-center text-center bg-black border-none;
     }
+
     tr {
-        @apply text-base font-normal text-white transition-all duration-700 ease-in-out delay-75 border-2 border-black border-double bg-yellow-minimal font-firaSans even:bg-purple-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light ;
+        @apply text-base font-normal text-white transition-all duration-700 ease-in-out delay-75 border-2 border-black border-double bg-yellow-minimal font-firaSans even:bg-indigo-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light;
     }
+
     td {
         @apply pl-2 border border-black rounded-md shadow-xl font-firaSans;
     }
+
     nav[role='navigation'] {
         @apply grid items-center justify-start w-full grid-cols-12 p-1 space-x-2 text-white bg-black;
-    }   
+    }
+
     nav[role='navigation'] > button {
         @apply flex text-xl font-bold text-white transition-all border border-white font-firaSans bg-blue-dark;
     }
+
     input {
         @apply border shadow-inner rounded-xl ring-1 ring-slate-light/75;
     }
+
     .icon-cell {
         @apply bg-white border border-black text-blue;
     }
+
     /* details[open] summary {
         @apply mb-2 border border-b border-l border-r;
     } */
@@ -53,6 +107,6 @@
     } */
 
     input {
-        @apply read-only:text-white read-only:rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
+        @apply text-white read-only: read-only:rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
     }
 }

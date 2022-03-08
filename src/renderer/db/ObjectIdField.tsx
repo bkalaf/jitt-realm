@@ -14,6 +14,7 @@ export function ObjectIdField(props: TextFieldProps<ObjectId>) {
             Label={ForwardComponents.label as LabelComponent}
             Feedback={ForwardComponents.small}
             Control={ForwardComponents.input}
-            converts={[(x: ObjectId) => x.toHexString(), (x: string) => new ObjectId(x)]}></Field>
+            converts={[(x: ObjectId) => x.toHexString(), (x: string) => new ObjectId(x)]}
+        ></Field>
     );
 }

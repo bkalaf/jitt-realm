@@ -13,5 +13,5 @@ export const colorsMap = {
     Brown: '#itemColorId-12',
     Gold: '#itemColorId-13',
     Silver: '#itemColorId-14'
-}
+};
 export type Colors = keyof typeof colorsMap;

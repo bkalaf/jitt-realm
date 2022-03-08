@@ -60,11 +60,7 @@ export class Facility {
     phoneNumber: string | undefined;
     address: Address = new Address();
     get name(): string {
-        return [
-            this.selfStorage?.name,
-            [this.address.city, this.address.state].join(','),
-            this.address.street?.split(' ').slice(1).join(' ')
-        ].join(' - ');
+        return [this.selfStorage?.name, [this.address.city, this.address.state].join(','), this.address.street?.split(' ').slice(1).join(' ')].join(' - ');
     }
     static sort: [string, boolean | undefined][] = [
         ['address.state', false],
@@ -124,7 +120,12 @@ export class Facility {
             <ID />
             <LookupField realm={realm} name='selfStorage' />
             <TextField name='facilityNumber' type='text' />
-            <CalculatedField name='name' calculationFunction={(x: Facility, y: { name: string }) => [x.selfStorage?.name ?? '', [x.address.city, x.address.state].join(','), x.address.street?.split(' ').slice(1).join(' ') ?? ''].join(' - ')} /> 
+            <CalculatedField
+                name='name'
+                calculationFunction={(x: Facility, y: { name: string }) =>
+                    [x.selfStorage?.name ?? '', [x.address.city, x.address.state].join(','), x.address.street?.split(' ').slice(1).join(' ') ?? ''].join(' - ')
+                }
+            />
             <Address.Insert prefix='address' realm={realm} />
             <TextField name='email' display='E-mail' type='email' />
             <TextField name='phoneNumber' type='tel' />

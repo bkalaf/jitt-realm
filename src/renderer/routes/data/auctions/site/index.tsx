@@ -1,7 +1,7 @@
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
 import { $$datatypes, $$names } from '@controls/constants';
-import { InputControl } from '../../../controls/InputControl';
+import { InputControl } from '@controls/_InputControl';
 import { InsertForm } from '../../../forms/InsertForm';
 import { Grid } from '../../../Grid';
 import { RowID } from '@controls/RowID';
@@ -64,15 +64,7 @@ export function AuctionSiteRow({ data, index, typeName }: { typeName: string; in
 }
 
 export function AuctionSiteGrid({ realm }: { realm: Realm }) {
-    return (
-        <Grid
-            typeName={$$names.auctions.auctionSite}
-            realm={realm}
-            sort={[['name', false]]}
-            GridHeaders={AuctionSiteHeaders}
-            TableRow={AuctionSiteRow}
-        />
-    );
+    return <Grid typeName={$$names.auctions.auctionSite} realm={realm} sort={[['name', false]]} GridHeaders={AuctionSiteHeaders} TableRow={AuctionSiteRow} />;
 }
 export function AuctionSiteInsertForm({ realm }: { realm: Realm }) {
     return (

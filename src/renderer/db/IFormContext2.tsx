@@ -1,4 +1,3 @@
-
 export type IFormContext2<T, TCalc> = {
     formData: T;
     createGetterSetter: (name: string) => [getter: () => any, setter: (ev: any) => void, getError: () => string[]];
@@ -15,5 +14,5 @@ export type IFormContext2<T, TCalc> = {
     clearErrors: () => void;
     isFeedbacking: boolean;
     showFeedback: () => void;
-    hideFeedback: () => void;   
+    hideFeedback: () => void;
 };

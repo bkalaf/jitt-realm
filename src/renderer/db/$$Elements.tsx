@@ -79,7 +79,8 @@ export const $$Elements: Record<string, (props: React.PropsWithChildren<any>, re
     }
 };
 
-export const ForwardComponents: Record<
-    keyof typeof $$Elements,
-    React.ForwardRefExoticComponent<Pick<any, string | symbol | number> & React.RefAttributes<HTMLElement>>
-> = objectMap($$Elements, identity, (x) => React.forwardRef(x));
+export const ForwardComponents: Record<keyof typeof $$Elements, React.ForwardRefExoticComponent<Pick<any, string | symbol | number> & React.RefAttributes<HTMLElement>>> = objectMap(
+    $$Elements,
+    identity,
+    (x) => React.forwardRef(x)
+);

@@ -1,5 +1,3 @@
-
-
 export function unzip<T, U>(arr: [T, U][]): [T[], U[]] {
     if (arr.length === 0) {
         return [[], []];

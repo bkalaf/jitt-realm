@@ -4,12 +4,12 @@ import { Boundary } from '../components/suspense/Boundary';
 import { Menu } from './Menu';
 import { Viewport } from './Viewport';
 
-export function Frame({ realm }: { realm: DataReader<Realm>; }) {
+export function Frame({ realm }: { realm: DataReader<Realm> }) {
     const location = useLocation();
     return (
         <Boundary fallback={<div>Loading...</div>}>
             <div className='flex flex-col w-screen h-screen'>
-                <Menu realm={realm.read()}/>
+                <Menu realm={realm.read()} />
                 <div className='flex flex-col flex-grow p-1 bg-sky-light'>
                     <Viewport realm={realm.read()} />
                     <div className='flex flex-grow'></div>

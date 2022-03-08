@@ -39,15 +39,7 @@ import { useRecordType } from '../hooks/useRecordType';
 //     );
 // }
 
-export function LookupControl<T extends DbOutputType & { _id: BSON.ObjectId }>({
-    name,
-    displayName,
-    realm
-}: {
-    name: string;
-    displayName: string;
-    realm: Realm;
-}) {
+export function LookupControl<T extends DbOutputType & { _id: BSON.ObjectId }>({ name, displayName, realm }: { name: string; displayName: string; realm: Realm }) {
     const [type, Ctor] = useRecordType();
     const options = realm
         .objects<{ _id: BSON.ObjectId }>(type)

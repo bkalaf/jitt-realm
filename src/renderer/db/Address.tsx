@@ -45,18 +45,17 @@ export class Address {
     };
     static sort: [string, boolean][] = [];
     static toDisplayName(obj: Address) {
-        return [
-            [obj.street, obj.suite ? `Ste# ${obj.suite}` : null].filter((x) => x != null).join(' '),
-            [[obj.city, obj.state].join(', '), obj.country, obj.postal].join(',')
-        ].join('\n');
+        return [[obj.street, obj.suite ? `Ste# ${obj.suite}` : null].filter((x) => x != null).join(' '), [[obj.city, obj.state].join(', '), obj.country, obj.postal].join(',')].join('\n');
     }
-    static convertFrom = (obj: Address): {
-        street: string,
-        suite: string,
-        city: string,
-        state: string,
-        country: string,
-        postal: string
+    static convertFrom = (
+        obj: Address
+    ): {
+        street: string;
+        suite: string;
+        city: string;
+        state: string;
+        country: string;
+        postal: string;
     } => ({
         street: obj.street ?? '',
         suite: obj.suite ?? '',
@@ -94,7 +93,8 @@ export class Address {
                 labelLabel='legend'
                 containerLabel='fieldset'
                 Container={ForwardComponents.fieldset as ContainerComponent}
-                Label={ForwardComponents.legend as LabelComponent}>
+                Label={ForwardComponents.legend as LabelComponent}
+            >
                 {countries}
                 {provinces}
                 <TextField name='street' type='text' />

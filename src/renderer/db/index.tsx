@@ -3,10 +3,11 @@ import { Address } from './Address';
 import { Facility } from './Facility';
 import { FacilityDTO } from '../routes/data/auctions/facility';
 import { SelfStorageDTO } from '../routes/data/auctions/selfStorage';
-import { AddressDTO } from '../routes/embedded/address';
 import { ObjectClass } from 'realm';
-import { CostDTO, LotDTO } from '../routes/data/auctions/lot';
+import { LotDTO } from '../routes/data/auctions/lot';
 import { AuctionSiteDTO } from '../routes/data/auctions/site';
+import { AddressDTO } from '../routes/embedded/address';
+import { CostDTO } from '../routes/embedded/cost';
 
 export function ifEmpty(str: string) {
     return str != null ? str : undefined;

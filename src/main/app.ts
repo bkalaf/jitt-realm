@@ -29,11 +29,13 @@ function createWindow() {
     const url = ['file://', __dirname, 'index.html'].join('/');
     mainWindow.loadURL(url);
 }
-app.whenReady().then(() => {
-    session.defaultSession.loadExtension(devToolsPath(), { allowFileAccess: true });
-}).then(() => {
-    createWindow();
-    enable(mainWindow!.webContents);
-    mainWindow?.webContents.openDevTools();
-    mainWindow?.maximize();
-})
+app.whenReady()
+    .then(() => {
+        session.defaultSession.loadExtension(devToolsPath(), { allowFileAccess: true });
+    })
+    .then(() => {
+        createWindow();
+        enable(mainWindow!.webContents);
+        mainWindow?.webContents.openDevTools();
+        mainWindow?.maximize();
+    });

@@ -12,7 +12,7 @@ export const autoCompleteMap = {
     sex: 'sex',
     tel: 'tel',
     street: 'address-line1'
-}
+};
 export type AutoComplete = keyof typeof autoCompleteMap;
 
 export function readAutoComplete(ac?: AutoComplete) {
@@ -20,14 +20,22 @@ export function readAutoComplete(ac?: AutoComplete) {
     if (Object.keys(autoCompleteMap).includes(ac)) return autoCompleteMap[ac]!;
     return ac;
 }
+
+export type Subscriber<T> = (name: string, item: [RefObject<DataEntryElement>, ((x: T) => Result<any>)[]]) => void;
+
+export type Unsubscribe = (name: string) => void;
+
+/**
+ * @deprecated
+ */
 export type ControlProps<T> = {
     name: string;
     display?: string;
     feedbacking?: boolean;
     getter?: (x: string) => T;
     setter?: (x: keyof SelfStorage, conversion?: (x: string) => any, valueAs?: 'date' | 'number') => (ev: React.ChangeEvent<DataEntryElement>) => void;
-    subscribe?: (name: string, item: [RefObject<DataEntryElement>, ((x: T) => Result<any>)[]]) => void;
-    unsubscribe?: (name: string) => void;
+    subscribe?: Subscriber<T>;
+    unsubscribe?: Unsubscribe;
     getErrors?: (item: string) => [RefObject<DataEntryElement>, string[]];
     children?: Children;
     autoComplete?: AutoComplete;

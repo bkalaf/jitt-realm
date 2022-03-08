@@ -11,7 +11,7 @@ export function toPropertyProps<T extends DataEntryElement>({
 }: PropertyProps<T> & { name?: string }): IPropertyProps<T> {
     console.log('attributes', attributes);
     const { enumMap, func, ...attr } = (attributes as any) ?? { enumMap: {}, func: undefined as string | undefined };
-    console.log()
+    console.log();
     return {
         ordinal,
         name: columnName ?? name,

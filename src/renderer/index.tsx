@@ -5,4 +5,4 @@ import App from './layout/App';
 
 const el = document.getElementById('app-root')!;
 
-createRoot(el).render(<App />)
+createRoot(el).render(<App />);

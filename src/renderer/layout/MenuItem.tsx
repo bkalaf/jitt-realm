@@ -16,11 +16,7 @@ export function MenuItem({ to, icon, onClick, tooltip }: { onClick?: () => void;
         [active]
     );
     const buttonCn = useMemo(
-        () =>
-            cn(
-                { 'bg-red': active, 'bg-blue-dark': !active },
-                'flex py-0.5 px-3 text-white border-2 border-white rounded-lg shadow-lg items-center justify-center text-lg'
-            ),
+        () => cn({ 'bg-red': active, 'bg-blue-dark': !active }, 'flex py-0.5 px-3 text-white border-2 border-white rounded-lg shadow-lg items-center justify-center text-lg'),
         [active]
     );
     const linkCn = cn({ 'border-2': false, 'border-white': false }, buttonCn);

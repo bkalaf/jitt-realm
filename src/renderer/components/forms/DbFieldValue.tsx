@@ -14,20 +14,18 @@ export type DbSet<T extends DbPrimitive> = T[] & {
     has(item: T): boolean;
     clear(): void;
     forEach(func: (x: T) => void): void;
-    size: number;    
-}
+    size: number;
+};
 
 export type DbDictionary<T extends DbPrimitive> = Record<string, T> & {
     put(partial: Record<string, T>): void;
     remove(properties: string[]): void;
-}
+};
 
-export type DbEmbeddedObject<T extends DbDataType> = Record<string, T> 
+export type DbEmbeddedObject<T extends DbDataType> = Record<string, T>;
 
 export type DbObject<T extends DbDataType> = Realm.Object & Record<string, T> & { _id: BSON.ObjectId };
 
 export type DbDataType = DbPrimitive | DbList<DbPrimitive> | DbSet<DbPrimitive> | DbDictionary<DbPrimitive> | DbEmbeddedObject<any> | DbObject<any>;
 
 export type DbOutputType = string | readonly string[] | boolean | number;
-
-

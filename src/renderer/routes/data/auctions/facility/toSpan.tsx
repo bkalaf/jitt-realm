@@ -1,5 +1,3 @@
-
-
 export function toSpan(span?: number) {
     switch (span) {
         case undefined:

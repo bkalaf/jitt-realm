@@ -1,7 +1,6 @@
 import { cn } from '../util/cn';
 
-
-export function Cell({ children, ...remain }: { children: Children; } & React.TdHTMLAttributes<HTMLTableCellElement>) {
+export function Cell({ children, ...remain }: { children: Children } & React.TdHTMLAttributes<HTMLTableCellElement>) {
     const className = cn(
         {
             'text-left border border-dashed border-black pl-3': true

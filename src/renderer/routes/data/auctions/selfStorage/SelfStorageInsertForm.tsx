@@ -1,6 +1,6 @@
 import { $$names } from '@controls/constants';
 import { InsertForm } from '../../../forms/InsertForm';
-import { InputControl } from '../../../controls/InputControl';
+import { InputControl } from '@controls/_InputControl';
 import { SelfStorage } from '.';
 import * as BSON from 'bson';
 

@@ -16,7 +16,7 @@ import { $Address } from '../db/Address';
 import { intersection } from '../../common/array/intersection';
 import { unzip } from './unzip';
 import { ignore } from '../../common/ignore';
-import { InsertForm } from "./InsertForm";
+import { InsertForm } from './InsertForm';
 import { useRecordType } from '../hooks/useRecordType';
 import { FormProvider } from '../db/FormProvider';
 import React from 'react';
@@ -36,8 +36,7 @@ export type PropertyInfo_v2 = {
     propertyName: string;
     displayName: string;
 };
-const isPrimitive = (x: string) =>
-    ['string', 'bool', 'int', 'float', 'decimal128', 'double', 'data', 'date', 'objectId', 'uuid'].includes(x);
+const isPrimitive = (x: string) => ['string', 'bool', 'int', 'float', 'decimal128', 'double', 'data', 'date', 'objectId', 'uuid'].includes(x);
 
 const getDataType = (type: string, objectType?: string) => {
     const datatype = objectType == null ? type : objectType;
@@ -129,7 +128,7 @@ export function Records({
     );
 }
 
-export function PassThruComponent(props: { children?: Children, Component: React.FunctionComponent } & Record<string, any> ) {
+export function PassThruComponent(props: { children?: Children; Component: React.FunctionComponent } & Record<string, any>) {
     const { Component, children, ...remain } = props;
     return <Component {...remain}>{children}</Component>;
 }

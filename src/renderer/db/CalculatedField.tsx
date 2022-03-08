@@ -3,13 +3,7 @@ import { $useControl } from '../hooks/$useControl';
 import { Field } from './Field';
 import { ForwardComponents } from './$$Elements';
 
-export function CalculatedField<T, U extends Record<string, string>>({
-    name,
-    calculationFunction
-}: {
-    name: string;
-    calculationFunction: (formData: T, calcObject: U) => string;
-}) {
+export function CalculatedField<T, U extends Record<string, string>>({ name, calculationFunction }: { name: string; calculationFunction: (formData: T, calcObject: U) => string }) {
     const { backing } = $useControl(name, calculationFunction);
     const outputID = `${name}-output`;
     const className = $useThemeClassNames('output');

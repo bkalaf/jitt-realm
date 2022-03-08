@@ -5,7 +5,7 @@ import { useRecordType } from '../hooks/useRecordType';
 import { useMemo } from 'react';
 import { TableRow } from './TableRow';
 import { RecordSetHeader } from './RecordSetHeader';
-import { useTheme } from "../providers/useTheme";
+import { useTheme } from '../providers/useTheme';
 
 export function RecordSet<T extends Objects, TElement extends DataEntryElement>({
     realm,
@@ -31,14 +31,17 @@ export function RecordSet<T extends Objects, TElement extends DataEntryElement>(
     const cells = useMemo(() => columns.map((x) => x.columnName), [columns]);
     const data = realm.objects<{ _id: ObjectId }>(type).sorted(sort);
     const infos = useMemo(() => getColumnsInfo<TElement>(type), [getColumnsInfo, type]);
-    const selectable = useMemo((): Selectable => ({
-        isSelectable,
-        isSelected,
-        setSelectable,
-        addToggledSelected,
-        adjustRange,
-        replaceSelected
-    }), [isSelectable, isSelected, setSelectable, addToggledSelected, adjustRange, replaceSelected])
+    const selectable = useMemo(
+        (): Selectable => ({
+            isSelectable,
+            isSelected,
+            setSelectable,
+            addToggledSelected,
+            adjustRange,
+            replaceSelected
+        }),
+        [isSelectable, isSelected, setSelectable, addToggledSelected, adjustRange, replaceSelected]
+    );
     // const toggleSelected = useCallback((id: ObjectId) => {
     //     setSelected(prev => {
     //         if (prev.includes(id)) {

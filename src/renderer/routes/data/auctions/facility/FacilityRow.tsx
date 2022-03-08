@@ -7,9 +7,7 @@ export function FacilityRow<T>({ data, typeName, index }: { data: Realm.Object &
     return (
         <tr key={index} data-id={data._id.toHexString()}>
             <RowID data={data} />
-            <td>
-                {data.name}
-            </td>
+            <td>{data.name}</td>
             <td>{data.selfStorage?.name}</td>
             <td>{data.facilityNumber}</td>
             <td>{data.phoneNumber}</td>
@@ -23,4 +21,3 @@ export function FacilityRow<T>({ data, typeName, index }: { data: Realm.Object &
         </tr>
     );
 }
-

@@ -1,16 +1,22 @@
-import { RefObject, useEffect, useMemo, useRef } from 'react';
+import { HTMLInputTypeAttribute, RefObject, useEffect, useMemo, useRef } from 'react';
 import { toTitleCase } from '../../../common/text/toTitleCase';
 import { $useThemeClassNames } from '../../db/SelfStorage';
 import { useTheme } from '../../providers/useTheme';
 import React from 'react';
 import { ignore } from '../../../common/ignore';
-import { Indicator } from '../../db/Indicator';
-import { faBan, faCalculator, faCircleExclamationCheck, faExchangeAlt, faPenAltSlash, faTextSlash } from '@fortawesome/pro-solid-svg-icons';
-import { ControlProps, readAutoComplete } from './ControlProps';
+import { faBan, faExchangeAlt } from '@fortawesome/pro-solid-svg-icons';
+import { ControlProps, readAutoComplete, Subscriber, Unsubscribe } from '@controls/_ControlProps';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { replaceAll } from '../../../common/text/replaceAll';
 import { camelToTitleCase } from '../../../common/text/camelToTitleCase';
+import { Result } from '../../hooks/$useControl';
+import { handleDisplayName } from '../../util/handleDisplayName';
+import { Indicators } from './Indicators';
+import { useControlThemes } from '../../hooks/useControlThemes';
 
+/**
+ * @deprecated
+ */
 export function InputControl({
     name: $name,
     children,
@@ -53,12 +59,12 @@ export function InputControl({
         isCalculated: calculated
     };
     const labelID = `${name}-field-control-label`;
-    const value = useMemo(
-        () => (toOutput ? toOutput(getter != null ? getter($name) : '') : getter != null ? getter($name) : ''),
-        [toOutput, getter, $name]
-    );
+    const value = useMemo(() => (toOutput ? toOutput(getter != null ? getter($name) : '') : getter != null ? getter($name) : ''), [toOutput, getter, $name]);
     const displayName = display ? display : name.includes('-') ? toTitleCase(replaceAll('-', ' ')(name)) : camelToTitleCase(name);
-    const onChange = useMemo(() => (setter != null ? toDatabase == null ? setter($name as any, undefined, valueAs) : setter($name as any, toDatabase, valueAs) : ignore), [$name, setter, toDatabase, valueAs]);
+    const onChange = useMemo(
+        () => (setter != null ? (toDatabase == null ? setter($name as any, undefined, valueAs) : setter($name as any, toDatabase, valueAs)) : ignore),
+        [$name, setter, toDatabase, valueAs]
+    );
     const feedback = useMemo(() => (getErrors != null ? getErrors(name)[1].join('\n') : ''), [getErrors, name]);
     const ref: RefObject<any> = useRef(null);
     useEffect(() => {
@@ -77,7 +83,7 @@ export function InputControl({
                     {...remain}
                     id={inputID}
                     type={inputType ?? 'text'}
-                    value={value}
+                    value={value ?? ''}
                     onChange={onChange}
                     aria-labelledby={labelID}
                     required={isRequired}
@@ -91,22 +97,7 @@ export function InputControl({
                     <FontAwesomeIcon icon={icon} className='bg-black text-yellow' />
                 </div>
             ),
-        [
-            autoComplete,
-            icon,
-            inputCn,
-            inputID,
-            inputType,
-            isDisabled,
-            isReadonly,
-            isRequired,
-            labelID,
-            name,
-            onChange,
-            placeholder,
-            remain,
-            value
-        ]
+        [autoComplete, icon, inputCn, inputID, inputType, isDisabled, isReadonly, isRequired, labelID, name, onChange, placeholder, remain, value]
     );
     return (
         <div id={divID} className={containerCn}>
@@ -118,12 +109,7 @@ export function InputControl({
             {contents}
             <label className={labelCn} id={labelID} htmlFor={inputID}>
                 {displayName}
-                <span className='absolute top-0 right-0 flex flex-row space-x-2'>
-                    <Indicator icon={faCalculator} title='Field is calculated.' isFlag={isCalculated} bg='bg-blue' />
-                    <Indicator icon={faPenAltSlash} title='Field is read-only.' isFlag={isReadonly} bg='bg-amber' />
-                    <Indicator icon={faCircleExclamationCheck} title='Field is required.' isFlag={isRequired} bg='bg-red' />
-                    <Indicator icon={faTextSlash} title='Field is disabled.' isFlag={isDisabled} bg='bg-black' />
-                </span>
+                <Indicators isCalculated={isCalculated} isReadonly={isReadonly} isRequired={isRequired} isDisabled={isDisabled} />
             </label>
         </div>
     );
