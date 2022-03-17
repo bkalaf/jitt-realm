@@ -94,6 +94,10 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/electron ./public/app.js",
-    "build": "NODE_ENV=development ./node_modules/.bin/webpack-cli"
+    "build": "NODE_ENV=development ./node_modules/.bin/webpack-cli",
+    "madge-circ": "npx madge --circular --extensions ts,tsx ./src",
+    "madge-leaf": "npx madge --circular --extensions ts,tsx ./src",
+    "madge-orphans": "npx madge --orphans --extensions ts,tsx ./src",
+    "madge": "npx madge --image ./graphs/deps.svg --extensions ts,tsx ./src"
   }
 }

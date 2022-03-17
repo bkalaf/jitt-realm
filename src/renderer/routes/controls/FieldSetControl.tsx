@@ -1,22 +1,29 @@
-import { camelToTitleCase } from '../../../common/text/camelToTitleCase';
-import { toTitleCase } from '../../../common/text/toTitleCase';
-import { $useThemeClassNames } from '../../db/SelfStorage';
+import { AddEmbeddedStack } from '../providers/EmbeddedContext/index';
+import { useEmbedded } from '../../hooks/useEmbedded';
+import { ObjectSchemaProperty } from 'realm';
+import { useMinimalControl } from "../../hooks/useMinimalControl";
+import { cloneElement, ReactElement } from 'react';
+import { isEmptyOrNull } from '../../util/asPercentage';
 
-export function FieldSetControl({ name, children, display, realm, getter, feedbacking, unsubscribe, setter, setValue, subscribe }: { name: string; children: Children; display?: string; getter?: any; setter?: any; onValidate?: any; realm?: Realm; feedbacking?: boolean; subscribe?: () => void; unsubscribe?: () => void; setValue?: any;  }) {
-    const adjustName = (s: string) => `${name}.${s}`;
-    const displayName = display == null ? toTitleCase(name) : display;
-    const fieldSetCn = $useThemeClassNames('fieldset');
-    const legendCn = $useThemeClassNames('legend');
+export function FieldSetControl({ name: $name, display, formName, ...remain }: { name: string; display?: string, formName?: string  }) {
+    console.log('FIELD SET CONTROL');
+    const { prefix, type, realm } = useEmbedded();
+    const t = realm.schema.filter(x => x.name === type)[0];
+    const p = t.properties[$name] as ObjectSchemaProperty;
+    console.log(`t`, t, `p`, p);
+    if (p.type !== 'object') throw new Error(`bad type: ${p.type}`);
+    const { objectType } = p;
+    const { displayName, fullName, toID } = useMinimalControl(formName ?? '', $name, display);
+    console.log(`objectType`, objectType);
+    const newType = objectType;
+    if (isEmptyOrNull(newType)) throw new Error(`bad objectType: ${newType ?? ''}`);
+    const children = JITTRegistrar.getChildren(newType);
     return (
-        <fieldset name={name} id={`${name}-fieldset`} className={fieldSetCn}>
-            <legend id={`${name}-fieldset-legend`} className={legendCn}>
-                {displayName}
-            </legend>
-            {React.Children.toArray(children).map((x, ix) => {
-                const el = x as React.ReactElement;
-                return React.cloneElement(el, { ...el.props, key: ix, name: adjustName(el.props.name), display: el.props.display ? el.props.display : camelToTitleCase(el.props.name),
-                realm, feedbacking, setter, getter, subscribe, setValue, unsubscribe });
-            })}
+        <fieldset name={fullName} id={toID('fieldset')} aria-labelledby={toID('legend')}>
+            <legend id={toID('legend')}>{displayName}</legend>
+            <AddEmbeddedStack name={$name} type={newType ?? 'n/a'}>
+                {React.Children.toArray(children).map((x, ix) => cloneElement(x as ReactElement, { ...(x as ReactElement).props, formName, ...remain, key: ix }))}
+            </AddEmbeddedStack>
         </fieldset>
     );
 }

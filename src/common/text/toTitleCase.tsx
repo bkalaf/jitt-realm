@@ -9,3 +9,7 @@ export function letters(str: string) {
 export function isUpper(x: string) {
     return x.toUpperCase() === x && x.toLowerCase() !== x;
 }
+
+export function toLower(x: string) {
+    return x.toLowerCase();
+}

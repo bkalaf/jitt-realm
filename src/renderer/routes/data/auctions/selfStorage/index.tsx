@@ -1,5 +1,5 @@
-import { dt, routeNames } from '../../../constants';
 import { ObjectId } from 'bson';
+import { $$names, $$datatypes } from '../../../controls/index';
 
 export type SelfStorage = {
     _id: ObjectId;
@@ -9,15 +9,15 @@ export type SelfStorage = {
 };
 export class SelfStorageDTO {
     static schema = {
-        name: routeNames.auctions.selfStorage,
+        name: $$names.auctions.selfStorage,
         primaryKey: '_id',
         properties: {
-            _id: dt.objectId,
-            name: dt.string,
-            website: dt.opt.string,
+            _id: $$datatypes.objectId,
+            name: $$datatypes.string,
+            website: $$datatypes.opt.string,
             facilities: {
-                type: dt.linkingObjects,
-                objectType: routeNames.auctions.facility,
+                type: $$datatypes.linkingObjects,
+                objectType: $$names.auctions.facility,
                 property: 'selfStorage'
             }
         }

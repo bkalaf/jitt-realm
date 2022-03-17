@@ -1,4 +1,4 @@
-import { useGoToPageOnClick } from "./useGoToPageOnClick";
+import { useGoToPageOnClick } from './useGoToPageOnClick';
 
 export function useDescendOnClick() {
     return useGoToPageOnClick('..');

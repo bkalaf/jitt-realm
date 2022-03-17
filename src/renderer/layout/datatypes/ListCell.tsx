@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { getAssocPath } from '../../../common/obj/getAssocPath';
-import { Cell } from "../Cell";
+import { Cell } from '../Cell';
 
-export function ListCell({ data, name }: { data: Realm.Object & Record<string, any[]>; name: string; }) {
+export function ListCell({ data, name }: { data: Realm.Object & Record<string, any[]>; name: string }) {
     const value = useMemo(() => getAssocPath<any[]>(name, data), [name, data]);
     return (
         <Cell>

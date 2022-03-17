@@ -1,18 +1,20 @@
 /* eslint-disable react/boolean-prop-naming */
-import Realm, { BSON } from 'realm';
+import Realm from 'realm';
 import { ObjectId } from 'bson';
 import { $Facility, Facility } from './Facility';
 import { faKey } from '@fortawesome/pro-regular-svg-icons';
-import { ifEmpty } from '.';
-import { identity } from '../../common/identity';
 import { useTheme } from '../providers/useTheme';
-import { HTMLInputTypeAttribute, useDebugValue, useRef, useState } from 'react';
+import { HTMLInputTypeAttribute, useDebugValue } from 'react';
 import { ObjectIdField } from './ObjectIdField';
 import { TextField } from './TextField';
-import { InsertFormFields } from './InsertFormFields';
-
+import { ifEmpty } from '../../common/src/ifEmpty';
+/**
+ * @deprecated
+ */
 export const $SelfStorage: $SelfStorage = 'SelfStorage';
-
+/**
+ * @deprecated
+ */
 export class SelfStorage {
     constructor() {
         this._id = new ObjectId();
@@ -83,21 +85,22 @@ export class SelfStorage {
         );
     };
 }
-
+/**
+ * @deprecated
+ */
 export function ID() {
     useDebugValue('ID');
     return <ObjectIdField name='_id' display='ID' type='text' required readOnly />;
 }
-export type ContainerComponent = React.FunctionComponent<React.ComponentPropsWithRef<'div' | 'fieldset'>>;
-export type LabelComponent =
-    | React.FunctionComponent<React.ComponentPropsWithRef<'label'>>
-    | React.FunctionComponent<React.ComponentPropsWithRef<'legend'>>;
-export type ControlComponent = React.FunctionComponent<React.ComponentPropsWithRef<'input' | 'select' | 'textarea' | 'output'>>;
-export type FeedbackComponent = React.FunctionComponent<React.ComponentPropsWithRef<'small'>>;
+/**
+ * @deprecated
+ */
 export function $useThemeClassNames(...remain: string[]) {
     return useTheme({}, '', 'form', 'insert', 'field', ...remain);
 }
-
+/**
+ * @deprecated
+ */
 export type TextFieldProps<T> = {
     name: string;
     display?: string;

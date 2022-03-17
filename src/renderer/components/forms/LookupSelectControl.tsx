@@ -4,7 +4,6 @@
 // import { Stringify } from '../../db/Facility';
 // import { useControl2 } from './useControl2';
 
-
 // export function LookupSelectControl<T extends { _id: ObjectId; }>({
 //     name, convert, labelID, getValue, readOnly, disabled, setValue, children, ...props
 // }: React.SelectHTMLAttributes<HTMLSelectElement> & {

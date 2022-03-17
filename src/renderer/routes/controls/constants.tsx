@@ -2,7 +2,7 @@ export const $SelfStorage = 'SelfStorage';
 export const $Address = 'Address';
 export const $Facility = 'Facility';
 
-export const routeNames = {
+export const $$names = {
     tier1: {
         api: 'api',
         data: 'data',
@@ -34,9 +34,10 @@ export const routeNames = {
     inventory: {
         skus: 'sku',
         bins: 'bin',
-        items: 'item',
+        items: 'item'
     },
     files: {
+        file: 'file',
         images: 'image',
         versions: 'version',
         attachments: 'attachment',
@@ -56,10 +57,11 @@ export const routeNames = {
         capacity: 'capacity',
         voltage: 'voltage',
         transaction: 'transaction',
-        squareFootage: 'square-footage'
+        squareFootage: 'square-footage',
+        fileLocation: 'file-location'
     }
 };
-export const dt = {
+export const $$datatypes = {
     objectId: 'objectId',
     string: 'string',
     int: 'int',

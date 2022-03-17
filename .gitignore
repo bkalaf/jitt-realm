@@ -12,6 +12,7 @@ public/
 backup.eslint
 log01.log
 lib/
+graphs/
 filelist.txt
 move.sh
 *-ls.txt

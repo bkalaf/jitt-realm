@@ -3,17 +3,7 @@ import { toTitleCase } from '../../common/text/toTitleCase';
 import { generateRandomString } from '../../common/text/generateRandomString';
 import React from 'react';
 
-export function InsertFormFields({
-    children,
-    prefix,
-    realm,
-    saveOnBlur
-}: {
-    prefix?: string;
-    children?: Children;
-    saveOnBlur?: boolean;
-    realm: Realm;
-}) {
+export function InsertFormFields({ children, prefix, realm, saveOnBlur }: { prefix?: string; children?: Children; saveOnBlur?: boolean; realm: Realm }) {
     return (
         <InsertFormFields realm={realm}>
             {React.Children.toArray(children).map((x, ix) => {

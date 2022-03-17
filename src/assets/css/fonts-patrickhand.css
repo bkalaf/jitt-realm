@@ -41,7 +41,7 @@
     font-family: 'Patrick Hand';
     font-weight: 400;
     font-style: normal;
-    src: url('./../fonts/Patrick-Hand/PatrickHand-Regular.ttf') format('truetype')
+    src: url('./../fonts/Patrick-Hand/PatrickHand-Regular.ttf') format('truetype');
 }
 /* @font-face {
     font-family: 'Patrick Hand';

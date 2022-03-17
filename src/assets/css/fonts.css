@@ -4,6 +4,7 @@
 @import './fonts-patrickhand';
 @import './fonts-raleway';
 
-html, body {
-    font-family: "Open Sans" !important;
+html,
+body {
+    font-family: 'Open Sans' !important;
 }

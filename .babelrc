@@ -6,6 +6,8 @@
             {
                 "root": ["./"],
                 "alias": {
+                    "@controls/*": "./src/renderer/routes/controls/*",
+                    "@forms/*": "./src/renderer/routes/forms/*",
                     // "assets/*": "./src/assets/*",
                     // "css/*": "./src/assets/css/*",
                     // "fonts/*": "./src/assets/fonts/*",
@@ -14,7 +16,6 @@
                     // "@/*": "./src/common/*",
                     // "@monads/*": "./src/common/monads/*",
                     // "@@/*": "./src/main/*",
-                    "@renderer/*": "./src/renderer/*",
                     "@root/*": "./src/*",
                     "@common/*": "./src/common/*",
                     "@main/*": "./src/main/*",

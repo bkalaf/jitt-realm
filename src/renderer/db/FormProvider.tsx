@@ -12,7 +12,7 @@ export const FormContext2 = React.createContext<IFormContext2<Record<string, any
  * @returns React.ReactElement
  */
 export function FormProvider({ children, canSubmit, realm }: { children?: Children; canSubmit: boolean; realm: Realm }) {
-    const [type, Ctor] = useRecordType();
+    const [, Ctor] = useRecordType() as any;
     const value = $useProvideFormContext(realm, Ctor.init);
     return (
         <Boundary fallback={<div>Loading...</div>}>

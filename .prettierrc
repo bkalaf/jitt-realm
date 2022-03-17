@@ -10,7 +10,7 @@
     "useTabs": false,
     "tabWidth": 4,
     "parser": "typescript",
-    "printWidth": 130,
+    "printWidth": 200,
     "quoteProps": "as-needed",
     "htmlWhitespaceSensitivity": "css",
     "overrides": [

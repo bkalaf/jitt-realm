@@ -5,13 +5,11 @@ import { createContext } from 'react';
 import { useProvideRealmContext } from './useProvideRealmContext';
 
 export type IRealmContext = {
-    reader: DataReader<Realm>
-}
+    reader: DataReader<Realm>;
+};
 export const RealmContext = createContext<IRealmContext | undefined>(undefined);
 
 export function RealmProvider({ children }: { children: Children }) {
     const value = useProvideRealmContext();
-    return <RealmContext.Provider value={value}>
-        {children}
-    </RealmContext.Provider>
+    return <RealmContext.Provider value={value}>{children}</RealmContext.Provider>;
 }

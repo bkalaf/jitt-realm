@@ -3,22 +3,18 @@ import { ObjectId } from 'bson';
 import { $$Schema } from './index';
 import { Field } from './Field';
 import { useRecordType } from '../hooks/useRecordType';
-import { ForwardComponents } from './$$Elements';
-import { $useLookupOptions } from "./$useLookupOptions";
-import { ContainerComponent, LabelComponent } from './SelfStorage';
+import { $useLookupOptions } from './$useLookupOptions';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
+import { ForwardComponents } from './$FC';
 
-export function LookupField<T extends { _id: ObjectId; }>({
-    name, display, realm, mapping
-}: {
-    name: string;
-    realm: Realm;
-    display?: string;
-    mapping?: Record<string, string>;
-}) {
-    const [type, Ctor] = useRecordType();
+/**
+ * @deprecated
+ */
+export function LookupField<T extends { _id: ObjectId }>({ name, display, realm, mapping }: { name: string; realm: Realm; display?: string; mapping?: Record<string, string> }) {
+    const [type, Ctor] = useRecordType() as any;
     const { objectType }: Realm.ObjectSchemaProperty = realm.schema.filter((x) => x.name === type)[0].properties[name] as any;
-    if (objectType == null)
-        throw new Error(`Unable to find property type: ${type}/${name}`);
+    if (objectType == null) throw new Error(`Unable to find property type: ${type as string}/${name}`);
 
     const options = $useLookupOptions(realm, objectType, $$Schema[objectType].toDisplayName.bind(null));
     return (
@@ -32,14 +28,15 @@ export function LookupField<T extends { _id: ObjectId; }>({
             Feedback={ForwardComponents.small}
             Control={ForwardComponents.select}
             toOutput={mapping == null ? undefined : (x: string) => mapping[x]}
-            converts={[(x: T | undefined) => x?._id.toHexString() ?? '', (x: string | undefined) => onlyIfNotNullOrEmpty(x, a => realm.objectForPrimaryKey<T>(objectType, new ObjectId(a)))]}>
+            converts={[(x: T | undefined) => x?._id.toHexString() ?? '', (x: string | undefined) => onlyIfNotNullOrEmpty(x, (a) => realm.objectForPrimaryKey<T>(objectType, new ObjectId(a)))]}
+        >
             {options}
         </Field>
     );
 }
 export function onlyIfNotNullOrEmpty<T, U>(value: T | null | undefined, func: (x: T) => U) {
-    if (value == null || (('length' in value) ? ((value as any).length === 0) : false)) {
+    if (value == null || ('length' in value ? (value as any).length === 0 : false)) {
         return undefined;
-    } 
+    }
     return func(value);
 }

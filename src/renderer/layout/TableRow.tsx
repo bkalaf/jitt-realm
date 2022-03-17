@@ -9,7 +9,7 @@ import { useCallback, useMemo } from 'react';
 import { Cell } from './Cell';
 import { CellSwitcher } from './datatypes/CellSwitcher';
 import { DropdownCell } from './datatypes/DropdownCell';
-import { useTheme } from "../providers/useTheme";
+import { useTheme } from '../providers/useTheme';
 
 export function TableRow<T extends Objects, TElement extends DataEntryElement>({
     infos,
@@ -63,9 +63,7 @@ export function TableRow<T extends Objects, TElement extends DataEntryElement>({
             )}
             {cells.map((columnName, index) => {
                 const key = isSelectable ? index + 1 : index;
-                const { name, datatype, enumMap, func, calculated, ...props } = toPropertyProps(
-                    infos.get(columnName)!
-                ) ;
+                const { name, datatype, enumMap, func, calculated, ...props } = toPropertyProps(infos.get(columnName)!);
                 if (enumMap != null && Object.keys(enumMap).length > 0) {
                     return (
                         <DropdownCell

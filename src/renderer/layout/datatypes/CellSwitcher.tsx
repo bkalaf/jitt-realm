@@ -1,4 +1,4 @@
-import { $$Schema, schema } from '../../db';
+import { $$Schema, schema } from '../../db/index';
 import { LookupCell } from './LookupCell';
 import { ListCell } from './ListCell';
 import { IntCell } from './IntCell';
@@ -10,12 +10,7 @@ import { EmbeddedCell } from './EmbeddedCell';
 import { BoolCell } from './BoolCell';
 import { CalculatedCell } from './CalculatedCell';
 
-export function CellSwitcher<
-    T extends
-        | React.InputHTMLAttributes<HTMLInputElement>
-        | React.SelectHTMLAttributes<HTMLSelectElement>
-        | React.TextareaHTMLAttributes<HTMLTextAreaElement>
->({
+export function CellSwitcher<T extends React.InputHTMLAttributes<HTMLInputElement> | React.SelectHTMLAttributes<HTMLSelectElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>>({
     data,
     name,
     datatype,

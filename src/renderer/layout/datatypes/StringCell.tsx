@@ -6,4 +6,3 @@ export function StringCell({ data, name }: { data: Realm.Object & Record<string,
     const value = useMemo(() => getAssocPath<string>(name, data), [name, data]);
     return <Cell>{value}</Cell>;
 }
-

@@ -1,6 +1,16 @@
+import { ObjectId } from 'bson';
 import * as React from 'react';
+import { SortDescriptor } from 'realm';
 
 declare global {
+    export let JITTRegistrar: { 
+        getInitial(name: string): () => any;
+        getConvert(name: string): (x: any) => any;
+        getChildren(name: string): JSX.Element[];
+        addInsert(name: string, initial: () => any, convert: (x: any) => any, children: JSX.Element[], GridHeaders: () => JSX.Element, TableRow: () => JSX.Element, sort: SortDescriptor[]): void;
+        getInsertProps(name: string): any;
+        getGridProps(name: string): any;
+    };
     export type IEventer<T extends Event> = {
         addEventListener(event: string, listener: (x: T) => void): void;
         removeEventListener(event: string, listener: (x: T) => void): void;
@@ -12,16 +22,7 @@ declare global {
     export type JittObjectClass<T> = {
         toDisplayName(obj: any): string;
         columns: string[];
-        columnMap: Record<
-            string,
-            [
-                string,
-                (
-                    | React.InputHTMLAttributes<HTMLInputElement>
-                    | (React.SelectHTMLAttributes<HTMLSelectElement> & { enumMap: Record<string, string> })
-                )
-            ]
-        >;
+        columnMap: Record<string, [string, React.InputHTMLAttributes<HTMLInputElement> | (React.SelectHTMLAttributes<HTMLSelectElement> & { enumMap: Record<string, string> })]>;
         sort: Realm.SortDescriptor[];
         convertFrom: (obj: T) => Record<string, any>;
         convertTo: (obj: Record<string, any>, realm?: Realm) => Record<string, any>;
@@ -100,24 +101,72 @@ declare global {
     } & Attributes<T>;
 
     export type PropertyProps<T extends DataEntryElement> = IColumnPosition & IPropertyInfo<T>;
-    export type ClassObject<T extends string> = T extends $SelfStorage
-        ? SelfStorage
-        : T extends $Address
-        ? Address
-        : T extends $Facility
-        ? Facility
-        : never;
-    export type GetValue<T> = (name: string, stringify?: Stringify<T>) => () => T;
+    export type ClassObject<T extends string> = T extends $SelfStorage ? SelfStorage : T extends $Address ? Address : T extends $Facility ? Facility : never;
+    export type GetValue<T> = (name: string, stringify?: IStringifyFunction) => () => T;
     export type SetValue<T, TElement> = (name: string, convert: (s: string) => T) => (ev: React.ChangeEvent<TElement>) => void;
     export type Convert<T> = (x: string) => T;
-    export type Stringify<T> = (x: T) => string;
-    export type IUnsubscribe = () => void;
+    export type IUnsubscribeFunction = () => void;
     export type CalculationUpdate<T> = (setter: StateSetter<string>) => (x: T) => string;
     export type Initializer<T> = T | (() => T);
     // eslint-disable-next-line @typescript-eslint/ban-types
     export type ConversionOrCalculation<T, U, V extends Record<string, string> = {}> =
-    | [convertFrom: ((x: T, realm?: Realm) => U), convertTo: (x: U, realm?: Realm) => T]
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    | ((x: T, y: V) => U)
+        | [convertFrom: (x: T, realm?: Realm) => U, convertTo: (x: U, realm?: Realm) => T]
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        | ((x: T, y: V) => U);
+
+    export interface IGetterFunction<T> {
+    <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsaved: string | undefined): () => string;
+    }
+
+    export interface IFormSubscribe {
+        (propName: string, value: [React.RefObject<DataEntryElement>, () => boolean, Array<Validator<any>>]): void
+    }
+    // export interface IStringifyFunction {
+    //     <K extends keyof T & string>(x: T[K]): string;
+    // }
+    // export interface IStringifyFunction<T = any> {
+    //     <T>(x: T): string;
+    // }
+    export interface IStringifyFunction {
+        (x: any): string;
+    }
+    export interface IParseFunction {
+        (x: string): any;
+    }
+    export interface ISavedValueSetterFunction<T> {
+        <K extends keyof T & string>(name: K, parse: IParseFunction, setSaved: StateSetter<string>, addError: (name: string, messages: string[]) => void): (value: string) => void;
+    }
+    export interface ISavedValueGetterFunction<T> {
+        <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsavedData: string | undefined): () => string; 
+    }
+    export interface ISetterFunction<T> {
+        <K extends keyof T & string>(name: K, parse: IParseFunction): (value: string) => void;
+    }
+    export interface IAction {
+        (): void;
+    }
+    export interface IActionFunction<T> {
+        (x: T): void;
+    }
+    export type IPredicate<T> = (...x: T) => boolean;
+    export type IQuery<TArgs extends any[], T> = (...x: TArgs) => T;
+    export type IBinaryPredicate = IQuery<never[], boolean>
+
+    // export interface Validator2<V> {
+    //     (x: V): Result<V>;
+    // }
+    export interface Validator2<T> {
+        <K extends keyof T>(x: T[K]): Result<T[K]>;
+    }
+
+    export interface IValidatorResult<V> {
+        <T>(x: V): Result<T>;
+    }
+    export type Validator<T> = Validator2<T>;
+    export type Subscriber<T> = <K extends keyof T & string>(name: K, item: [ref: RefObject<DataEntryElement>, hasUnsavedData: IBinaryPredicate, validators: Validator<T>[]]) => void;
+
+    export interface IRealmDTO {
+        _id: ObjectId;
+    }
 }
 export const i = 1;

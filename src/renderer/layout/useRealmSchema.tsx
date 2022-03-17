@@ -1,22 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import { toTitleCase } from '../../common/text/toTitleCase';
-import { $$Schema } from '../db';
-import { Logger } from "./Logger";
+import { $$Schema } from '../db/index';
+import { Logger } from './Logger';
 
 export type ColumnInfoMap<T extends DataEntryElement> = Map<string, PropertyProps<T>>;
 
 export function useRealmSchema(realm: Realm) {
     Logger.enter('useRealmSchema');
-    const typeMap = useMemo(
-        () =>
-            new Map(
-                realm.schema.map((x): [string, RealmSchemaKind] => [
-                    x.name,
-                    x.embedded ? 'embedded' : x.primaryKey === '_id' ? 'lookup' : 'neither'
-                ])
-            ),
-        []
-    );
+    const typeMap = useMemo(() => new Map(realm.schema.map((x): [string, RealmSchemaKind] => [x.name, x.embedded ? 'embedded' : x.primaryKey === '_id' ? 'lookup' : 'neither'])), []);
     const isPrimitive = useCallback((type: string) => {
         return ['bool', 'string', 'int', 'double', 'float', 'decimal128', 'data', 'date', 'objectId', 'uuid'].includes(type);
     }, []);
@@ -35,9 +26,7 @@ export function useRealmSchema(realm: Realm) {
                         .map(([propertyName, schemaProperty]) => ({
                             [propertyName]: {
                                 propertyName,
-                                datatype: (schemaProperty.objectType != null ? schemaProperty.objectType : schemaProperty.type) as
-                                    | Primitive
-                                    | Objects,
+                                datatype: (schemaProperty.objectType != null ? schemaProperty.objectType : schemaProperty.type) as Primitive | Objects,
                                 optional: schemaProperty.optional ?? false,
                                 kind:
                                     schemaProperty.type === 'linkingObjects'
@@ -51,12 +40,8 @@ export function useRealmSchema(realm: Realm) {
                                             ? 'embedded'
                                             : 'primitive'
                                         : ('primitive' as DataKinds),
-                                displayName: $$Schema[typeName].columnMap[propertyName]
-                                    ? $$Schema[typeName].columnMap[propertyName][0]
-                                    : toTitleCase(propertyName),
-                                attributes: $$Schema[typeName].columnMap[propertyName]
-                                    ? ($$Schema[typeName].columnMap[propertyName][1] as Attributes)
-                                    : {}
+                                displayName: $$Schema[typeName].columnMap[propertyName] ? $$Schema[typeName].columnMap[propertyName][0] : toTitleCase(propertyName),
+                                attributes: $$Schema[typeName].columnMap[propertyName] ? ($$Schema[typeName].columnMap[propertyName][1] as Attributes) : {}
                             }
                         }))
                         .reduce((pv, cv) => ({ ...pv, ...cv }), {})
@@ -68,7 +53,13 @@ export function useRealmSchema(realm: Realm) {
         <T extends DataEntryElement>(typeName: string, propertyName: string): IPropertyInfo<T> => {
             const [head, ...tail] = propertyName.split('.');
             if (tail.length === 0) {
-                const info: IPropertyInfo<T> = propertiesMap[typeName][head] ?? { name: head, displayName: $$Schema[typeName].columnMap[head][0], attributes: $$Schema[typeName].columnMap[head][1], datatype: 'string', kind: 'primitive' };
+                const info: IPropertyInfo<T> = propertiesMap[typeName][head] ?? {
+                    name: head,
+                    displayName: $$Schema[typeName].columnMap[head][0],
+                    attributes: $$Schema[typeName].columnMap[head][1],
+                    datatype: 'string',
+                    kind: 'primitive'
+                };
                 return {
                     ...info
                 };
@@ -144,24 +135,35 @@ export function useRealmSchema(realm: Realm) {
         return result;
     }, []);
     const getFieldInfos = useCallback(<T extends DataEntryElement>(type: string) => {
-        const fields = getFields(type).map((x, ix) => x.includes('.') ? getFields(type)[ix - 1].split('.')[0] === x.split('.')[0] ? [x] : [x.split('.')[0], x] : [x]).reduce((pv, cv) => [...pv, ...cv], []);
+        const fields = getFields(type)
+            .map((x, ix) => (x.includes('.') ? (getFields(type)[ix - 1].split('.')[0] === x.split('.')[0] ? [x] : [x.split('.')[0], x]) : [x]))
+            .reduce((pv, cv) => [...pv, ...cv], []);
         console.log('FIELDS', fields);
         return fields.map((fieldName, ix) => {
             function inner(dotNotation: string, propertyType: string): PropertyProps<T> {
                 const [head, ...tail] = dotNotation.split('.');
-                const nextInfo = getColumnsInfo(propertyType).get(head)
+                const nextInfo = getColumnsInfo(propertyType).get(head);
                 if (tail.length === 0) {
                     if (nextInfo == null) {
-                        return { ordinal: ix, columnName: fieldName, readOnly: false, displayName: $$Schema[type].columnMap[fieldName][0], kind: 'fieldset', datatype: 'fieldset', attributes: {} as Attributes<T>, propertyName: fieldName, optional: false }
-                        
+                        return {
+                            ordinal: ix,
+                            columnName: fieldName,
+                            readOnly: false,
+                            displayName: $$Schema[type].columnMap[fieldName][0],
+                            kind: 'fieldset',
+                            datatype: 'fieldset',
+                            attributes: {} as Attributes<T>,
+                            propertyName: fieldName,
+                            optional: false
+                        };
                     }
-                    return nextInfo as PropertyProps<T>
+                    return nextInfo as PropertyProps<T>;
                 }
                 return inner(tail.join('.'), nextInfo?.datatype ?? '');
             }
             return inner(fieldName, type);
-        })
-    }, [])
+        });
+    }, []);
     return {
         getPropertyInfo,
         getTypeInfo,

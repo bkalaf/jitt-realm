@@ -10,6 +10,24 @@ export function ThemeProvider({ children }: { children?: Children }) {
     const value: IThemeContext = {
         form: {
             insert: {
+                // fieldset: {
+                //     relative: 'relative',
+                //     bg: 'bg-amber/75',
+                //     padding: 'pb-2',
+                //     margin: 'px-1 py-0.5',
+                //     span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
+                //     grid: 'grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-3',
+                //     justify: 'justify-center',
+                //     minwidth: 'min-w-full',
+                //     legend: {
+                //         bg: 'bg-black',
+                //         text: 'text-white',
+                //         rounded: 'rounded-xl shadow-xl',
+                //         minwidth: 'min-w-full',
+                //         padding: 'px-2',
+                //         fs: 'text-xl font-firaSans font-bold'
+                //     }
+                // },
                 grid: 'grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4',
                 gap: 'gap-x-4 gap-y-2',
                 border: 'border-2 border-black',
@@ -17,39 +35,19 @@ export function ThemeProvider({ children }: { children?: Children }) {
                 text: 'text-black',
                 font: 'font-firaSans',
                 field: {
-                    container: {
-                        bg: 'bg-white/75',
-                        padding: 'pb-4',
-                        justify: 'justify-center',
-                        margin: 'p-1',
-                        col: 'flex flex-col-reverse',
-                        relative: 'relative'
-                    },
-                    fieldset: {
-                        relative: 'relative',
-                        bg: 'bg-amber/75',
-                        padding: 'pb-2',
-                        margin: 'px-1 py-0.5',
-                        span: 'xs:col-span-2 md:col-span-3 xl:col-span-4',
-                        grid: 'grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-3',
-                        justify: 'justify-center',
-                        minwidth: 'min-w-full'
-                    },
-                    legend: {
-                        bg: 'bg-black',
-                        text: 'text-white',
-                        rounded: 'rounded-xl shadow-xl',
-                        minwidth: 'min-w-full',
-                        padding: 'px-2',
-                        fs: 'text-xl font-firaSans font-bold'
-                    },
+                    bg: 'bg-white/75',
+                    padding: 'pb-4',
+                    justify: 'justify-center',
+                    margin: 'p-1',
+                    col: 'flex flex-col-reverse',
+                    relative: 'relative',
                     label: {
                         font: 'font-firaSans',
                         fs: 'text-xl',
                         fw: 'font-bold',
                         left: 'ml-4',
                         bottom: 'mb-0.5',
-                        width: 'min-w-full text-left',
+                        width: 'min-w-full text-left'
                         // after: 'peer-required:after:font-openSans peer-required:after:content-["__(*)_"] peer-required:after:text-red-dark after:font-extrabold'
                     },
                     control: {

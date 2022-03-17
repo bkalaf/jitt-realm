@@ -6,10 +6,7 @@ import { setAssocPath } from '../../common/obj/setAssocPath';
 import { useRecordType } from './useRecordType';
 import { IFormContext2 } from '../db/IFormContext2';
 
-export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc extends Record<string, any>>(
-    realm: Realm,
-    initializer?: Initializer<T>
-): IFormContext2<T, TCalc> {
+export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc extends Record<string, any>>(realm: Realm, initializer?: Initializer<T>): IFormContext2<T, TCalc> {
     const [type, { convertTo, init }] = useRecordType();
     const [formData, setFormData] = React.useState(initializer ?? init());
     const [calcObject, setCalcObject] = React.useState({} as TCalc);
@@ -19,14 +16,17 @@ export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc e
     const appendError = React.useCallback((propertyName: string, message: string) => {
         setErrors((prev) => [...prev, [propertyName, message]]);
     }, []);
-    const getErrors = React.useCallback((name: string) => () => {
-        return errors.filter(([k, v]) => name === k).map(([k, v]) => v);
-    }, [errors]);
+    const getErrors = React.useCallback(
+        (name: string) => () => {
+            return errors.filter(([k, v]) => name === k).map(([k, v]) => v);
+        },
+        [errors]
+    );
     const isValid = React.useMemo(() => errors.length === 0, [errors]);
     const subscribeCalculation = React.useCallback((name: string, add: (x: T, y: TCalc) => string) => {
         calculations.current.set(name, add);
     }, []);
-    const unsubscribeCalculation = React.useCallback((name: string, add: (x: T,y: TCalc) => string) => {
+    const unsubscribeCalculation = React.useCallback((name: string, add: (x: T, y: TCalc) => string) => {
         calculations.current.delete(name);
     }, []);
     const onInput = React.useCallback(() => {
@@ -98,6 +98,23 @@ export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc e
             showFeedback,
             isFeedbacking
         }),
-        [createGetterSetter, formData, onSubmit, realm, onReset, onInput, onCancel, calcObject, subscribeCalculation, unsubscribeCalculation, isValid, appendError, clearErrors, hideFeedback, showFeedback, isFeedbacking]
+        [
+            createGetterSetter,
+            formData,
+            onSubmit,
+            realm,
+            onReset,
+            onInput,
+            onCancel,
+            calcObject,
+            subscribeCalculation,
+            unsubscribeCalculation,
+            isValid,
+            appendError,
+            clearErrors,
+            hideFeedback,
+            showFeedback,
+            isFeedbacking
+        ]
     );
 }

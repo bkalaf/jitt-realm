@@ -1,5 +1,5 @@
-import { $$Schema } from '../../db';
-import { EnumCell } from "./EnumCell";
+import { $$Schema } from '../../db/index';
+import { EnumCell } from './EnumCell';
 import { useRealmSchema } from '../useRealmSchema';
 
 export function DropdownCell<T extends React.SelectHTMLAttributes<HTMLSelectElement> = React.SelectHTMLAttributes<HTMLSelectElement>>({

@@ -1,14 +1,18 @@
 import Realm from 'realm';
 import { provinceMap, Provinces } from './enums/Provinces';
 import { CountryISO2, countryMap } from './enums/CountryISO2';
-import { ifEmpty } from '.';
 import { DataListField, TextField } from './TextField';
 import { Field } from './Field';
-import { ForwardComponents } from './$$Elements';
-import { ContainerComponent, LabelComponent } from './SelfStorage';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
 import { useDataListPortal } from '../hooks/$useDataListPortal';
 import { $countries, $provinces } from '../hooks/useProvideDataLists';
+import { ifEmpty } from '../../common/src/ifEmpty';
+import { ForwardComponents } from './$FC';
 
+/**
+ * @deprecated
+ */
 export class Address {
     static schema: Realm.ObjectSchema = {
         name: 'Address',
@@ -45,18 +49,17 @@ export class Address {
     };
     static sort: [string, boolean][] = [];
     static toDisplayName(obj: Address) {
-        return [
-            [obj.street, obj.suite ? `Ste# ${obj.suite}` : null].filter((x) => x != null).join(' '),
-            [[obj.city, obj.state].join(', '), obj.country, obj.postal].join(',')
-        ].join('\n');
+        return [[obj.street, obj.suite ? `Ste# ${obj.suite}` : null].filter((x) => x != null).join(' '), [[obj.city, obj.state].join(', '), obj.country, obj.postal].join(',')].join('\n');
     }
-    static convertFrom = (obj: Address): {
-        street: string,
-        suite: string,
-        city: string,
-        state: string,
-        country: string,
-        postal: string
+    static convertFrom = (
+        obj: Address
+    ): {
+        street: string;
+        suite: string;
+        city: string;
+        state: string;
+        country: string;
+        postal: string;
     } => ({
         street: obj.street ?? '',
         suite: obj.suite ?? '',
@@ -94,7 +97,8 @@ export class Address {
                 labelLabel='legend'
                 containerLabel='fieldset'
                 Container={ForwardComponents.fieldset as ContainerComponent}
-                Label={ForwardComponents.legend as LabelComponent}>
+                Label={ForwardComponents.legend as LabelComponent}
+            >
                 {countries}
                 {provinces}
                 <TextField name='street' type='text' />
