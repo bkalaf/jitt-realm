@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useControl } from './useControl';
-import { ClonedProps } from "./ClonedProps";
+import { ClonedProps } from './ClonedProps';
 import { useEmbedded } from '../../hooks/useEmbedded';
 import { Indicators } from './Indicators';
 
@@ -19,6 +19,7 @@ export function SelectControl<T extends IRealmDTO>({
     setValue,
     getValue,
     subscribe,
+    filtered,
     feedbacking,
     optionLabel,
     ...remain
@@ -27,6 +28,7 @@ export function SelectControl<T extends IRealmDTO>({
     name: string;
     stringify?: IStringifyFunction;
     parse?: IParseFunction;
+    filtered?: string;
     display?: string;
     validators?: Validator2<T>[];
     optionLabel?: (x: any) => string;
@@ -52,9 +54,12 @@ export function SelectControl<T extends IRealmDTO>({
     const options = useMemo(
         () =>
             typeof lookup === 'string'
-                ? realm.objects<IRealmDTO>(lookup).map((x, ix) => <option key={ix + 1} value={x._id.toHexString()} label={optionLabel ? optionLabel(x) : `key: ${ix}`} />)
+                ? realm
+                      .objects<IRealmDTO>(lookup)
+                      .filtered(filtered == null ? '_id != null' : filtered)
+                      .map((x, ix) => <option key={ix + 1} value={x._id.toHexString()} label={optionLabel ? optionLabel(x) : `key: ${ix}`} />)
                 : Object.entries(lookup).map(([k, v], ix) => <option key={ix + 1} value={k} label={v} />),
-        [lookup, optionLabel, realm]
+        [filtered, lookup, optionLabel, realm]
     );
     return (
         <div id={toID('field')} className='field'>

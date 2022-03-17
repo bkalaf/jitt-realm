@@ -1,11 +1,15 @@
 import { ObjectId } from 'bson';
 import * as React from 'react';
+import { SortDescriptor } from 'realm';
 
 declare global {
     export let JITTRegistrar: { 
         getInitial(name: string): () => any;
         getConvert(name: string): (x: any) => any;
         getChildren(name: string): JSX.Element[];
+        addInsert(name: string, initial: () => any, convert: (x: any) => any, children: JSX.Element[], GridHeaders: () => JSX.Element, TableRow: () => JSX.Element, sort: SortDescriptor[]): void;
+        getInsertProps(name: string): any;
+        getGridProps(name: string): any;
     };
     export type IEventer<T extends Event> = {
         addEventListener(event: string, listener: (x: T) => void): void;

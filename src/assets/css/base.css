@@ -22,50 +22,51 @@
     legend {
         @apply min-w-full px-2 text-xl font-bold text-white bg-black shadow-xl rounded-xl font-firaSans;
     }
-    form > header {
+
+    form>header {
         @apply text-xl font-bold leading-loose tracking-wide text-white bg-black border-cyan font-firaSans sm:md:col-span-3 xl:col-span-4 pl-3 before:content-["*_"];
     }
+
     form.insert {
         @apply grid grid-cols-2 text-black border-2 border-black sm:md:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-2 bg-stone-light/50 font-firaSans;
     }
 
-    form > div.field {
+    form>div.field,
+    fieldset>div.field {
         @apply relative flex flex-col-reverse justify-center p-1 pb-4 bg-white/75;
     }
-    
-    form > footer {
+
+    form>footer {
         @apply sm:md:col-span-3 xl:col-span-4;
     }
 
-    div.field > label {
+    div.field>label {
         @apply font-firaSans text-xl font-bold ml-4 mb-0.5 min-w-full text-left;
     }
 
-    div.field > input,
+    div.field>input,
     select,
     textarea {
         @apply font-firaSans text-base font-semibold py-1 px-3 whitespace-pre before:content-["_"] border border-neutral/75 shadow-lg shadow-blue-dark rounded-lg transition-all duration-700 delay-75 ease-in-out hover:ring-2 hover:ring-amber flex min-w-full placeholder:text-pink-light/50 text-blue-dark hover:scale-105 transform;
     }
 
-    div.field > input.calculated {
+    div.field>input.calculated {
         @apply min-w-full px-3 py-1 text-base font-medium border rounded-lg shadow-lg font-firaSans border-neutral/75 shadow-sky-very-dark bg-cyan-light;
     }
 
-    div.field > small.feedback {
+    div.field>small.feedback {
         @apply inline-flex text-lg font-extrabold text-center text-red font-montserrat place-self-center;
     }
 
-    form > footer > div.button-group {
+    form>footer>div.button-group {
         @apply grid items-center justify-center w-full grid-cols-3 col-span-2 px-2 py-1 mx-auto bg-white gap-x-6;
     }
 
-    label > span > span {
+    label>span>span {
         @apply inline-flex border border-white rounded-2xl bg-black/75 p-0.5;
     }
-    label > span > span > svg {
-        @apply m-0.5;
-    }
-    div.button-group > button {
+
+    div.button-group>button {
         @apply flex bg-blue-dark/75 text-white px-2 py-0.5 font-bold text-center items-center justify-center rounded-md mx-auto border-2 border-black/70 hover:ring-2 hover:ring-red disabled:bg-black/25 disabled:text-white/25 disabled:opacity-25 transition-all duration-700 delay-75 ease-in-out w-1/2 transform;
     }
 
@@ -73,7 +74,7 @@
         @apply space-x-2 space-y-1 divide-black;
     }
 
-    table > thead {
+    table>thead {
         @apply text-white border border-white bg-slate-dark;
     }
 
@@ -84,6 +85,7 @@
     th[scope='row'] {
         @apply items-center justify-center text-center bg-black border-none;
     }
+
 
     tr {
         @apply text-base font-normal text-white transition-all duration-700 ease-in-out delay-75 border-2 border-black border-double bg-yellow-minimal font-firaSans even:bg-indigo-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light;
@@ -97,8 +99,8 @@
         @apply grid items-center justify-start w-full grid-cols-12 p-1 space-x-2 text-white bg-black;
     }
 
-    nav[role='navigation'] > button {
-        @apply flex text-xl font-bold text-white transition-all border border-white font-firaSans bg-blue-dark;
+    nav[role='navigation']>button {
+        @apply inline-flex text-xl font-bold text-white transition-all border border-white font-firaSans bg-blue-dark;
     }
 
     input {
@@ -117,6 +119,28 @@
     } */
 
     input {
-        @apply text-white read-only:rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
+        @apply text-white rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
     }
+    table {
+        @apply border-collapse;
+    }
+
+    td>table { 
+        @apply even:bg-emerald-dark even:text-white odd:bg-lime odd:text-black;
+    }
+    td>table>thead {
+        @apply bg-yellow-light text-blue;
+    }
+    td>table>thead>tr>th {
+        @apply text-center align-middle border-none rounded-none bg-yellow-light text-blue;
+    }
+    td>table>tbody>tr>td {
+        @apply p-0 m-0 text-center align-middle bg-transparent border-none rounded-none;
+    }
+    td>table>thead>tr>th,
+    td>table>tbody>tr>td,
+    td>table {
+        @apply text-base font-medium font-firaSans;
+    }
+
 }

@@ -37,6 +37,7 @@ export const $$names = {
         items: 'item'
     },
     files: {
+        file: 'file',
         images: 'image',
         versions: 'version',
         attachments: 'attachment',
@@ -56,7 +57,8 @@ export const $$names = {
         capacity: 'capacity',
         voltage: 'voltage',
         transaction: 'transaction',
-        squareFootage: 'square-footage'
+        squareFootage: 'square-footage',
+        fileLocation: 'file-location'
     }
 };
 export const $$datatypes = {

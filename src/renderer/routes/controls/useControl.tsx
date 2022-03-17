@@ -3,7 +3,7 @@ import { Result } from '../../hooks/Result';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { identity } from '../../../common/identity';
 import { Booleanish } from './Booleanish';
-import { useMinimalControl } from './useMinimalControl';
+import { useMinimalControl } from '../../hooks/useMinimalControl';
 
 export function useControl<TElement extends DataEntryElement>(
     name: string,
@@ -48,7 +48,7 @@ export function useControl<TElement extends DataEntryElement>(
         },
         [fullName, parse, setValue]
     );
-    const value = useMemo(() => {
+    const value = useCallback(() => {
         if (getValue == null) throw new Error('getValue null');
 
         return getValue(fullName, stringify ?? identity)();
@@ -77,7 +77,7 @@ export function useControl<TElement extends DataEntryElement>(
                 'aria-disabled': ariaDisabled as Booleanish,
                 onChange,
                 autoComplete: readAutoComplete(autoComplete as AutoComplete),
-                value
+                value: value()
             },
             feedback: feedback(),
             isShowingFeedback: feedbacking ?? false

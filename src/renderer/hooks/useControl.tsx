@@ -3,13 +3,18 @@ import { InsertFormCtxt } from '../routes/providers/InsertFormCtxt/index';
 import { useAdjustNames } from './useAdjustNames';
 import { useValidation } from './useValidation';
 import { useUnsavedTracking } from './useUnsavedTracking';
-import { isEmptyOrNull } from '../util/asPercentage';
 import { EmbeddedContext } from '../routes/providers/EmbeddedContext/index';
 
+/**
+ * @deprecated
+ */
 export function usePrefix(name: string) {
     const { prefix } = useContext(EmbeddedContext)!;
     return [...prefix, name].join('.');
 }
+/**
+ * @deprecated
+ */
 export function useControl<T extends IRealmDTO, K extends keyof T & string>(
     name: string,
     display: string | undefined,
@@ -17,7 +22,6 @@ export function useControl<T extends IRealmDTO, K extends keyof T & string>(
     stringify: IStringifyFunction,
     parse: IParseFunction
 ) {
-    console.log('useControl', name, display);
     const { subscribe, unsubscribe, getter, setter, addError, ...ctxt } = useContext(InsertFormCtxt)!;
     const { ...ids } = useAdjustNames(name, display);
     const fullName = usePrefix(name);

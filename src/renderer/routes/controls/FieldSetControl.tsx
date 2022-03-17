@@ -1,11 +1,10 @@
 import { AddEmbeddedStack } from '../providers/EmbeddedContext/index';
 import { useEmbedded } from '../../hooks/useEmbedded';
 import { ObjectSchemaProperty } from 'realm';
-import { useMinimalControl } from "./useMinimalControl";
+import { useMinimalControl } from "../../hooks/useMinimalControl";
 import { cloneElement, ReactElement } from 'react';
 import { isEmptyOrNull } from '../../util/asPercentage';
 
-const Registrar = JITTRegistrar;
 export function FieldSetControl({ name: $name, display, formName, ...remain }: { name: string; display?: string, formName?: string  }) {
     console.log('FIELD SET CONTROL');
     const { prefix, type, realm } = useEmbedded();
@@ -18,7 +17,7 @@ export function FieldSetControl({ name: $name, display, formName, ...remain }: {
     console.log(`objectType`, objectType);
     const newType = objectType;
     if (isEmptyOrNull(newType)) throw new Error(`bad objectType: ${newType ?? ''}`);
-    const children = Registrar.getChildren(newType);
+    const children = JITTRegistrar.getChildren(newType);
     return (
         <fieldset name={fullName} id={toID('fieldset')} aria-labelledby={toID('legend')}>
             <legend id={toID('legend')}>{displayName}</legend>

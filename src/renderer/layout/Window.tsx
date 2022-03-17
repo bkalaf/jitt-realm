@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router';
 import { $$Schema, schema } from '../db/index';
 import { Loading } from './Loading';
@@ -48,32 +48,37 @@ export function getColumnType(name: string, type: string): string {
     }
     return handleProperties($$Schema[type].schema.properties[name]);
 }
-export function getRealmObjectPropertyType(oc: JittClass<any>, name: string): [string, string?] {
-    console.log('oc', oc, 'name', name);
-    const property = oc.schema.properties[name];
-    if (property == null) return ['string'];
-    if (typeof property === 'string') return [property];
-    if ('type' in property) {
-        return property.objectType ? [property.objectType, property.type] : [property.type];
-    }
-    return [property.name];
-}
-export function useGetPropertyType() {
-    const objectClass = useObjectClass();
-    const getPropertyType = useCallback(
-        (n: string): [string, string?] => {
-            console.log('n', n);
-            const [head, ...tail] = n.includes('.') ? n.split('.') : [n];
-            if (tail.length === 0) {
-                return getRealmObjectPropertyType(objectClass, head);
-            }
-            const [t] = getRealmObjectPropertyType(objectClass, head);
-            return getRealmObjectPropertyType(schema.filter((x) => x.schema.name === t)[0], tail.join('.'));
-        },
-        [objectClass]
-    );
-    return getPropertyType;
-}
+// export function getRealmObjectPropertyType(oc: JittClass<any>, name: string): [string, string?] {
+//     console.log('oc', oc, 'name', name);
+//     const property = oc.schema.properties[name];
+//     if (property == null) return ['string'];
+//     if (typeof property === 'string') return [property];
+//     if ('type' in property) {
+//         return property.objectType ? [property.objectType, property.type] : [property.type];
+//     }
+//     return [property.name];
+// }
+// export function useGetPropertyType() {
+//     const objectClass = useObjectClass() as any;
+//     const getPropertyType = useCallback(
+//         (n: string): [string, string?] => {
+//             console.log('n', n);
+//             const [head, ...tail] = n.includes('.') ? n.split('.') : [n];
+//             if (tail.length === 0) {
+//                 return getRealmObjectPropertyType(objectClass, head);
+//             }
+//             const [t] = getRealmObjectPropertyType(objectClass, head);
+//             return getRealmObjectPropertyType(
+//                 schema.filter((x) => {
+//                     return x.schema.name === t;
+//                 })[0] as any,
+//                 tail.join('.')
+//             );
+//         },
+//         [objectClass]
+//     );
+//     return getPropertyType;
+// }
 export default function Window() {
     const realm = useRealm();
     return (

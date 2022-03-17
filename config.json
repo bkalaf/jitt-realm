@@ -8,5 +8,10 @@
     "smtp": {
         "user": "bobby.kalaf.jr@gmail.com",
         "password": "uvuloxnqeflmwcon"
+    }, 
+    "files": {
+        "root": "/home/bobby/Public/jitt",
+        "uploads": "uploads",
+        "invoices": "(id, invoiceId) => `${invoiceId == null || invoiceId.length === 0 ? '0000' : invoiceId}.png`"
     }
 }

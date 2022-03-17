@@ -13,7 +13,7 @@ import { setPropertyByPath } from "../../../../common/object/setPropertyByPath";
 import { identity } from '../../../../common/identity';
 import { replaceAll } from '../../../../common/text/replaceAll';
 
-export function useProvideFormBase<TDto extends DTO>(name: string, type: string, initial: () => TDto, convertTo: (x: any) => any, drillOnSuccess = false): FormBaseContext {
+export function useProvideFormBase<TDto extends DTO>(name: string, type: string, initial: (realm?: Realm) => TDto, convertTo: (x: any, realm?: Realm) => any, drillOnSuccess = false): FormBaseContext {
     console.log('useProvideFormBase');
     const formName = [type, name, 'form'].join('-');
     const formHeader = replaceAll('-', ' ')(formName).split(' ').map(caps).join(' ');
@@ -21,7 +21,7 @@ export function useProvideFormBase<TDto extends DTO>(name: string, type: string,
     const { prefix, realm } = useEmbeddedStack();
     const refs = useRef<Map<string, React.RefObject<DataEntryElement>>>(new Map());
     const validators = useRef<Map<string, (x: any) => Result<any>>>(new Map());
-    const init = initial();
+    const init = initial(realm);
     const memoized = useRef(init);
     console.log('useProvideFormBase2');
 
@@ -41,6 +41,7 @@ export function useProvideFormBase<TDto extends DTO>(name: string, type: string,
         (propName: string, parse: IParseFunction = identity) =>
             (value: any) => {
                 setFormData((prev) => {
+                    console.log('prev', prev);
                     return setPropertyByPath(propName, prev, parse(value));
                 });
             },
@@ -94,7 +95,7 @@ export function useProvideFormBase<TDto extends DTO>(name: string, type: string,
                 return;
             }
             realm.write(() => {
-                const _id = realm.create<TDto>(type, convertTo(formData), Realm.UpdateMode.Modified);
+                const _id = realm.create<TDto>(type, convertTo(formData, realm), Realm.UpdateMode.Modified);
                 commit();
                 afterWrite(_id);
             });

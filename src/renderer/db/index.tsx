@@ -8,9 +8,10 @@ import { LotDTO } from '../routes/data/auctions/lot/index';
 import { AuctionSiteDTO } from '../routes/data/auctions/site/index';
 import { AddressDTO } from '../routes/embedded/address';
 import { CostDTO } from '../routes/embedded/cost';
+import { FileLocationDTO } from '../routes/data/files/fileInfo/fileLocation';
+import { FileDTO } from '../routes/data/files/fileInfo';
 
-export type Objs = SelfStorage | Address | Facility;
-export const schema: Array<ObjectClass> = [SelfStorageDTO, AddressDTO, FacilityDTO, CostDTO, AuctionSiteDTO, LotDTO];
+export const schema: Array<ObjectClass> = [SelfStorageDTO, AddressDTO, FacilityDTO, CostDTO, AuctionSiteDTO, LotDTO, FileLocationDTO, FileDTO];
 
 export const $$Schema: Record<string, JittClass<any>> = {
     ['$SelfStorage']: SelfStorage as JittClass<SelfStorage>,

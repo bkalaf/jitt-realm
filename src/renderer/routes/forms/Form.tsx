@@ -20,7 +20,7 @@ export function Form({
     children: Children;
     realm: Realm;
     initial: () => any;
-    convertTo: (x: any) => any;
+    convertTo: (x: any, realm?: Realm) => any;
 }) {
     console.log('Form');
     const { formHeader, formName, onCancel, onSubmit, onReset, ...rest } = useProvideFormBase(name, type, initial, convertTo, drillOnSuccess);

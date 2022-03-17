@@ -40,6 +40,15 @@ export function Menu({ realm }: { realm: Realm }) {
                                 <Route path='*' element={<Auctions />} />
                                 <Route index element={<Auctions />} />
                             </Route>
+                            <Route path={$$names.tier2.files}>
+                                {/* <Route path={routeNames.auctions.auctionSite}></Route>
+                                <Route path={routeNames.auctions.facility}></Route>
+                                <Route path={routeNames.auctions.lot}></Route>
+                                <Route path={routeNames.auctions.selfStorage} element={<InsertButton />}> */}
+                                <Route path=':type' element={<InsertButton />} />
+                                <Route path='*' element={<></>} />
+                                <Route index element={<InsertButton />} />
+                            </Route>
                             <Route index element={<Tier2 />} />
                         </Route>
                         <Route index element={<Navigate to='v1' replace />} />

@@ -7,20 +7,17 @@ export type Cost = {
     salesTaxPercent: number;
     get total(): number;
     get premium(): number;
-    get salesTax(): number;
+    get tax(): number;
 };
 
 const premiumFunc = function (this: any) {
-    const dto = this as Cost;
-    return dto.premiumPercent * dto.bid;
+    return parseFloat(this.premiumPercent ?? '0') * parseFloat(this.bid ?? '0');
 };
 const taxFunc = function (this: any) {
-    const dto = this as Cost;
-    return dto.salesTaxPercent * dto.bid;
+    return parseFloat(this.salesTaxPercent ?? '0') * parseFloat(this.bid ?? '0');
 };
 const totalFunc = function (this: any) {
-    const dto = this as Cost;
-    return dto.bid + dto.premium + dto.salesTax;
+    return parseFloat(this.bid ?? '0') + parseFloat(this.premium ?? '0') + parseFloat(this.tax ?? '0');
 };
 export class CostDTO {
     static schema: Realm.ObjectSchema = {
@@ -47,22 +44,30 @@ export class CostDTO {
     }
 }
 
-// export const costInitial = (): Cost => {
-//     const cost: Cost = new CostDTO() as any;
-//     cost.bid = 0;
-//     cost.depositAmount = 0;
-//     cost.premiumPercent = 0;
-//     cost.salesTaxPercent = 0;
-//     Object.defineProperties(cost, {
-//         premium: {
-//             get: premiumFunc
-//         },
-//         total: {
-//             get: totalFunc
-//         },
-//         tax: {
-//             get: taxFunc
-//         }
-//     });
-//     return cost;
-// };
+export const costInitial = (): Cost => {
+    const cost: Cost = {} as any as Cost;
+    cost.bid = 0;
+    cost.depositAmount = 0;
+    cost.premiumPercent = 0;
+    cost.salesTaxPercent = 0;
+    Object.defineProperties(cost, {
+        premium: {
+            get: premiumFunc
+        },
+        total: {
+            get: totalFunc
+        },
+        tax: {
+            get: taxFunc
+        }
+    });
+    return cost;
+};
+export const costConvertTo = (obj: any) => {
+    const dto = costInitial();
+    dto.bid = parseFloat(obj.bid);
+    dto.depositAmount = parseFloat(obj.depositAmount);
+    dto.premiumPercent = parseFloat(obj.premiumPercent);
+    dto.salesTaxPercent = parseFloat(obj.salesTaxPercent);
+    return dto;
+}

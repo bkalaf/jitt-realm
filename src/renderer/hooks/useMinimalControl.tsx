@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useEmbedded } from '../../hooks/useEmbedded';
-import { replaceAll } from '../../../common/text/replaceAll';
-import { isEmptyOrNull } from '../../util/asPercentage';
-import { caps } from '../../../common/text/caps';
+import { useEmbedded } from './useEmbedded';
+import { replaceAll } from '../../common/text/replaceAll';
+import { isEmptyOrNull } from '../util/asPercentage';
+import { caps } from '../../common/text/caps';
 
 export function useMinimalControl(formName: string, name: string, dp?: string) {
     const { prefix } = useEmbedded();
