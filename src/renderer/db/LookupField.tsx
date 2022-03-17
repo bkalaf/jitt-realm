@@ -3,14 +3,18 @@ import { ObjectId } from 'bson';
 import { $$Schema } from './index';
 import { Field } from './Field';
 import { useRecordType } from '../hooks/useRecordType';
-import { ForwardComponents } from './$$Elements';
 import { $useLookupOptions } from './$useLookupOptions';
-import { ContainerComponent, LabelComponent } from './SelfStorage';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
+import { ForwardComponents } from './$FC';
 
+/**
+ * @deprecated
+ */
 export function LookupField<T extends { _id: ObjectId }>({ name, display, realm, mapping }: { name: string; realm: Realm; display?: string; mapping?: Record<string, string> }) {
-    const [type, Ctor] = useRecordType();
+    const [type, Ctor] = useRecordType() as any;
     const { objectType }: Realm.ObjectSchemaProperty = realm.schema.filter((x) => x.name === type)[0].properties[name] as any;
-    if (objectType == null) throw new Error(`Unable to find property type: ${type}/${name}`);
+    if (objectType == null) throw new Error(`Unable to find property type: ${type as string}/${name}`);
 
     const options = $useLookupOptions(realm, objectType, $$Schema[objectType].toDisplayName.bind(null));
     return (

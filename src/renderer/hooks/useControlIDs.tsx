@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { handleDisplayName } from '../util/handleDisplayName';
-import { getID } from '@controls/SafeInputControl';
+import { getID } from "../util/getID";
 
 export function useControlIDs(name: string, display?: string) {
     const container = getID(name, 'field');

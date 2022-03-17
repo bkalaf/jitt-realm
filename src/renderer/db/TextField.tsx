@@ -1,7 +1,12 @@
-import { TextFieldProps, LabelComponent, ContainerComponent } from './SelfStorage';
+import { TextFieldProps } from './SelfStorage';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
 import { Field } from './Field';
-import { $$Elements, ForwardComponents } from './$$Elements';
+import { ForwardComponents } from './$FC';
 
+/**
+ * @deprecated
+ */
 export function TextField(props: TextFieldProps<string> & React.ComponentPropsWithoutRef<'input'>) {
     const { converts, ...remain } = props;
     return (
@@ -17,6 +22,9 @@ export function TextField(props: TextFieldProps<string> & React.ComponentPropsWi
     );
 }
 
+/**
+ * @deprecated
+ */
 export function DataListField(props: TextFieldProps<string> & { list: string; map: Record<string, string> }) {
     const { converts, map, list, ...remain } = props;
     return (

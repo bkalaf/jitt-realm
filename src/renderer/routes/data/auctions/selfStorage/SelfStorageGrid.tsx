@@ -1,4 +1,4 @@
-import { $$names } from '@controls/constants';
+import { $$names } from '../../../controls/index';
 import { Grid } from '../../../Grid';
 import { SelfStorageHeaders } from './SelfStorageHeaders';
 import { SelfStorageRow } from './SelfStorageRow';

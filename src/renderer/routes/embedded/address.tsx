@@ -1,6 +1,6 @@
 import { CountryISO2 } from '../../db/enums/CountryISO2';
 import { Provinces } from '../../db/enums/Provinces';
-import { $$datatypes, $$names } from '@controls/constants';
+import { $$names, $$datatypes } from '../controls/index';
 
 export type Address = {
     street?: string;
@@ -25,7 +25,7 @@ export class AddressDTO {
     };
 }
 export const addressInitial = () => {
-    const address: Address = new AddressDTO() as any;
+    const address = {} as any;
     address.city = '';
     address.state = 'CA';
     address.country = 'US';
@@ -34,3 +34,6 @@ export const addressInitial = () => {
     address.street = '';
     return address;
 };
+export const addressConvertIn = (obj: any) => {
+    return obj;
+}

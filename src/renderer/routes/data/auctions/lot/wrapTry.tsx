@@ -1,4 +1,4 @@
-import { Result } from '../../../../hooks/$useControl';
+import { Result } from "../../../../hooks/Result";
 
 export function wrapTry<T, U>(func: (x: T) => U) {
     return function (x: T): Result<U> {

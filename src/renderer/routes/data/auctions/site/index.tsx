@@ -1,11 +1,9 @@
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
-import { $$datatypes, $$names } from '@controls/constants';
-import { InputControl } from '@controls/_InputControl';
 import { InsertForm } from '../../../forms/InsertForm';
 import { Grid } from '../../../Grid';
-import { RowID } from '@controls/RowID';
 import { Lot } from '../lot';
+import { $$datatypes, $$names, RowHeadCell, TextInputControl } from '../../../controls/index';
 
 export type AuctionSite = {
     _id: ObjectId;
@@ -55,7 +53,7 @@ export function AuctionSiteHeaders() {
 export function AuctionSiteRow({ data, index, typeName }: { typeName: string; index: number; data: Realm.Object & AuctionSite }) {
     return (
         <tr key={index} data-id={data._id.toHexString()}>
-            <RowID data={data} />
+            <RowHeadCell scope='row' data={data} />
             <td>{data.name}</td>
             <td>{data.website}</td>
             <td>{data.lots.length}</td>
@@ -69,8 +67,8 @@ export function AuctionSiteGrid({ realm }: { realm: Realm }) {
 export function AuctionSiteInsertForm({ realm }: { realm: Realm }) {
     return (
         <InsertForm realm={realm} type={$$names.auctions.auctionSite} initial={auctionSiteInitial}>
-            <InputControl name='name' inputType='text' required />
-            <InputControl name='website' inputType='url' />
+            <TextInputControl name='name' type='text' required />
+            <TextInputControl name='website' type='url' />
         </InsertForm>
     );
 }

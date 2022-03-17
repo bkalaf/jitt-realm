@@ -1,16 +1,9 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { $$datatypes, $$names } from '@controls/constants';
 import { SelfStorage } from '../selfStorage';
-import { provinceMap, Provinces } from '../../../../db/enums/Provinces';
-import { CountryISO2, countryMap } from '../../../../db/enums/CountryISO2';
-import { identity } from '../../../../../common/identity';
-import { SelectControl, FieldSetControl, OutputControl, ObjectId } from '@controls/index';
-import { toHexString } from '../lot/toHexString';
-import { $InputControl } from '../../../controls/SafeInputControl';
 import { replaceAll } from '../../../../../common/text/replaceAll';
-import { InsertForm } from '../../../forms/InsertForm';
-import { Address, addressInitial } from '../../../embedded/address';
-import { $FieldSetControl } from '../../../controls/$FieldSetControl';
+import { Address, addressConvertIn, addressInitial } from '../../../embedded/address';
+import { ObjectId } from 'bson';
+import { $$names, $$datatypes } from '../../../controls/index';
 
 export type Facility = {
     _id: ObjectId;
@@ -49,16 +42,26 @@ export class FacilityDTO {
     }
 }
 
+export const facilityConvertIn = (obj: any, realm?: Realm) => {
+    return {
+        _id: new ObjectId(obj._id),
+        phoneNumber: obj.phoneNumber,
+        email: obj.email,
+        facilityNumber: obj.facilityNumber,
+        address: addressConvertIn(obj.address),
+        selfStorage: realm?.objectForPrimaryKey($$names.auctions.selfStorage, obj.selfStorage)
+    };
+}
 export const facilityInitial = (): Facility => {
-    const facility: Facility = new FacilityDTO() as any;
-    facility._id = new ObjectId();
+    const facility = {} as any
+    facility._id = new ObjectId().toHexString();
     facility.phoneNumber = '';
     facility.email = '';
     facility.address = addressInitial();
     facility.facilityNumber = '';
     Object.defineProperty(facility, 'name', {
         get: function (this: any) {
-            return `${this.selfStorage?.name ?? ''} - ${this.address?.city ?? ''}, ${this.address?.state ?? ''} - ${this.address?.street?.split(' ').slice(1).join(' ') ?? ''}`;
+            return `${this.selfStorage?.name ?? ''} - ${this.address?.city ?? ''}, ${this.address?.state ?? ''} - ${this.address?.street?.split(' ')?.slice(1).join(' ') ?? ''}`;
         }
     });
     return facility;
@@ -99,28 +102,10 @@ export type AnyFunction = (...args: any[]) => any;
 function compManyR(...funcs: any[]) {
     return (x: any) => funcs.reduce(compR, x);
 }
-function formatTel(x: string) {
-    return ['(', x.slice(3), ')', x.slice(3, 6), '-', x.slice(6)].join('');
-}
 export const parseTel = compManyR(replaceAll('-', ''), replaceAll('(', ''), replaceAll(')', ''), replaceAll(' ', ''));
 export const echoString = (x: string) => x;
-export function FacilityInsertForm({ realm }: { realm: Realm }) {
-    return (
-        <InsertForm>
-            <OutputControl name='name' span={2} />
-            <$InputControl name='facilityNumber' type='text' validators={[]} stringify={echoString} parse={identity} />
-            <SelectControl name='selfStorage' lookup={$$names.auctions.selfStorage} toOutput={toHexString} />
-            <$InputControl name='phoneNumber' type='tel' placeholder='(619) 555-1212' stringify={formatTel} parse={parseTel} autoComplete='tel' validators={[]} />
-            {/* <InputControl name='phoneNumber' inputType='tel' placeholder='(619) 555-1212' /> */}
-            <$InputControl name='email' type='email' placeholder='john.doe@example.com' validators={[]} stringify={echoString} parse={identity} />
-            <$FieldSetControl name='address'>
-                <$InputControl name='street' type='text' validators={[]} parse={identity} stringify={echoString} autoComplete='street' />
-                <$InputControl name='suite' validators={[]} parse={identity} stringify={echoString} type='text' />
-                <$InputControl name='city' validators={[]} parse={identity} stringify={echoString} type='text' autoComplete='city' />
-                <SelectControl name='state' map={provinceMap} autoComplete='state' toOutput={identity} />
-                <SelectControl name='country' map={countryMap} autoComplete='country' toOutput={identity} />
-                <$InputControl name='postal' validators={[]} parse={identity} stringify={echoString} type='text' autoComplete='postalCode' />
-            </$FieldSetControl>
-        </InsertForm>
-    );
+export function ofHexString(x: string) {
+    return new ObjectId(x);
 }
+
+

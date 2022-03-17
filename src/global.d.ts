@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import * as React from 'react';
 
 declare global {
@@ -92,11 +93,10 @@ declare global {
 
     export type PropertyProps<T extends DataEntryElement> = IColumnPosition & IPropertyInfo<T>;
     export type ClassObject<T extends string> = T extends $SelfStorage ? SelfStorage : T extends $Address ? Address : T extends $Facility ? Facility : never;
-    export type GetValue<T> = (name: string, stringify?: Stringify<T>) => () => T;
+    export type GetValue<T> = (name: string, stringify?: IStringifyFunction) => () => T;
     export type SetValue<T, TElement> = (name: string, convert: (s: string) => T) => (ev: React.ChangeEvent<TElement>) => void;
     export type Convert<T> = (x: string) => T;
-    export type Stringify<T> = (x: T) => string;
-    export type IUnsubscribe = () => void;
+    export type IUnsubscribeFunction = () => void;
     export type CalculationUpdate<T> = (setter: StateSetter<string>) => (x: T) => string;
     export type Initializer<T> = T | (() => T);
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -104,5 +104,60 @@ declare global {
         | [convertFrom: (x: T, realm?: Realm) => U, convertTo: (x: U, realm?: Realm) => T]
         // eslint-disable-next-line @typescript-eslint/ban-types
         | ((x: T, y: V) => U);
+
+    export interface IGetterFunction<T> {
+    <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsaved: string | undefined): () => string;
+    }
+
+    export interface IFormSubscribe {
+        (propName: string, value: [React.RefObject<DataEntryElement>, () => boolean, Array<Validator<any>>]): void
+    }
+    // export interface IStringifyFunction {
+    //     <K extends keyof T & string>(x: T[K]): string;
+    // }
+    // export interface IStringifyFunction<T = any> {
+    //     <T>(x: T): string;
+    // }
+    export interface IStringifyFunction {
+        (x: any): string;
+    }
+    export interface IParseFunction {
+        (x: string): any;
+    }
+    export interface ISavedValueSetterFunction<T> {
+        <K extends keyof T & string>(name: K, parse: IParseFunction, setSaved: StateSetter<string>, addError: (name: string, messages: string[]) => void): (value: string) => void;
+    }
+    export interface ISavedValueGetterFunction<T> {
+        <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsavedData: string | undefined): () => string; 
+    }
+    export interface ISetterFunction<T> {
+        <K extends keyof T & string>(name: K, parse: IParseFunction): (value: string) => void;
+    }
+    export interface IAction {
+        (): void;
+    }
+    export interface IActionFunction<T> {
+        (x: T): void;
+    }
+    export type IPredicate<T> = (...x: T) => boolean;
+    export type IQuery<TArgs extends any[], T> = (...x: TArgs) => T;
+    export type IBinaryPredicate = IQuery<never[], boolean>
+
+    // export interface Validator2<V> {
+    //     (x: V): Result<V>;
+    // }
+    export interface Validator2<T> {
+        <K extends keyof T>(x: T[K]): Result<T[K]>;
+    }
+
+    export interface IValidatorResult<V> {
+        <T>(x: V): Result<T>;
+    }
+    export type Validator<T> = Validator2<T>;
+    export type Subscriber<T> = <K extends keyof T & string>(name: K, item: [ref: RefObject<DataEntryElement>, hasUnsavedData: IBinaryPredicate, validators: Validator<T>[]]) => void;
+
+    export interface IRealmDTO {
+        _id: ObjectId;
+    }
 }
 export const i = 1;

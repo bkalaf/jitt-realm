@@ -2,39 +2,19 @@ import Realm from 'realm';
 import { ObjectId } from 'bson';
 import { $SelfStorage, ID, SelfStorage } from './SelfStorage';
 import { Address } from './Address';
-import { ifEmpty } from './index';
+import { ifEmpty } from "../../common/src/ifEmpty";
 import { faKey } from '@fortawesome/pro-regular-svg-icons';
 import { TextField } from './TextField';
 import { LookupField } from './LookupField';
 import { CalculatedField } from './CalculatedField';
 
+/**
+ * @deprecated
+ */
 export const $Facility: $Facility = 'Facility';
-
-export const Convert = {
-    text: function (x: string) {
-        return x.length === 0 ? undefined : x;
-    },
-    oid: function (x: string): ObjectId | undefined {
-        return x.length > 0 ? new ObjectId(x) : undefined;
-    },
-    lookup: function <T>(realm: Realm, type: string) {
-        return function (x: string) {
-            return x.length > 0 ? realm.objectForPrimaryKey<T>(type, new ObjectId(x)) : undefined;
-        };
-    }
-};
-
-export const Stringify = {
-    text: function (x: string | undefined) {
-        return (x ?? '').trim();
-    },
-    oid: function (x: ObjectId | undefined) {
-        return x ? x.toHexString() : '';
-    },
-    lookup: function <T extends { _id: ObjectId }>(x: T | undefined) {
-        return x?._id.toHexString() ?? '';
-    }
-};
+/**
+ * @deprecated
+ */
 export class Facility {
     static schema: Realm.ObjectSchema = {
         name: 'Facility',

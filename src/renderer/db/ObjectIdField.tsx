@@ -1,9 +1,14 @@
 import { ObjectId } from 'bson';
-import { TextFieldProps, LabelComponent, ContainerComponent } from './SelfStorage';
+import { TextFieldProps } from './SelfStorage';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
 import { Field } from './Field';
-import { ForwardComponents } from './$$Elements';
 import { useDebugValue } from 'react';
+import { ForwardComponents } from './$FC';
 
+/**
+ * @deprecated
+ */
 export function ObjectIdField(props: TextFieldProps<ObjectId>) {
     useDebugValue((props as any).value);
     return (
@@ -14,7 +19,7 @@ export function ObjectIdField(props: TextFieldProps<ObjectId>) {
             Label={ForwardComponents.label as LabelComponent}
             Feedback={ForwardComponents.small}
             Control={ForwardComponents.input}
-            converts={[(x: ObjectId) => x.toHexString(), (x: string) => new ObjectId(x)]}
+            converts={[(x: ObjectId | undefined) => x?.toHexString() ?? '', (x: string | undefined) => x ? new ObjectId(x) : new ObjectId()]}
         ></Field>
     );
 }

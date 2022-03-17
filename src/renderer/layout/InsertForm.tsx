@@ -1,8 +1,4 @@
-import { useNavigate } from 'react-router-dom';
 import { usePreventDefault } from '../hooks/usePreventDefault';
-import { useRecordType } from '../hooks/useRecordType';
-import { useCallback } from 'react';
-import { ObjectId } from 'bson';
 import { useTheme } from '../providers/useTheme';
 import { ButtonGroup } from '../components/footer/ButtonGroup';
 import { FormButton } from '../components/footer/FormButton';

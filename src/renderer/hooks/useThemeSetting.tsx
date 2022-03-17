@@ -1,7 +1,11 @@
+// @flow
 import { useMemo } from 'react';
 import { cn } from '../util/cn';
 import { CSSSettingKey, ThemeValue } from '../providers/ThemeProvider';
 
+/**
+ * @deprecated
+ */
 export function useThemeSetting(setting: Partial<Record<CSSSettingKey, ThemeValue>>, obj?: Record<string, boolean>, className?: string) {
     // console.log('themeSetting', setting);
     const value = Object.values(setting ?? {})

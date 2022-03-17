@@ -1,112 +1,82 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { toTitleCase } from '../../../common/text/toTitleCase';
-import { $useThemeClassNames } from '../../db/SelfStorage';
-import React from 'react';
-import { ignore } from '../../../common/ignore';
-import { Indicator } from '../../db/Indicator';
-import { faCalculator, faCircleExclamationCheck, faPenAltSlash, faTextSlash } from '@fortawesome/pro-solid-svg-icons';
-import { ControlProps, readAutoComplete } from '@controls/_ControlProps';
-import { replaceAll } from '../../../common/text/replaceAll';
-import { ObjectId } from 'bson';
-import { camelToTitleCase } from '../../../common/text/camelToTitleCase';
-import { isEmptyOrNull } from '../data/auctions/lot/asPercentage';
+import { toHexString } from '../../util/toHexString';
+import { ofHexString } from '../data/auctions/facility';
+import { useControl } from './useControl';
+import { ClonedProps } from "./ClonedProps";
+import { useEmbedded } from '../../hooks/useEmbedded';
+import { Indicators } from './Indicators';
 
-export function SelectControl<T extends { _id: ObjectId; toLookup(): string }>({
-    name: $name,
+export function LookupControl({ display, ...spread }: { name: string; display?: string; lookup: string; optionLabel?: (x: any) => string } & React.ComponentPropsWithoutRef<'select'>) {
+    return <SelectControl stringify={toHexString} validators={[]} display={display ?? toTitleCase(spread.name)} parse={ofHexString} {...spread} />;
+}
+export function SelectControl<T extends IRealmDTO>({
     children,
-    disabled,
+    name,
+    stringify,
+    parse,
     display,
-    feedbacking,
-    getErrors,
-    getter,
-    map,
-    placeholder: $ph,
-    required,
-    setValue,
-    readOnly,
-    lookup,
-    autoComplete,
-    subscribe,
-    toOutput,
-    realm,
-    unsubscribe,
     validators,
-    setter,
-    icon,
-    calculated,
-    inputType,
+    disabled: _disabled,
+    autoComplete,
+    required: _required,
+    lookup,
+    formName,
+    setValue,
+    getValue,
+    subscribe,
+    feedbacking,
+    optionLabel,
     ...remain
-}: ControlProps<any> & { setValue?: (name: string) => (value: any) => void; lookup?: string; map?: Record<string, string> }) {
-    const name = replaceAll('.', '-')($name);
-    const selectID = `${name}-select-control`;
-    const labelID = `${name}-select-control-label`;
-    const feedbackID = `${name}-select-control-feedback`;
-    const divID = `${name}-select-field`;
-    const divCn = $useThemeClassNames('container');
-    const labelCn = $useThemeClassNames('label');
-    const feedbackCn = $useThemeClassNames('feedback');
-    const selectCn = $useThemeClassNames('control');
-    const optionCn = 'text-base font-firaSans font-bold bg-blue text-white';
-    const placeholder = $ph ? $ph : 'Choose an option...';
-    const isCalculated = false;
-    const isReadonly = false;
-    const isRequired = required ?? false;
-    const isDisabled = (disabled || readOnly) ?? false;
-    const options = map
-        ? Object.entries(map).map(([k, v], ix) => <option className={optionCn} key={ix + 1} value={k} label={v} />)
-        : children == null && lookup != null
-        ? realm?.objects<T>(lookup).map((x, ix) => <option key={ix} value={x._id.toHexString()} label={x.toLookup()} />)
-        : children;
-    const value = useMemo(() => (toOutput ? toOutput(getter ? getter($name) : '') : getter ? getter($name) : ''), [toOutput, $name, getter]);
-    // const onChange = useMemo(() => (setter ? setter($name as any) : ignore), [$name, setter]);
-    const onChange = useCallback(
-        (ev: React.ChangeEvent<HTMLSelectElement>) => {
-            if (setValue == null) throw new Error('no setter');
-            const value = ev.target.value;
-            const output = lookup ? (isEmptyOrNull(value) ? undefined : realm?.objectForPrimaryKey<T>(lookup, new ObjectId(value))) : value;
-            setValue($name as any)(output);
-        },
-        [$name, lookup, realm, setValue]
+}: {
+    children?: Children;
+    name: string;
+    stringify?: IStringifyFunction;
+    parse?: IParseFunction;
+    display?: string;
+    validators: Validator2<T>[];
+    optionLabel?: (x: any) => string;
+    lookup: string | Record<string, string>;
+} & React.ComponentPropsWithoutRef<'select'> &
+    ClonedProps) {
+    const { calculated, displayName, feedback, isShowingFeedback, props, ref, toID } = useControl<HTMLSelectElement>(
+        name,
+        { _disabled, _readonly: false, _required, feedbacking },
+        { formName, setValue, getValue, subscribe, stringify, parse },
+        validators,
+        display,
+        autoComplete
     );
-    const ref = useRef<any>(null);
-    useEffect(() => {
-        if (subscribe != null && unsubscribe != null) {
-            subscribe($name, [ref, validators ?? []]);
-            return () => unsubscribe($name);
-        }
-    }, [$name, subscribe, unsubscribe, validators]);
-    const feedback = useMemo(() => (getErrors ? getErrors($name)[1] : []).join('\n'), [$name, getErrors]);
-    const displayName = display ? display : camelToTitleCase($name);
+    const { readOnly, ...spread } = props;
+    const { realm } = useEmbedded();
+    // const displayName = !display ? camelToTitleCase(name) : display;
+    // const $disabled = (disabled && !(false ?? false)) ?? false;
+    // const $readonly = (false && !(disabled ?? false)) ?? false;
+    // const $required = required ?? false;
+    // const ariaRequired = $required ? 'true' : 'false';
+    // const ariaDisabled = $disabled ? 'true' : disabled ? 'false' : undefined;
+    const options = useMemo(
+        () =>
+            typeof lookup === 'string'
+                ? realm.objects<IRealmDTO>(lookup).map((x, ix) => <option key={ix + 1} value={x._id.toHexString()} label={optionLabel ? optionLabel(x) : `key: ${ix}`} />)
+                : Object.entries(lookup).map(([k, v], ix) => <option key={ix + 1} value={k} label={v} />),
+        [lookup, optionLabel, realm]
+    );
     return (
-        <div id={divID} className={divCn}>
+        <div id={toID('field')} className='field'>
             {feedbacking && (
-                <small className={feedbackCn} id={feedbackID}>
+                <small id={toID('feedback')} className='feedback'>
                     {feedback}
                 </small>
             )}
-            <select
-                autoComplete={readAutoComplete(autoComplete)}
-                required={isRequired}
-                disabled={isDisabled}
-                id={selectID}
-                className={selectCn}
-                placeholder={placeholder}
-                aria-labelledby={labelID}
-                value={value ?? ''}
-                ref={ref}
-                onChange={onChange}
-            >
-                <option key={0} label='' value='' className={optionCn} />
+            <select ref={ref} id={toID('dropdown')} className='dropdown' aria-labelledby={toID('dropdown', 'label')} {...remain} {...spread}>
+                <option key={0} value='' label='Please choose one...' />
                 {options}
             </select>
-            <label id={labelID} className={labelCn} htmlFor={selectID}>
+
+            <label id={toID('dropdown', 'label')} htmlFor={toID('dropdown')}>
                 {displayName}
-                <span className='absolute top-0 right-0 flex flex-row space-x-2'>
-                    <Indicator icon={faCalculator} title='Field is calculated.' isFlag={isCalculated} bg='bg-blue' />
-                    <Indicator icon={faPenAltSlash} title='Field is read-only.' isFlag={isReadonly} bg='bg-amber' />
-                    <Indicator icon={faCircleExclamationCheck} title='Field is required.' isFlag={isRequired} bg='bg-red' />
-                    <Indicator icon={faTextSlash} title='Field is disabled.' isFlag={isDisabled} bg='bg-black' />
-                </span>
+                <Indicators isCalculated={calculated} isDisabled={props.disabled} isReadonly={props.readOnly} isRequired={props.required} />
             </label>
         </div>
     );

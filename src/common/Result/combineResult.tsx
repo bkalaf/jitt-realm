@@ -1,4 +1,4 @@
-import { Result } from '../../renderer/hooks/$useControl';
+import { Result } from "../../renderer/hooks/Result";
 
 export function combineResult<T>(pv: Result<T>, cv: Result<T>): Result<string | T> {
     if (Result.isPass(pv) && Result.isPass(cv)) {

@@ -3,35 +3,18 @@ import { identity } from '../../common/identity';
 import { $useSubscribe } from './$useSubscribe';
 import { useForm } from './useForm';
 import { $useControlRef } from './$useControlRef';
+import { IFail, Result } from './Result';
 
-export interface IPass<T> {
-    kind: 'pass';
-    value: T;
-}
-export interface IFail {
-    kind: 'fail';
-    value: string[];
-}
-export type Result<T> = IFail | IPass<T>;
-export const Result = {
-    isPass<T>(item: Result<T>): item is IPass<T> {
-        return item.kind === 'pass';
-    },
-    isFail<T>(item: Result<T>): item is IFail {
-        return item.kind === 'fail';
-    },
-    toPass<T>(value: T): Result<T> {
-        return { kind: 'pass', value };
-    },
-    toFail<T>(...messages: string[]): Result<T> {
-        return { kind: 'fail', value: messages };
-    }
-};
+/**
+ * @deprecated
+ */
 export function evalValidator<T>(str: string, value: any) {
     const result: Result<T> = eval(str)(value);
     return result;
 }
-
+/**
+ * @deprecated
+ */
 export function $useControl<T extends Record<string, any>, U, V extends Record<string, string>>(
     name: string,
     converts: ConversionOrCalculation<T, U, V>,
@@ -116,7 +99,9 @@ export function $useControl<T extends Record<string, any>, U, V extends Record<s
         [backing, feedback, onInput, isFeedbacking, names, onBlur, onChange, ref]
     );
 }
-
+/**
+ * @deprecated
+ */
 export type $ControlProps = {
     onChange: (ev: React.ChangeEvent<DataEntryElement>) => void;
     backing: string;

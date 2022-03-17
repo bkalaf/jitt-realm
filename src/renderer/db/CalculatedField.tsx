@@ -1,12 +1,11 @@
-import { $useThemeClassNames, ContainerComponent, LabelComponent } from './SelfStorage';
-import { $useControl } from '../hooks/$useControl';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
 import { Field } from './Field';
-import { ForwardComponents } from './$$Elements';
-
+import { ForwardComponents } from './$FC';
+/**
+ * @deprecated
+ */
 export function CalculatedField<T, U extends Record<string, string>>({ name, calculationFunction }: { name: string; calculationFunction: (formData: T, calcObject: U) => string }) {
-    const { backing } = $useControl(name, calculationFunction);
-    const outputID = `${name}-output`;
-    const className = $useThemeClassNames('output');
     return (
         <Field
             Container={ForwardComponents.div as ContainerComponent}

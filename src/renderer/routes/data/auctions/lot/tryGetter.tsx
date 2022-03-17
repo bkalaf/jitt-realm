@@ -1,5 +1,5 @@
-import { Result } from '../../../../hooks/$useControl';
-import { isEmptyOrNull } from './asPercentage';
+import { Result } from "../../../../hooks/Result";
+import { isEmptyOrNull } from '../../../../util/asPercentage';
 import { wrapTry } from './wrapTry';
 
 // export function tryGetter<T, TElement extends DataEntryElement>(getter: () => T, stringify: (x: T) => string) {

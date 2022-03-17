@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SortDescriptor } from 'realm';
 import { useRealmQuery } from '../hooks/useRealmQuery';
-import { SelfStorageDTO } from './data/auctions/selfStorage';
+import { SelfStorageDTO } from './data/auctions/selfStorage/index';
 
 export function Grid<T>({
     typeName,

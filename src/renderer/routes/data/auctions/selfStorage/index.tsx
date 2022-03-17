@@ -1,5 +1,5 @@
-import { $$datatypes, $$names } from '@controls/constants';
 import { ObjectId } from 'bson';
+import { $$names, $$datatypes } from '../../../controls/index';
 
 export type SelfStorage = {
     _id: ObjectId;

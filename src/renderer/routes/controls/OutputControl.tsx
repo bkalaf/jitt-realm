@@ -1,26 +1,68 @@
-import { useMemo } from 'react';
-import { $useThemeClassNames } from '../../db/SelfStorage';
-import { camelToTitleCase } from '../../../common/text/camelToTitleCase';
-import { faCalculator } from '@fortawesome/pro-solid-svg-icons';
-import { Indicator } from '../../db/Indicator';
 import { toSpan } from '../data/auctions/facility/toSpan';
+import { useField } from '../../hooks/useField';
+import { Indicators } from './Indicators';
+import { Span } from './Span';
+import { identity } from '../../../common/identity';
+import { facilityInitial } from '../data/auctions/facility';
+import { InputControl } from '.';
+import { useControl } from './useControl';
+import { ClonedProps } from "./ClonedProps";
 
-export function OutputControl({ getter, display, name, span }: { display?: string; name: string; getter?: (x: string) => any; span?: number }) {
-    const inputCn = $useThemeClassNames('control');
-    const labelCn = $useThemeClassNames('label');
-    const divCn = $useThemeClassNames('container');
-    const controlID = `${name}-output`;
-    const value = useMemo(() => (getter ? getter(name) : 'n/a') ?? '', [getter, name]);
-    const displayName = display ? display : camelToTitleCase(name);
+export function OutputControl<T extends IRealmDTO, K extends keyof T & string>({
+    display,
+    name,
+    span,
+    validators,
+    stringify,
+    parse,
+    readOnly: _readonly,
+    required: _required,
+    disabled: _disabled,
+    setValue,
+    getValue,
+    subscribe,
+    formName,
+    feedbacking,
+    ...remain
+}: {
+    name: string;
+    validators: Validator<T>[];
+    span: Span;
+    stringify?: IStringifyFunction;
+    parse?: IParseFunction;
+    display?: string;
+} & React.ComponentPropsWithoutRef<'input'> &
+    ClonedProps) {
+    const { props, calculated, displayName, feedback, isShowingFeedback, ref, toID } = useControl<HTMLInputElement>(
+        name,
+        { _readonly, _disabled, _required, feedbacking },
+        { setValue, getValue, subscribe, stringify, parse, formName },
+        validators,
+        display,
+        undefined
+    );
+
+    const className = [toSpan(span), 'field'].join(' ');
     return (
-        <div className={[divCn, ...toSpan(span)].join(' ')}>
-            <input readOnly value={value} id={controlID} className={inputCn} />
-            <label className={labelCn} htmlFor={controlID}>
+        <div id={toID('field')} className={className}>
+            {feedbacking && (
+                <small id={toID('feedback')} className='feedback'>
+                    {feedback}
+                </small>
+            )}
+            <input id={toID('output')} className='calculation' aria-labelledby={toID('output', 'label')} ref={ref} {...remain} {...props} />
+            <label id={toID('output', 'label')} htmlFor={toID('output')}>
                 {displayName}
-                <span className='absolute top-0 right-0 flex flex-row space-x-2'>
-                    <Indicator icon={faCalculator} title='Field is calculated.' isFlag={true} bg='bg-blue' />
-                </span>
+                <Indicators isCalculated={calculated} isDisabled={props.disabled} isReadonly={props.readOnly} isRequired={props.required} />
             </label>
         </div>
     );
+}
+
+export function TextOutputControl<T, K extends keyof T & string>({ span, ...remain }: React.ComponentPropsWithoutRef<'input'> & { name: string; span: Span }) {
+    return <OutputControl span={span} stringify={(x: string) => x} parse={identity} validators={[]} {...remain} />;
+}
+
+export function TextInputControl(remain: React.ComponentPropsWithoutRef<'input'> & { display?: string; name: string }) {
+    return <InputControl type='text' validators={[]} parse={identity} stringify={identity} {...remain} />;
 }

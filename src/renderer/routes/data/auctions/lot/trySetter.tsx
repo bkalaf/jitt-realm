@@ -1,4 +1,4 @@
-import { Result } from '../../../../hooks/$useControl';
+import { Result } from "../../../../hooks/Result";
 import { wrapTry } from './wrapTry';
 
 export function trySetter<T, TElement extends DataEntryElement>(unsavedSetter: StateSetter<string | undefined>, setter: StateSetter<T>, converter: (x: string) => T) {

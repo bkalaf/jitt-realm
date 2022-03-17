@@ -1,4 +1,4 @@
-import { $$names, $$datatypes } from '../controls';
+import { $$names, $$datatypes } from '../controls/index';
 
 export type Cost = {
     depositAmount: number;

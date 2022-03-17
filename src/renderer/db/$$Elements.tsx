@@ -2,7 +2,7 @@ import React from 'react';
 import { ReactText } from 'react';
 import { identity } from '../../common/identity';
 import { objectMap } from '../../common/object/objectMap';
-import { ContainerComponent } from './SelfStorage';
+import { ContainerComponent } from "./ContainerComponent";
 
 export const $$Elements: Record<string, (props: React.PropsWithChildren<any>, ref: React.ForwardedRef<HTMLElement>) => JSX.Element> = {
     fieldset: ({ children, ref: _ref, ...remain }: { children?: Children; ref?: any }, ref?: React.ForwardedRef<HTMLElement>) => {
@@ -79,8 +79,4 @@ export const $$Elements: Record<string, (props: React.PropsWithChildren<any>, re
     }
 };
 
-export const ForwardComponents: Record<keyof typeof $$Elements, React.ForwardRefExoticComponent<Pick<any, string | symbol | number> & React.RefAttributes<HTMLElement>>> = objectMap(
-    $$Elements,
-    identity,
-    (x) => React.forwardRef(x)
-);
+

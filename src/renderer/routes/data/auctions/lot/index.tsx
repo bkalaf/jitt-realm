@@ -1,14 +1,12 @@
-import { FieldSetControl, OutputControl, SelectControl, $$datatypes, $$names, ObjectId, ObjectSchema, RowID } from '@controls/index';
-import { Results } from 'realm';
 import { Cost, costInitial } from '../../../embedded/cost';
 import { InsertForm } from '../../../forms/InsertForm';
 import { Grid } from '../../../Grid';
-import { Facility, facilityInitial } from '../facility';
-import { AuctionSite } from '../site';
-import { asCurrency, fromCurrency } from './asCurrency';
-import { asPercentage, fromPercentage } from './asPercentage';
-import { stringifyDate } from './toDateString';
-import { toHexString } from './toHexString';
+import { Facility } from '../facility/index';
+import { AuctionSite } from '../site/index';
+import { stringifyDate } from '../../../../util/toDateString';
+import { ObjectId } from 'bson';
+import { ObjectSchema } from 'realm';
+import { $$names, $$datatypes, RowHeadCell, TextOutputControl, LookupControl, TextInputControl } from '../../../controls/index';
 
 // export const costInitial = (): Cost => {
 //     const cost: Cost = {} as any;
@@ -110,7 +108,7 @@ export function LotHeaders() {
 export function LotRow({ data, index, typeName }: { typeName: string; index: number; data: Realm.Object & Lot }) {
     return (
         <tr key={index} data-id={data._id.toHexString()}>
-            <RowID data={data} />
+            <RowHeadCell scope='col' data={data} />
             <td>{data.name}</td>
             <td>{data.auctionSite?.name}</td>
             <td>{data.auctionID}</td>
@@ -128,26 +126,30 @@ export function LotRow({ data, index, typeName }: { typeName: string; index: num
 export function LotGrid({ realm }: { realm: Realm }) {
     return <Grid typeName={$$names.auctions.lot} realm={realm} sort={[['closeDate', true]]} GridHeaders={LotHeaders} TableRow={LotRow} />;
 }
-export function LotInsertForm({ realm }: { realm: Realm }) {
+
+export function LotInsertForm({ realm, type }: { realm: Realm; type: string }) {
     return (
-        <InsertForm realm={realm} type={$$names.auctions.lot} initial={lotInitial}>
-            <OutputControl name='name' span={2} />
-            <SelectControl name='auctionSite' lookup={$$names.auctions.auctionSite} toOutput={toHexString} />
-            <InputControl name='auctionID' display='Auction ID' inputType='text' />
-            <SelectControl name='facility' required lookup={$$names.auctions.facility} toOutput={toHexString} />
-            <InputControl name='closeDate' inputType='text' required toOutput={stringifyDate} />
-            <FieldSetControl name='cost'>
-                <InputControl name='bid' inputType='text' required toOutput={asCurrency} toDatabase={fromCurrency} placeholder='$150.00' valueAs='number' />
-                <OutputControl name='total' />
-                <InputControl name='premiumPercent' inputType='text' required toOutput={asPercentage} toDatabase={fromPercentage} placeholder='5.00% enter as (0.05)' valueAs='number' />
-                <OutputControl name='premium' />
-                <InputControl name='salesTaxPercent' inputType='text' required toDatabase={fromPercentage} toOutput={asPercentage} placeholder='7.75% enter as 0.0775' valueAs='number' />
-                <OutputControl name='salesTax' />
-                <InputControl name='depositAmount' inputType='text' toOutput={asCurrency} toDatabase={fromCurrency} placeholder='$100.00' valueAs='number' />
-            </FieldSetControl>
-            <InputControl name='unit' inputType='text' placeholder='#' />
-            <InputControl name='unitSize' inputType='text' placeholder='5 x 5' />
-            <InputControl name='cleanout' inputType='number' />
+        <InsertForm realm={realm} type={type} initial={lotInitial}>
+            <TextOutputControl name='name' span={2} />
+            <LookupControl name='auctionSite' display='Auction Site' lookup={$$names.auctions.auctionSite} />
+            <TextInputControl name='auctionID' display='Auction ID' type='text' />
+            <LookupControl name='facility' required lookup={$$names.auctions.facility} />
+            <TextInputControl name='closeDate' type='text' required />
+            {/* <FieldSetControl name='cost'>
+                <TextInputControl name='bid' type='text' required placeholder='$150.00' />
+                <TextOutputControl name='total' span={1} />
+                <TextInputControl name='premiumPercent' type='text' required placeholder='5.00% enter as (0.05)' />
+                <TextOutputControl name='premium' type='text' span={1} />
+                <TextInputControl name='salesTaxPercent' type='text' required placeholder='7.75% enter as 0.0775' />
+                <TextOutputControl name='salesTax' type='text' span={1} />
+                <TextInputControl name='depositAmount' type='text' placeholder='$100.00' />
+            </FieldSetControl> */}
+            <TextInputControl name='unit' type='text' placeholder='#' />
+            <TextInputControl name='unitSize' display='' type='text' placeholder='5 x 5' />
+            <TextInputControl name='cleanout' type='text' placeholder='#' />
+            <TextInputControl name='unit' type='text' placeholder='#' />
+            <TextInputControl name='unitSize' type='text' placeholder='5 x 5' />
+            <TextInputControl name='cleanout' type='number' />
         </InsertForm>
     );
 }

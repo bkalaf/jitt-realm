@@ -1,14 +1,18 @@
 import Realm from 'realm';
 import { provinceMap, Provinces } from './enums/Provinces';
 import { CountryISO2, countryMap } from './enums/CountryISO2';
-import { ifEmpty } from '.';
 import { DataListField, TextField } from './TextField';
 import { Field } from './Field';
-import { ForwardComponents } from './$$Elements';
-import { ContainerComponent, LabelComponent } from './SelfStorage';
+import { ContainerComponent } from "./ContainerComponent";
+import { LabelComponent } from "./LabelComponent";
 import { useDataListPortal } from '../hooks/$useDataListPortal';
 import { $countries, $provinces } from '../hooks/useProvideDataLists';
+import { ifEmpty } from '../../common/src/ifEmpty';
+import { ForwardComponents } from './$FC';
 
+/**
+ * @deprecated
+ */
 export class Address {
     static schema: Realm.ObjectSchema = {
         name: 'Address',
