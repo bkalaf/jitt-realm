@@ -23,7 +23,7 @@
         @apply min-w-full px-2 text-xl font-bold text-white bg-black shadow-xl rounded-xl font-firaSans;
     }
     form > header {
-        @apply text-xl font-bold leading-loose tracking-wide text-white bg-black border-cyan font-firaSans;
+        @apply text-xl font-bold leading-loose tracking-wide text-white bg-black border-cyan font-firaSans sm:md:col-span-3 xl:col-span-4 pl-3 before:content-["*_"];
     }
     form.insert {
         @apply grid grid-cols-2 text-black border-2 border-black sm:md:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-2 bg-stone-light/50 font-firaSans;
@@ -31,6 +31,10 @@
 
     form > div.field {
         @apply relative flex flex-col-reverse justify-center p-1 pb-4 bg-white/75;
+    }
+    
+    form > footer {
+        @apply sm:md:col-span-3 xl:col-span-4;
     }
 
     div.field > label {
@@ -51,12 +55,18 @@
         @apply inline-flex text-lg font-extrabold text-center text-red font-montserrat place-self-center;
     }
 
-    form > div.button-group {
-        @apply grid items-center w-full grid-cols-3 col-span-2 px-2 py-1 mx-auto bg-white sm:md:col-span-3 xl:col-span-4 gap-x-6;
+    form > footer > div.button-group {
+        @apply grid items-center justify-center w-full grid-cols-3 col-span-2 px-2 py-1 mx-auto bg-white gap-x-6;
     }
 
+    label > span > span {
+        @apply inline-flex border border-white rounded-2xl bg-black/75 p-0.5;
+    }
+    label > span > span > svg {
+        @apply m-0.5;
+    }
     div.button-group > button {
-        @apply flex bg-blue-dark/75 text-white px-2 py-0.5 font-bold text-center items-center justify-center rounded-md mx-auto border-2 border-black/70 hover:ring-2 hover:ring-red disabled:bg-black/25 disabled:text-white/25 disabled:opacity-25 transition-all duration-700 delay-75 ease-in-out w-1/2 transform translate-x-1/2;
+        @apply flex bg-blue-dark/75 text-white px-2 py-0.5 font-bold text-center items-center justify-center rounded-md mx-auto border-2 border-black/70 hover:ring-2 hover:ring-red disabled:bg-black/25 disabled:text-white/25 disabled:opacity-25 transition-all duration-700 delay-75 ease-in-out w-1/2 transform;
     }
 
     table {

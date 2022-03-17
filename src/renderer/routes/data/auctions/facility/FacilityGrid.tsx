@@ -8,11 +8,7 @@ export function FacilityGrid({ realm }: { realm: Realm }) {
         <Grid
             realm={realm}
             typeName={$$names.auctions.facility}
-            sort={[
-                ['selfStorage.name', false],
-                ['address.state', false],
-                ['address.city', false]
-            ]}
+            sort={[]}
             GridHeaders={FacilityHeader}
             TableRow={FacilityRow}
         ></Grid>

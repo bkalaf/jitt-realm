@@ -1,9 +1,7 @@
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
-import { InsertForm } from '../../../forms/InsertForm';
-import { Grid } from '../../../Grid';
-import { Lot } from '../lot';
-import { $$datatypes, $$names, RowHeadCell, TextInputControl } from '../../../controls/index';
+import { Lot } from '../lot/index';
+import { $$datatypes, $$names } from '../../../controls/index';
 
 export type AuctionSite = {
     _id: ObjectId;
@@ -30,45 +28,45 @@ export class AuctionSiteDTO {
         return (this as any).name;
     }
 }
-export const auctionSiteInitial = () => {
-    const result = new AuctionSiteDTO() as any as AuctionSite;
-    result._id = new ObjectId();
-    result.name = '';
-    result.website = '';
-    result.lots = [];
-    return result;
-};
+// export const auctionSiteInitial = () => {
+//     const result = new AuctionSiteDTO() as any as AuctionSite;
+//     result._id = new ObjectId();
+//     result.name = '';
+//     result.website = '';
+//     result.lots = [];
+//     return result;
+// };
 
-export function AuctionSiteHeaders() {
-    return (
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Website</th>
-            <th>Lot Count</th>
-        </tr>
-    );
-}
+// export function AuctionSiteHeaders() {
+//     return (
+//         <tr>
+//             <th>ID</th>
+//             <th>Name</th>
+//             <th>Website</th>
+//             <th>Lot Count</th>
+//         </tr>
+//     );
+// }
 
-export function AuctionSiteRow({ data, index, typeName }: { typeName: string; index: number; data: Realm.Object & AuctionSite }) {
-    return (
-        <tr key={index} data-id={data._id.toHexString()}>
-            <RowHeadCell scope='row' data={data} />
-            <td>{data.name}</td>
-            <td>{data.website}</td>
-            <td>{data.lots.length}</td>
-        </tr>
-    );
-}
+// export function AuctionSiteRow({ data, index, typeName }: { typeName: string; index: number; data: Realm.Object & AuctionSite }) {
+//     return (
+//         <tr key={index} data-id={data._id.toHexString()}>
+//             <RowHeadCell scope='row' data={data} />
+//             <td>{data.name}</td>
+//             <td>{data.website}</td>
+//             <td>{data.lots.length}</td>
+//         </tr>
+//     );
+// }
 
-export function AuctionSiteGrid({ realm }: { realm: Realm }) {
-    return <Grid typeName={$$names.auctions.auctionSite} realm={realm} sort={[['name', false]]} GridHeaders={AuctionSiteHeaders} TableRow={AuctionSiteRow} />;
-}
-export function AuctionSiteInsertForm({ realm }: { realm: Realm }) {
-    return (
-        <InsertForm realm={realm} type={$$names.auctions.auctionSite} initial={auctionSiteInitial}>
-            <TextInputControl name='name' type='text' required />
-            <TextInputControl name='website' type='url' />
-        </InsertForm>
-    );
-}
+// export function AuctionSiteGrid({ realm }: { realm: Realm }) {
+//     return <Grid typeName={$$names.auctions.auctionSite} realm={realm} sort={[['name', false]]} GridHeaders={AuctionSiteHeaders} TableRow={AuctionSiteRow} />;
+// }
+// export function AuctionSiteInsertForm({ realm }: { realm: Realm }) {
+//     return (
+//         <InsertForm realm={realm} type={$$names.auctions.auctionSite} initial={auctionSiteInitial}>
+//             <TextInputControl name='name' type='text' required />
+//             <TextInputControl name='website' type='url' />
+//         </InsertForm>
+//     );
+// }

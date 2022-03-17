@@ -8,13 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { useEmbeddedStack } from '../EmbeddedContext/useEmbeddedStack';
 import { condense } from './condense';
 import { DTO, FormBaseContext } from './index';
-import { getProperty, setProperty } from '../../data/auctions/selfStorage/SelfStorageInsertForm';
+import { getProperty } from "../../../../common/object/getProperty";
+import { setPropertyByPath } from "../../../../common/object/setPropertyByPath";
 import { identity } from '../../../../common/identity';
+import { replaceAll } from '../../../../common/text/replaceAll';
 
 export function useProvideFormBase<TDto extends DTO>(name: string, type: string, initial: () => TDto, convertTo: (x: any) => any, drillOnSuccess = false): FormBaseContext {
     console.log('useProvideFormBase');
     const formName = [type, name, 'form'].join('-');
-    const formHeader = formName.replace('-', ' ').split(' ').map(caps).join(' ');
+    const formHeader = replaceAll('-', ' ')(formName).split(' ').map(caps).join(' ');
     const [feedbacking, showFeedback, hideFeedback] = useBoolean(false);
     const { prefix, realm } = useEmbeddedStack();
     const refs = useRef<Map<string, React.RefObject<DataEntryElement>>>(new Map());
@@ -39,7 +41,7 @@ export function useProvideFormBase<TDto extends DTO>(name: string, type: string,
         (propName: string, parse: IParseFunction = identity) =>
             (value: any) => {
                 setFormData((prev) => {
-                    return setProperty(propName, prev, parse(value));
+                    return setPropertyByPath(propName, prev, parse(value));
                 });
             },
         []

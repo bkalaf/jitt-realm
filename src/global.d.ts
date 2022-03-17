@@ -2,6 +2,11 @@ import { ObjectId } from 'bson';
 import * as React from 'react';
 
 declare global {
+    export let JITTRegistrar: { 
+        getInitial(name: string): () => any;
+        getConvert(name: string): (x: any) => any;
+        getChildren(name: string): JSX.Element[];
+    };
     export type IEventer<T extends Event> = {
         addEventListener(event: string, listener: (x: T) => void): void;
         removeEventListener(event: string, listener: (x: T) => void): void;

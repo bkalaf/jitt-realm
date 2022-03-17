@@ -1,4 +1,4 @@
-import { $$Schema } from '../../db';
+import { $$Schema } from '../../db/index';
 import { EnumCell } from './EnumCell';
 import { useRealmSchema } from '../useRealmSchema';
 

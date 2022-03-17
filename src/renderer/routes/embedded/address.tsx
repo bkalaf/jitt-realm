@@ -1,6 +1,6 @@
 import { CountryISO2 } from '../../db/enums/CountryISO2';
 import { Provinces } from '../../db/enums/Provinces';
-import { $$names, $$datatypes } from '../controls/index';
+import { $$datatypes, $$names } from '../controls/constants';
 
 export type Address = {
     street?: string;

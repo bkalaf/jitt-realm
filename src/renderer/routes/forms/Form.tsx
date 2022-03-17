@@ -5,7 +5,23 @@ import { cloneElement, ReactElement } from 'react';
 import { useProvideFormBase } from '../providers/InsertFormCtxt/useProvideFormBase';
 import { PrimaryKeyField } from '../controls/index';
 
-export function Form({ name, type, initial, convertTo, drillOnSuccess, children, realm }: { name: string; drillOnSuccess: boolean; type: string; children: Children; realm: Realm; initial: () => any; convertTo: (x: any) => any }) {
+export function Form({
+    name,
+    type,
+    initial,
+    convertTo,
+    drillOnSuccess,
+    children,
+    realm
+}: {
+    name: string;
+    drillOnSuccess: boolean;
+    type: string;
+    children: Children;
+    realm: Realm;
+    initial: () => any;
+    convertTo: (x: any) => any;
+}) {
     console.log('Form');
     const { formHeader, formName, onCancel, onSubmit, onReset, ...rest } = useProvideFormBase(name, type, initial, convertTo, drillOnSuccess);
     console.log(rest);
@@ -16,7 +32,9 @@ export function Form({ name, type, initial, convertTo, drillOnSuccess, children,
                 {formHeader}
             </header>
 
-            {[<PrimaryKeyField key={0} {...rest}/>, ...React.Children.toArray(children)].map((x, ix) => cloneElement(x as ReactElement, { ...(x as ReactElement).props, key: ix + 1, formName, ...rest }))}
+            {[<PrimaryKeyField key={0} {...rest} />, ...React.Children.toArray(children)].map((x, ix) =>
+                cloneElement(x as ReactElement, { ...(x as ReactElement).props, key: ix + 1, formName, ...rest })
+            )}
             <footer className='form-footer'>
                 <ButtonGroup id={[formName, 'buttons'].join('-')} className='button-group'>
                     <FormButton id={[formName, 'reset', 'btn'].join('-')} onClick={onReset}>

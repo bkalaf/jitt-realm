@@ -3,7 +3,7 @@ import { useField } from '../../hooks/useField';
 import { Indicators } from './Indicators';
 import { Span } from './Span';
 import { identity } from '../../../common/identity';
-import { facilityInitial } from '../data/auctions/facility';
+import { facilityInitial } from '../data/auctions/facility/index';
 import { InputControl } from '.';
 import { useControl } from './useControl';
 import { ClonedProps } from "./ClonedProps";
@@ -26,7 +26,7 @@ export function OutputControl<T extends IRealmDTO, K extends keyof T & string>({
     ...remain
 }: {
     name: string;
-    validators: Validator<T>[];
+    validators?: Validator<T>[];
     span: Span;
     stringify?: IStringifyFunction;
     parse?: IParseFunction;

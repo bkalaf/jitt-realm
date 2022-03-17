@@ -1,15 +1,9 @@
 import { useMemo } from 'react';
-import { toTitleCase } from '../../../common/text/toTitleCase';
-import { toHexString } from '../../util/toHexString';
-import { ofHexString } from '../data/auctions/facility';
 import { useControl } from './useControl';
 import { ClonedProps } from "./ClonedProps";
 import { useEmbedded } from '../../hooks/useEmbedded';
 import { Indicators } from './Indicators';
 
-export function LookupControl({ display, ...spread }: { name: string; display?: string; lookup: string; optionLabel?: (x: any) => string } & React.ComponentPropsWithoutRef<'select'>) {
-    return <SelectControl stringify={toHexString} validators={[]} display={display ?? toTitleCase(spread.name)} parse={ofHexString} {...spread} />;
-}
 export function SelectControl<T extends IRealmDTO>({
     children,
     name,
@@ -34,7 +28,7 @@ export function SelectControl<T extends IRealmDTO>({
     stringify?: IStringifyFunction;
     parse?: IParseFunction;
     display?: string;
-    validators: Validator2<T>[];
+    validators?: Validator2<T>[];
     optionLabel?: (x: any) => string;
     lookup: string | Record<string, string>;
 } & React.ComponentPropsWithoutRef<'select'> &

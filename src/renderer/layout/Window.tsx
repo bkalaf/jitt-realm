@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router';
-import { $$Schema, schema } from '../db';
+import { $$Schema, schema } from '../db/index';
 import { Loading } from './Loading';
 import { useRealm } from '../hooks/useRealm';
 import { ObjectId } from 'bson';

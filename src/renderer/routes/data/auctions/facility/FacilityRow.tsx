@@ -1,9 +1,9 @@
 import { provinceMap } from '../../../../db/enums/Provinces';
 import { countryMap } from '../../../../db/enums/CountryISO2';
-import { Facility } from './index';
+import { Facility } from './Facility';
 import { RowHeadCell } from '../../../controls/index';
 
-export function FacilityRow<T>({ data, typeName, index }: { data: Realm.Object & Facility; index: number; typeName: string }) {
+export function FacilityRow({ data, typeName, index }: { data: Realm.Object & Facility; index: number; typeName: string }) {
     return (
         <tr key={index} data-id={data._id.toHexString()}>
             <RowHeadCell scope='row' data={data} />

@@ -6,8 +6,8 @@ import { ClonedProps } from './ClonedProps';
 type PassedThruFormProps<T extends IRealmDTO> = {
     children?: Children;
     name: string;
-    stringify: IStringifyFunction;
-    parse: IParseFunction;
+    stringify?: IStringifyFunction;
+    parse?: IParseFunction;
     displayName?: string;
     validators?: Validator2<T>[];
 } & ClonedProps;

@@ -1,25 +1,10 @@
 import { AutoComplete, readAutoComplete } from '../enums/AutoComplete';
-import { Result } from "../../hooks/Result";
+import { Result } from '../../hooks/Result';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useEmbedded } from '../../hooks/useEmbedded';
-import { replaceAll } from '../../../common/text/replaceAll';
-import { isEmptyOrNull } from '../../util/asPercentage';
-import { caps } from '../../../common/text/caps';
 import { identity } from '../../../common/identity';
-import { Booleanish } from "./Booleanish";
+import { Booleanish } from './Booleanish';
+import { useMinimalControl } from './useMinimalControl';
 
-export function useMinimalControl(formName: string, name: string, dp?: string) {
-    const { prefix } = useEmbedded();
-    const fullName = [...prefix, name].join('.');
-    const displayName = isEmptyOrNull(dp) ? replaceAll('-', ' ')(name).split(' ').map(caps).join(' ') : dp;
-    const toID = useCallback(
-        (...suffix: string[]) => {
-            return [formName ?? '', name, ...suffix].join('-');
-        },
-        [formName, name]
-    );
-    return { fullName, displayName, toID };
-}
 export function useControl<TElement extends DataEntryElement>(
     name: string,
     { _disabled, _required, _readonly, feedbacking }: { _disabled?: boolean; _required?: boolean; _readonly?: boolean; feedbacking?: boolean } = {},
@@ -44,7 +29,7 @@ export function useControl<TElement extends DataEntryElement>(
 ) {
     const validatorArray = useMemo(() => [...validators], [validators]);
     const ref = useRef<TElement>(null);
-    const { displayName, fullName, toID } = useMinimalControl(formName ?? '', name, dp);    
+    const { displayName, fullName, toID } = useMinimalControl(formName ?? '', name, dp);
     const isDisabled = _disabled ?? false;
     const isReadonly = _readonly ?? false;
     const isRequired = _required ?? false;
@@ -75,7 +60,7 @@ export function useControl<TElement extends DataEntryElement>(
         return subscribe(fullName, ref, validatorArray);
     }, [fullName, ref, subscribe, validatorArray]);
     const calculated = useCallback(() => ref.current?.classList.contains('calculation'), []);
-    
+
     return useMemo(
         () => ({
             displayName,

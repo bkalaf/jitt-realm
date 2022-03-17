@@ -1,7 +1,7 @@
 import Realm from 'realm';
 import config from './../../../config.json';
 import { useAsyncResource } from '../hooks/useAsyncResource';
-import { schema } from '../db';
+import { schema } from '../db/index';
 import { useMemo, useRef } from 'react';
 import { useConnectivityStatus } from '../hooks/useConnectivityStatus';
 

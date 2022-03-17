@@ -47,22 +47,22 @@ export class CostDTO {
     }
 }
 
-export const costInitial = (): Cost => {
-    const cost: Cost = new CostDTO() as any;
-    cost.bid = 0;
-    cost.depositAmount = 0;
-    cost.premiumPercent = 0;
-    cost.salesTaxPercent = 0;
-    Object.defineProperties(cost, {
-        premium: {
-            get: premiumFunc
-        },
-        total: {
-            get: totalFunc
-        },
-        tax: {
-            get: taxFunc
-        }
-    });
-    return cost;
-};
+// export const costInitial = (): Cost => {
+//     const cost: Cost = new CostDTO() as any;
+//     cost.bid = 0;
+//     cost.depositAmount = 0;
+//     cost.premiumPercent = 0;
+//     cost.salesTaxPercent = 0;
+//     Object.defineProperties(cost, {
+//         premium: {
+//             get: premiumFunc
+//         },
+//         total: {
+//             get: totalFunc
+//         },
+//         tax: {
+//             get: taxFunc
+//         }
+//     });
+//     return cost;
+// };

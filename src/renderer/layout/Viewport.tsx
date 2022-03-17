@@ -57,7 +57,9 @@ export function InsertForm(props: { type: string; children: Children; realm: Rea
 }
 
 export function DynamicRouteBase({ realm }: { realm: Realm }) {
+    console.log('DynamicRouteBase');
     const { type } = useParams();
+    console.log(`type`, type);
     return (
         <NewEmbeddedContext realm={realm} type={type ?? ''}>
             <Outlet />
@@ -65,8 +67,11 @@ export function DynamicRouteBase({ realm }: { realm: Realm }) {
     );
 }
 export function DynamicNewRoute({ realm }: { realm: Realm }) {
+    console.log('DynamicNewRoute');
     const { type } = useParams();
-    return <InsertForm realm={realm} type={type ?? ''} {...$reference[type!]}></InsertForm>;
+    const r = $reference[type!];
+    console.log(`r`, r, `type`, type);
+    return <InsertForm realm={realm} type={type ?? ''} {...r}></InsertForm>;
 }
 export function DynamicGrid({ realm }: { realm: Realm }) {
     const { type } = useParams();
@@ -89,62 +94,12 @@ export function Viewport({ realm }: { realm: Realm }) {
                     <Route path='v1'>
                         <Route path={$$names.tier2.auctions}>
                             {toRoute(realm)}
-                            {/* <Route
-                                path={$$names.auctions.selfStorage}
-                                element={
-                                    <NewEmbeddedContext realm={realm} type={$$names.auctions.selfStorage}>
-                                        <Outlet />
-                                    </NewEmbeddedContext>
-                                }>
-                                <Route
-                                    path='new'
-                                    element={
-                                        <InsertForm convertTo={selfStorageConvertIn} type={$$names.auctions.selfStorage} realm={realm} initial={selfStorageInitial}></InsertForm>
-                                        // <Bound>
-                                        //     <Form convertTo={selfStorageConvertIn} type={$$names.auctions.selfStorage} realm={realm} initial={selfStorageInitial} name='insert' drillOnSuccess>
-                                        // <TextInputControl type='text' name='name' required />
-                                        // <TextInputControl type='url' name='website' />
-                                        //     </Form>
-                                        // </Bound>
-                                    }
-                                />
-                            </Route>
-                            <Route
-                                path={$$names.auctions.facility}
-                                element={
-                                    <NewEmbeddedContext realm={realm} type={$$names.auctions.facility}>
-                                        <Outlet />
-                                    </NewEmbeddedContext>
-                                }>
-                                <Route path='new' element={NewFacilityComponent(realm)} />
-                                <Route path=':id' element={<EditForm realm={realm} />} />
-                                <Route index element={<FacilityGrid realm={realm} />} />
-                            </Route>
-                            <Route path={$$names.auctions.auctionSite}>
-                                <Route path='new' element={<AuctionSiteInsertForm realm={realm} />} />
-                                <Route path=':id' element={<EditForm realm={realm} />} />
-                                <Route index element={<AuctionSiteGrid realm={realm} />} />
-                            </Route>
-                            <Route path={$$names.auctions.lot}>
-                                <Route path='new' element={<LotInsertForm realm={realm} type={$$names.auctions.lot} />} />
-                                <Route path=':id' element={<EditForm realm={realm} />} />
-                                <Route index element={<LotGrid realm={realm} />} />
-                            </Route> */}
                         </Route>
-                        {/* <Route path=':type'>
-                            <Route path='new' element={<Records isInsert isGrid={false} realm={realm} {...selectable} />} />
-                            <Route
-                                path='*'
-                                element={<Refinement matchNew realm={realm} {...selectable} isGrid={false} isInsert={false} />}
-                            />
-                            <Route index element={<Records isInsert={false} isGrid={true} realm={realm} {...selectable} />} />
-                        </Route> */}
+                        <Route index element={<Outlet />} />
                     </Route>
                 </Route>
-                <Route index element={<></>} />
+                <Route index element={<Outlet />} />
             </Routes>
         </Boundary>
     );
 }
-
-

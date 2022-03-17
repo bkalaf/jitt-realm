@@ -2,7 +2,7 @@ import { RecordSet } from './RecordSet';
 import { Toolbar } from './Toolbar';
 import { Selectable } from './Window';
 import { RecordsHeader } from './RecordsHeader';
-import '../db';
+import '../db/index';
 import { InsertForm } from './InsertForm';
 import { useRecordType } from '../hooks/useRecordType';
 import { FormProvider } from '../db/FormProvider';

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { toTitleCase } from '../../common/text/toTitleCase';
-import { $$Schema } from '../db';
+import { $$Schema } from '../db/index';
 import { Logger } from './Logger';
 
 export type ColumnInfoMap<T extends DataEntryElement> = Map<string, PropertyProps<T>>;

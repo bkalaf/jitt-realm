@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { $$Schema } from '../db';
+import { $$Schema } from '../db/index';
 /**
  * @deprecated
  */
