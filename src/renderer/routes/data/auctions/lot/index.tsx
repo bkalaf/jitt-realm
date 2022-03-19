@@ -2,7 +2,6 @@
 import { Cost } from '../../../embedded/cost';
 import { Facility } from '../facility/Facility';
 import { AuctionSite } from '../site/index';
-import { stringifyDate } from '../../../../util/toDateString';
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
 import { $$names, $$datatypes } from '../../../controls/index';

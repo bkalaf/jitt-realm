@@ -1,3 +1,5 @@
+// DTO $dto$file$info
+
 const fileSchema = {
     name: 'file',
     primaryKey: '_id',

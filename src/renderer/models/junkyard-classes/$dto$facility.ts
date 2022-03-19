@@ -1,3 +1,5 @@
+// DTO $dto$facility
+
 const facilitySchema = {
     name: 'facility',
     primaryKey: '_id',

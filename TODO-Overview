@@ -1,0 +1,262 @@
+Projects:
+  JITT:
+    ☐ nodemailer @package // NOTE NOTE 
+    ☐ logger @package
+    ☐ localStorage @package
+      ☐ useLocalStorage @hook //NOTE Noteworthy
+        ☐ save changed value on close
+        ☐ transaction support
+        ☐ concurrent
+    ORM: 
+      AddEmbeddedStack: 
+        ☐ props: { prefix: ['address'] }
+        ☐ Clone Child Controls to pass down FormProps
+      BaseFieldSetControl: 
+        ☐ @fieldset @critical
+        ☐ { name, type, displayName, span, color }
+        ☐ @legend
+        EmbeddedTypeControl:
+          AddressEmbeddedControl: 
+            ☐ fetch latitude/longitude from Google Maps
+            ☐ fetch mileage from office to expense
+            ☐ Output: estimated round trip cost / wear-tear, gas, maintenance
+            ☐ Output: lodging for far distances
+      BaseLabelControl:
+        ☐ @label or
+        ☐ @legend or
+        ☐ @caption 
+        ☐ @string text 
+        ☐ @string tooltip
+        ☐ @string invalidText
+        ☐ @string htmlFor
+        ☐ @el Indicators
+          ☐ @el ReadOnlyIndicator
+          ☐ @el InvalidIndicator 
+          ☐ @el DisabledIndicator 
+          ☐ @el CheckedIndicator 
+          ☐ @el SelectedIndicator
+          ☐ @el RequiredIndicator
+      BaseIconControl: @today 
+        ☐ @icon icon
+        StackedIconControl: @critical
+          ☐ @icon[] icons
+          ☐ @string[] sizes
+          ☐ @span 'fa-layers fa-fw'
+          ☐ children: icons
+        ☐ @string bg
+        ☐ @string fore 
+        ☐ @string tooltip
+        ☐ @boolean preventRender
+        IndicatorControl: @today
+          ☐ @span
+          InvalidIndicator:  @today
+            ☐ @span
+            ☐ faBan/red, faAwardSimple/navy 
+            ☐ iconElement: JSX.Element
+            ☐ red
+          RequiredIndicator: @today
+            ☐ @span
+            ☐ faBlockQuestion
+            ☐ orangered
+          ReadOnlyIndicator: @today
+            ☐ @span
+            ☐ faPenFancySlash
+            ☐ goldenrod
+          CalculatedIndicator: @today
+            ☐ @span
+            ☐ faCalculator / faAbacus
+            ☐ cyan
+          SelectedIndicator: @today
+            ☐ @span
+            ☐ faLasso
+            ☐ blue
+          CheckedIndicator: @today
+            ☐ @span
+            ☐ faCheckDouble
+            ☐ green
+          DisabledIndicator: @today
+            ☐ @span
+            ☐ faWheelchair
+            ☐ purple
+      BaseLinkControl: @today @component 
+        ☐ @a
+        ☐ @string href
+        ☐ @boolean openNewWindow
+        ☐ @boolean navRelative
+        ☐ @string className "visited:underline decoration-dotted visited:decoration-solid visited:decoration-2 underline-offset-4 visited:text-violet-light visited:deocration-violet-light transform hover:scale-105"
+        NewBrowserWindowLink: @today @component 
+        RelativeLink: @today @component 
+      BaseInputControl:
+        ☐ @input
+        ☐ TextInputControl: free form text @component
+        ☐ URLControl: link to open new page @component
+        UrlInputControl: @today @component
+          ☐ @string type="url"
+          ☐ @function electron:openChildWindow loadUrl
+          ☐ @el BaseLinkControl
+        IconInputControl: @today @component
+          ☐ @icon IconDefinition
+          ☐ @string size
+          ☐ @string bg 
+          ☐ @string text
+          ☐ @string tooltip
+          PrimaryKeyInputControl: @today
+            ☐ @icon faKey
+            ☐ readOnly: true
+        EmailControl: @today @component
+          ☐ @string type "email"
+          ☐ @el BaseLinkControl
+          ☐ @function mailto 
+        TelControl: @today
+          ☐ @string "tel" type
+          ☐ link to call number
+        RadioInputControl:
+          ☐ id: @string
+          ☐ name: @string=""
+          ☐ value: @string=""
+          ☐ displayName: @string
+          ☐ enumData: @record
+          ☐ type: @string="radio"
+          ☐ span: @integer=#
+          ☐ wrapOptions: @boolean=false
+          ☐ @fieldset
+            ☐ @legend
+            ☐ @div
+              ☐ @input name, value, id, checked 
+              ☐ @label for, children
+              ☐ @input name, value, id, checked 
+              ☐ @label for, children
+          SingleSelectEnumControl: @control
+            ☐ isReadonly: @function
+            ☐ isRequired: @function
+            ☐ value: @string
+            ☐ icons: (icon: @icon) || [isTrue: @icon, isFalse: @icon]
+            ☐ colors: (color: @color) || [isTrue: @color isFalse: @color]
+            SingleSelectOption: @control 
+              ☐ name: @string
+              ☐ value: @string
+              ☐ label: @string
+              ☐ isChecked: @function (v: string) => booelan
+              ☐ isDisabled: @function () => boolean
+              ☐ accent: @color @opt
+              ☐ text: @color @opt  (isChecked: () => bolean) => [icon, color]
+              ☐ icon: @icon || [isTrue:@icon isFalse:@icon] @opt
+
+        FileInputControl: @component @control
+          ☐ @string "file" type 
+          ☐ @string accept 
+          ☐ @function onChangeFile
+          ☐ @function onSubmitFile
+
+          MultipleFileInputControl: @component @control
+            ☐ @boolean multiple=true
+            ☐ @function onChangeFiles
+            ☐ @function onSubmitFiles
+
+        CheckboxInputControl:
+          ☐ @string "checkbox" type 
+          ☐ name: @string
+          ☐ value: @boolean @#opt
+          IndeterminateCheckboxInputControl:
+
+        DateInputControl:
+          ☐ @string "date" type
+        ImageInputControl:
+          ☐ @string "image" type
+        RangeInputControl:
+          ☐ @string "range" type
+        SearchInputControl:
+          ☐ @string "search" type
+        BaseDataListControl: 
+          ☐ @datalist
+          ☐ @string id
+      BaseTableControl:
+        BaseCaptionControl:
+        BaseColGroupControl:
+          ☐ @colgroup
+          ☐ span: @integer
+          BaseColControl:
+            ☐ @col
+            ☐ span: @integer 
+      BaseSelectControl: 
+        ☐ @select
+        ☐ @string autocomplete
+        ☐ @boolean multiple
+        ☐ @integer size: # of rows
+        ☐ @key [Shift] select multiple
+        ☐ @key [Ctrl] select non-contigious
+        ☐ @key [Up] [Down] keys
+        ☐ @key [Space] toggles selected options
+        ComboBoxControl: 
+          ☐ @input control with a popup (listbox, grid, tree, dialog)
+          ☐ aria-expanded: true when open
+          ☐ @key [Alt] + [Down]: if popup available but not displaced display popup, do not change focus
+          ☐ @key [Alt] + [Up]: if popup has focus return focus to combobox, otherwise close popup
+          ☐ @key [Enter] if combobox is editable and autocomplete suggestion is selected in popup, accept suggestion by placing cursor at the end fo the accepted value or performing a default action
+          ☐ text-input auto-suggest
+        ListBoxControl:
+          ☐ restricted-values
+          ☐ role: listbox
+            ☐ aria-multiselectable
+            ☐ role/children: @option
+              ☐ aria-selected: true if selected
+              ☐ aria-selected: false if unselected 
+              ☐ aria-selected: undefined if not selectable
+            ☐ onFocus: 1st item selected if nothing else is
+            ☐ @key [Up][Down] navigate the list
+            ☐ @key [Shift] + [Up]/[Down] extends selection 
+            ☐ @key [A-Za-z]* navigate to list item 
+            ☐ @key [Shift][F10] open context menu
+            ☐ @key [Space] toggle check (if checkable) toggle selection (if selectable])
+            ☐ @key [Shift] + [Space] = select contiguous items 
+            ☐ @key [Ctrl] + [Arrow] - moves without selecting
+            ☐ @key [Ctrl] + [Space] - select non-contiguous
+            ☐ @key [Ctrl] + [Up/Down] 
+            ☐ @key [Home] focus to first option
+            ☐ @key [End] focus to last option 
+            ☐ @key [Ctrl] [Shift] [Home] - select focused option and all up to the first option
+            ☐ @key [Ctrl] [Shift] [End] - select focused option and all up to the last option
+            ☐ @low checkbox, link, or other method be included to select all
+              ☐ [Ctrl] + [A] performs same action
+            
+      BaseTextAreaControl: 
+        ☐ @integer rows 
+        ☐ @integer cols
+        ☐ autocapitalize: sentences, words, characters, none
+        ☐ autocomplete
+        ☐ @string autocorrect: "on", "off" 
+        ☐ @string spellcheck: "true", "default", "false"
+        ☐ resizable: true is default "textarea { resize: none }"
+               
+      BaseMeterControl:
+        ☐ @meter
+        ☐ @integer min: #
+        ☐ @integer max: #
+        ☐ @integer low: #
+        ☐ @integer high: #
+        ☐ @integer optimum: #
+        ☐ @integer value: #
+      BaseOptGroupControl:
+        ☐ @optgroup
+        ☐ disabled
+        ☐ @string label
+      BaseOutputControl:
+        ☐ <output>
+        ☐ for: space-sep-list of controls
+      BaseProgressControl:
+        ☐ <progress>
+        ☐ max: #
+        ☐ value: #
+        ☐ for a loading page use aria-describedby & aria-busy
+      BaseAttachmentControl:
+        ☐ AttachmentFrameControl
+          ☐ PDFControl: <iframe> @pdf 
+          ☐ ImgControl: <img> @png @gif @jpg @svg
+      ☐ BaseCollectionControl @component 
+        ☐ ListControl
+        ☐ DictionaryControl
+        ☐ SetControl
+        ☐ 
+    ☐ DTOs
+      ☐ $dto
+        ☐ $address

@@ -1,3 +1,7 @@
+// DTO $dto$auction$lot
+// FIXME $dto$auction$lot 
+
+
 const lotSchema = {
     name: 'lot',
     primaryKey: '_id',

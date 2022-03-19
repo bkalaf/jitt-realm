@@ -2,6 +2,7 @@ import { EnhNumber } from '../../../common/types/EnhNumber';
 import { IEnhNumber } from '../../../common/types/IEnhNumber';
 import { I$dto$cost } from './I$dto$cost';
 
+// DTO $dto$cost
 export const costSchema = {
     name: 'cost',
     embedded: true,

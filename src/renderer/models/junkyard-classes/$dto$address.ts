@@ -2,7 +2,7 @@ import { I$dto$address } from './I$dto$address';
 import { ProvinceCode } from "./ProvinceCode";
 import { CountryCode } from "./CountryCode";
 
-//TODO: $dto$address 
+// DTO: $dto$address 
 
 const schema = {
     name: 'address',

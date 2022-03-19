@@ -20,15 +20,7 @@ export type auctionSite = {
     website?: string;
 };
 
-export const auctionSiteSchema = {
-    name: 'auction-site',
-    primaryKey: '_id',
-    properties: {
-        _id: 'objectId',
-        name: 'string',
-        website: 'string?'
-    }
-};
+
 
 // export type cost = {
 //     bid: number;
@@ -47,18 +39,7 @@ export type facility = {
     selfStorage?: selfStorage;
 };
 
-export const facilitySchema = {
-    name: 'facility',
-    primaryKey: '_id',
-    properties: {
-        _id: 'objectId',
-        address: 'address',
-        email: 'string?',
-        facilityNumber: 'string?',
-        phoneNumber: 'string?',
-        selfStorage: 'self-storage'
-    }
-};
+
 
 export type fileInfo = {
     _id: Realm.BSON.ObjectId;
@@ -76,40 +57,9 @@ export type fileInfo = {
     type?: string;
 };
 
-export const fileSchema = {
-    name: 'file',
-    primaryKey: '_id',
-    properties: {
-        _id: 'objectId',
-        createDate: 'date',
-        data: 'data',
-        hash: 'string',
-        ids: 'string{}',
-        isUnassigned: 'bool',
-        itemType: 'string?',
-        location: 'file-location',
-        mimeType: 'string',
-        modifiedDate: 'date',
-        size: 'int',
-        type: 'string?'
-    }
-};
 
-export type fileLocation = {
-    drive?: string;
-    filename: string;
-    folder: string;
-};
 
-export const fileLocationSchema = {
-    name: 'file-location',
-    embedded: true,
-    properties: {
-        drive: 'string?',
-        filename: 'string',
-        folder: 'string'
-    }
-};
+
 
 export type lot = {
     _id: Realm.BSON.ObjectId;
@@ -126,23 +76,7 @@ export type lot = {
     unitSize?: string;
 };
 
-export const lotSchema = {
-    name: 'lot',
-    primaryKey: '_id',
-    properties: {
-        _id: 'objectId',
-        auctionID: 'string?',
-        auctionSite: 'auction-site',
-        cleanout: 'int?',
-        closeDate: 'date',
-        cost: 'cost',
-        facility: 'facility',
-        invoice: 'file',
-        size: 'string?',
-        unit: 'string?',
-        unitSize: 'string?'
-    }
-};
+
 
 export type selfStorage = {
     _id: Realm.BSON.ObjectId;
@@ -152,19 +86,6 @@ export type selfStorage = {
     facilities: facility[];
 };
 
-export const selfStorageSchema = {
-    name: 'self-storage',
-    primaryKey: '_id',
-    properties: {
-        _id: 'objectId',
-        name: 'string',
-        website: 'string?',
-        facilities: {
-            type: 'linkingObjects',
-            objectType: 'facility',
-            property: 'selfStorage'
-        }
-    }
-};
+
 
 export const Schema = [$dto$address, $dto$cost, auctionSiteSchema, facilitySchema, fileSchema, fileLocationSchema, lotSchema, selfStorageSchema];

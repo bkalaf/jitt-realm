@@ -3,6 +3,8 @@ import { ObjectSchema } from 'realm';
 import { replaceAll } from '../../../common/text/replaceAll';
 import config from './../../../../config.json';
 
+// DTO $dto$file$location
+
 const schema = {
     name: 'file-location',
     embedded: true,

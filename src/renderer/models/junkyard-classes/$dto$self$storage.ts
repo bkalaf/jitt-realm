@@ -1,3 +1,5 @@
+// DTO $dto$self$storage
+
 const selfStorageSchema = {
     name: 'self-storage',
     primaryKey: '_id',

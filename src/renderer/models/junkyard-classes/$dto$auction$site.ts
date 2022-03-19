@@ -1,3 +1,5 @@
+// DTO $dto$auction$site
+
 const auctionSiteSchema = {
     name: 'auction-site',
     primaryKey: '_id',
