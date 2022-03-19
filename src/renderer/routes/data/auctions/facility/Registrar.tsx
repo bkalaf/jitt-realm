@@ -3,8 +3,9 @@ import { countryMap } from '../../../../db/enums/CountryISO2';
 import { provinceMap } from '../../../../db/enums/Provinces';
 import { TableRowFunction } from '../../../../layout/references';
 import { InputControl, OutputControl, SelectControl, TextInputControl, TextOutputControl } from '../../../controls';
-import { addressConvertIn, addressInitial } from '../../../embedded/address';
-import { Cost, costConvertTo, costInitial } from '../../../embedded/cost';
+import { addressConvertIn } from "../../../embedded/addressConvertIn";
+import { addressInitial } from "../../../embedded/addressInitial";
+import { costInitial, costConvertTo, Cost } from '../../../embedded/cost';
 import { fileLocationConvertIn, FileLocationHeaders, fileLocationInitial, FileLocationRow } from '../../files/fileInfo/fileLocation';
 
 export class Registrar {

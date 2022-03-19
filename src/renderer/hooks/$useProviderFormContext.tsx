@@ -5,9 +5,10 @@ import { getAssocPath } from '../../common/obj/getAssocPath';
 import { setAssocPath } from '../../common/obj/setAssocPath';
 import { useRecordType } from './useRecordType';
 import { IFormContext2 } from '../db/IFormContext2';
+import { ignore } from '../../common/ignore';
 
 export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc extends Record<string, any>>(realm: Realm, initializer?: Initializer<T>): IFormContext2<T, TCalc> {
-    const [type, { convertTo, init }] = useRecordType();
+    const [type, { convertTo, init }] = ['', { convertTo: ignore, init: ignore as any}];
     const [formData, setFormData] = React.useState(initializer ?? init());
     const [calcObject, setCalcObject] = React.useState({} as TCalc);
     const calculations = React.useRef<Map<string, (x: T, y: TCalc) => string>>(new Map());
@@ -68,10 +69,10 @@ export function $useProvideFormContext<T extends { _id: BSON.ObjectId }, TCalc e
     }, [navigate]);
     const onSubmit = React.useCallback(() => {
         realm.write(() => {
-            const result = realm.create<T>(type, convertTo(formData, realm) as T, Realm.UpdateMode.Modified);
+            const result = realm.create<T>(type, formData as T, Realm.UpdateMode.Modified);
             navigate(result._id.toHexString());
         });
-    }, [convertTo, formData, navigate, realm, type]);
+    }, [formData, navigate, realm, type]);
     const onReset = React.useCallback(() => {
         setFormData(memoized.current);
     }, []);

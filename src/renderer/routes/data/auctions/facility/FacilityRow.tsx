@@ -1,14 +1,14 @@
 import { provinceMap } from '../../../../db/enums/Provinces';
 import { countryMap } from '../../../../db/enums/CountryISO2';
-import { Facility } from './Facility';
 import { RowHeadCell } from '../../../controls/index';
+import { Facility } from './Facility';
 
 export function FacilityRow({ data, typeName, index }: { data: Realm.Object & Facility; index: number; typeName: string }) {
     return (
         <tr key={index} data-id={data._id.toHexString()}>
             <RowHeadCell scope='row' data={data} />
             <td>{data.name}</td>
-            <td>{data.selfStorage?.name}</td>
+            <td>{(data.selfStorage as any)?.name}</td>
             <td>{data.facilityNumber}</td>
             <td>{data.phoneNumber}</td>
             <td>{data.email}</td>

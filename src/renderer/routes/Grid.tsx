@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SortDescriptor } from 'realm';
+import { FacilityDTO } from './data/auctions/facility';
 import { SelfStorageDTO } from './data/auctions/selfStorage/index';
 
 export function Grid<T>({
@@ -20,9 +21,9 @@ export function Grid<T>({
     console.log('pulling data for', typeName);
     useEffect(() => {
         console.log('useEffect');
-        const query = Array.from(realm.objects<T>(typeName).sorted(sort));
+        const query = Array.from(realm.objects<FacilityDTO>(typeName).sorted(sort));
         console.log(`query`, query);
-        setData(query);
+        setData(query as any);
     }, [realm, sort, typeName]);
     return (
         <main className=''>

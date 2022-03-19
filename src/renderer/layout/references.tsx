@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { SortDescriptor } from 'realm';
 import { identity } from '../../common/identity';
-import { countryMap } from '../db/enums/CountryISO2';
+import { CountryISO2, countryMap } from '../db/enums/CountryISO2';
 import { provinceMap } from '../db/enums/Provinces';
 import { $$names, FieldSetControl, InputControl, OutputControl, RowHeadCell, SelectControl, TextInputControl, TextOutputControl } from '../routes/controls/index';
 import { facilityConvertIn } from '../routes/data/auctions/facility/index';
 import { SelfStorageHeaders } from '../routes/data/auctions/selfStorage/SelfStorageHeaders';
 import { selfStorageConvertIn, selfStorageInitial } from '../routes/data/auctions/selfStorage/SelfStorageInsertForm';
 import { SelfStorageRow } from '../routes/data/auctions/selfStorage/SelfStorageRow';
-import { addressConvertIn, addressInitial } from '../routes/embedded/address';
+import { addressConvertIn } from "../routes/embedded/addressConvertIn";
+import { addressInitial } from "../routes/embedded/addressInitial";
 import { FacilityHeader } from '../routes/data/auctions/facility/FacilityHeader';
 import { FacilityRow } from '../routes/data/auctions/facility/FacilityRow';
 import { DTO } from '../routes/providers/InsertFormCtxt';
@@ -21,8 +22,43 @@ import { File$, FileDTO } from '../routes/data/files/fileInfo';
 import { lotConvertTo } from '../routes/data/auctions/lot/lotConvertTo';
 import { lotInitial } from '../routes/data/auctions/lot/lotInitial';
 import { useEffect, useRef } from 'react';
+import { deepCopy } from '../routes/forms/deepCopy';
+import { $countries } from '../hooks/useProvideDataLists';
+import { Brand } from '../routes/data/products/brand';
 
+export type BrandProxy = {
+    _id: string;
+    name: string;
+    country: CountryISO2;
+    aliases: string[];
+    parent?: BrandProxy;
+    childs: BrandProxy[];
+};
 export const $reference: Record<string, { initial: (realm?: Realm | undefined) => any; convertTo: (x: any, realm?: Realm) => any; children: JSX.Element[] }> = {
+    [$$names.products.brands]: {
+        initial: (realm?: Realm) => {
+            const dto = {} as BrandProxy;
+            dto._id = new ObjectId().toHexString();
+            dto.name = '';
+            dto.country = 'US';
+            dto.aliases = [];
+            dto.childs = [];
+            dto.parent = undefined;
+            return dto;
+        },
+        convertTo: (obj: any, realm: Realm) => {
+            const result = deepCopy(obj);
+            result._id = new ObjectId(obj._id);
+            result.parent = lookupObject(realm, $$names.products.brands)(obj.parent);
+            result.childs = obj.childs.map((x: any) => lookupObject(realm, $$names.products.brands)(x));
+            return result;
+        },
+        children: [
+            <InputControl key={1} name='name' displayName='Name' />,
+            <SelectControl key={2} name='parent' display='Parent' optionLabel={(x) => x.name} lookup={$$names.products.brands} />,
+            <InputControl key={3} name='country' displayName='Country' list={$countries} />
+        ]
+    },
     [$$names.embedded.address]: {
         initial: addressInitial,
         convertTo: addressConvertIn,
@@ -95,10 +131,26 @@ export const $reference: Record<string, { initial: (realm?: Realm | undefined) =
             <SelectControl key={10} name='invoice' lookup={$$names.files.file} filtered='isUnassigned == true' optionLabel={(x: File$) => x.location.filename} />
         ]
     }
-};
+} as any;
 
 console.log($reference);
 export type TableRowFunction = <T extends DTO>(props: { data: Realm.Object & T; index: number; typeName: string }) => JSX.Element;
+
+const c = Object.entries(provinceMap);
+
+const pc = new RegExp("^[0-9]{5}(-?[0-9]{4})?$|^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][ -]?[0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9]$");
+console.log(pc.test('92111'));
+console.log(pc.test('921111234'));
+console.log(pc.test('92111-1234'));
+console.log(pc.test('92111-1'));
+console.log(pc.test('92111 1234'));
+console.log(pc.test('0912'));
+console.log(pc.test('A1A1A1'));
+console.log(pc.test('A1A 1A1'));
+console.log(pc.test('A101A1'));
+console.log(pc.test('A1A-1A1'));
+console.log(pc.test('Z1A1A1'));
+
 export const $grid: Record<
     string,
     {
@@ -107,6 +159,36 @@ export const $grid: Record<
         TableRow: TableRowFunction;
     }
 > = {
+    [$$names.products.brands]: {
+        GridHeaders: () => (
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Aliases</th>
+                <th>Owner</th>
+                <th>Subsidiarys</th>
+            </tr>
+        ),
+        TableRow: function <T extends Brand>({ data, index }: { data: Realm.Object & T; index: number }) {
+            return (
+                <tr>
+                    <RowHeadCell data={data} />
+                    <td>{data.name}</td>
+                    <td>{data.country}</td>
+                    <td>{data.aliases}</td>
+                    <td>{data.parent?.name}</td>
+                    <td>
+                        <ul>
+                            {data.childs.map((x, ix) => (
+                                <li key={ix}>{x.name}</li>
+                            ))}
+                        </ul>
+                    </td>
+                </tr>
+            );
+        }
+    },
     [$$names.auctions.selfStorage]: {
         GridHeaders: SelfStorageHeaders,
         TableRow: SelfStorageRow as TableRowFunction,
@@ -178,4 +260,4 @@ export const $grid: Record<
             ['facility.selfStorage.name', false]
         ] as SortDescriptor[]
     }
-};
+} as any;

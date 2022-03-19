@@ -3,6 +3,8 @@ import { replaceAll } from '../../../../../common/text/replaceAll';
 import { ObjectId } from 'bson';
 import { lookupObject } from './lookupObject';
 import { $$datatypes, $$names } from '../../../controls/constants';
+import { createInit } from './createInit';
+import { IDTO } from './IDTO';
 const Registrar = JITTRegistrar;
 
 export class FacilityDTO {
@@ -11,10 +13,7 @@ export class FacilityDTO {
         primaryKey: '_id',
         properties: {
             _id: $$datatypes.objectId,
-            selfStorage: {
-                type: $$names.auctions.selfStorage,
-                optional: true
-            },
+            selfStorage: $$names.auctions.selfStorage,
             facilityNumber: $$datatypes.opt.string,
             address: {
                 type: $$names.embedded.address
@@ -23,6 +22,17 @@ export class FacilityDTO {
             phoneNumber: $$datatypes.opt.string
         }
     };
+    constructor() {
+        console.log(`THIS`, this);
+        const d: any = this as any;
+        d.email = '';
+        d.phoneNumber = '';
+        d.facilityNumber = '';
+        d.address = createInit('address');
+        d._id = new ObjectId();
+        console.log('THIS', d);
+    }
+    
     get name() {
         const dto = this as any;
         return `${dto.selfStorage?.name ?? ''} - ${dto.address?.city ?? ''}, ${dto.address?.state ?? ''} - ${dto.address?.street?.split(' ').slice(1).join(' ') ?? ''}`;
@@ -38,28 +48,6 @@ export const facilityConvertIn = (obj: any, realm?: Realm) => {
         address: Registrar.getConvert($$names.embedded.address)(obj.address),
         selfStorage: lookupObject(realm!, $$names.auctions.selfStorage)(obj.selfStorage)
     };
-};
-
-export const facilityInitial = () => {
-    // const result: Facility = {
-    //     _id: new ObjectId(),
-    //     phoneNumber: '',
-    //     email: '',
-    //     address: {
-    //         street: '',
-    //         suite: '',
-    //         city: '',
-    //         state: 'CA' as Provinces,
-    //         country: 'US' as CountryISO2,
-    //         postal: ''
-    //     },
-    //     facilityNumber: '',
-    //     selfStorage: undefined as SelfStorage | undefined
-    // } as any;
-    //
-    // console.log(`result: `, result);
-    // console.log(`facility.name: `, result.name);
-    // return result;
 };
 
 export function compR<T, U, V>(f: (x: T) => U, g: (x: U) => V) {

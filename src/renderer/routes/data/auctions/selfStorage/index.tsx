@@ -1,12 +1,6 @@
-import { ObjectId } from 'bson';
 import { $$names, $$datatypes } from '../../../controls/index';
+import { SelfStorage } from './SelfStorage';
 
-export type SelfStorage = {
-    _id: ObjectId;
-    name: string;
-    website?: string;
-    facilities: Realm.Object[];
-};
 export class SelfStorageDTO {
     static schema = {
         name: $$names.auctions.selfStorage,

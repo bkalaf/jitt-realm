@@ -3,7 +3,6 @@ import { useField } from '../../hooks/useField';
 import { Indicators } from './Indicators';
 import { Span } from './Span';
 import { identity } from '../../../common/identity';
-import { facilityInitial } from '../data/auctions/facility/index';
 import { InputControl } from '.';
 import { useControl } from './useControl';
 import { ClonedProps } from "./ClonedProps";

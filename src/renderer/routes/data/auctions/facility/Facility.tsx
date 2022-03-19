@@ -1,6 +1,5 @@
-import { SelfStorage } from '../selfStorage';
-import { Address } from '../../../embedded/address';
 import { ObjectId } from 'bson';
+import { Address } from '../../../embedded/Address';
 
 export type Facility = {
     _id: ObjectId;
@@ -8,6 +7,6 @@ export type Facility = {
     email?: string;
     phoneNumber?: string;
     address?: Address;
-    selfStorage?: SelfStorage;
+    selfStorage?: Realm.Object;
     get name(): string;
 };

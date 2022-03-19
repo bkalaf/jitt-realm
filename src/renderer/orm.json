@@ -1,0 +1,67 @@
+{
+    "address": [
+        {
+            "name": "street",
+            "displayName": "Street",
+            "type": "string?",
+            "default": "undefined",
+            "props": {
+                "autoComplete": "street",
+                "type": "text"
+            }
+        },
+        {
+            "name": "suite",
+            "displayName": "Suite",
+            "default": "undefined",
+            "type": "string?",
+            "props": {
+                "type": "text"
+            }
+        },
+        {
+            "name": "city",
+            "displayName": "City",
+            "type": "string",
+            "default": "''",
+            "props": {
+                "type": "text",
+                "autoComplete": "city",
+                "required": true
+            }
+        },
+        {
+            "name": "state",
+            "displayName": "State/Province",
+            "type": "string",
+            "default": "CA",
+            "props": {
+                "lookup": "provinceMap",
+                "autoComplete": "state",
+                "required": true
+            }
+        },
+        {
+            "name": "country",
+            "displayName": "Country",
+            "type": "string",
+            "default": "US",
+            "props": {
+                "lookup": "countryMap",
+                "autoComplete": "country",
+                "required": true
+            }
+        },
+        {
+            "name": "postal",
+            "displayName": "Zip/Postal Code",
+            "type": "string?",
+            "default": "undefined",
+            "props": {
+                "type": "text",
+                "autoComplete": "postalCode",
+                "pattern": "^[0-9]{5}(-?[0-9]{4})?$|^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][ -]?[0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9]$"
+            }
+        }
+    ]
+}

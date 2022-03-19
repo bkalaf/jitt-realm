@@ -1,4 +1,4 @@
-import { $$Schema, schema } from '../../db/index';
+import { $$Schema } from '../../db/index';
 import { LookupCell } from './LookupCell';
 import { ListCell } from './ListCell';
 import { IntCell } from './IntCell';

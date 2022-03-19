@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { SelfStorage } from '../routes/data/auctions/selfStorage/index';
+import { SelfStorage } from "../routes/data/auctions/selfStorage/SelfStorage";
 import { useNavigate } from 'react-router-dom';
 import { useMap } from './useMap';
 import { Result } from "./Result";

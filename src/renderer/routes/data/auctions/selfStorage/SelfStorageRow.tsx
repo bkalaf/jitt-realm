@@ -1,6 +1,6 @@
 import { faKey } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SelfStorage } from './index';
+import { SelfStorage } from "./SelfStorage";
 
 export function SelfStorageRow({ data, index, typeName }: { data: Realm.Object & SelfStorage; index: number; typeName: string }) {
     const id = `${typeName}-#${index}`;

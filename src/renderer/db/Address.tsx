@@ -10,9 +10,6 @@ import { $countries, $provinces } from '../hooks/useProvideDataLists';
 import { ifEmpty } from '../../common/src/ifEmpty';
 import { ForwardComponents } from './$FC';
 
-/**
- * @deprecated
- */
 export class Address {
     static schema: Realm.ObjectSchema = {
         name: 'Address',
