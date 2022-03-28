@@ -1,5 +1,5 @@
 import { usePreventDefault } from '../hooks/usePreventDefault';
-import { useTheme } from '../providers/useTheme';
+import { useTheme } from '../hooks/useTheme';
 import { ButtonGroup } from '../components/footer/ButtonGroup';
 import { FormButton } from '../components/footer/FormButton';
 import { useForm2 } from '../hooks/useForm2';

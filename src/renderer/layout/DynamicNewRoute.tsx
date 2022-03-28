@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router';
-import { InsertForm } from './Viewport';
+import { InsertForm } from "./InsertForm.1";
 
 export function DynamicNewRoute({ realm }: { realm: Realm }) {
     console.log('DynamicNewRoute');

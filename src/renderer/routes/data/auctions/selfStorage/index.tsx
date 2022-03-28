@@ -7,6 +7,7 @@ export class SelfStorageDTO {
         primaryKey: '_id',
         properties: {
             _id: $$datatypes.objectId,
+            id: $$datatypes.int,
             name: $$datatypes.string,
             website: $$datatypes.opt.string,
             facilities: {

@@ -3,7 +3,7 @@ import Realm from 'realm';
 import { ObjectId } from 'bson';
 import { $Facility, Facility } from './Facility';
 import { faKey } from '@fortawesome/pro-regular-svg-icons';
-import { useTheme } from '../providers/useTheme';
+import { useTheme } from '../hooks/useTheme';
 import { HTMLInputTypeAttribute, useDebugValue } from 'react';
 import { ObjectIdField } from './ObjectIdField';
 import { TextField } from './TextField';

@@ -13,6 +13,7 @@ export class FacilityDTO {
         primaryKey: '_id',
         properties: {
             _id: $$datatypes.objectId,
+            id: $$datatypes.int,
             selfStorage: $$names.auctions.selfStorage,
             facilityNumber: $$datatypes.opt.string,
             address: {

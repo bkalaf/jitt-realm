@@ -1,67 +1,284 @@
 {
-    "address": [
-        {
-            "name": "street",
-            "displayName": "Street",
-            "type": "string?",
-            "default": "undefined",
-            "props": {
-                "autoComplete": "street",
-                "type": "text"
+    "address": {
+        "fields": {
+            "city": {
+                "default": "",
+                "displayName": "City",
+                "elementType": "input",
+                "index": 2,
+                "props": {
+                    "autoComplete": "city",
+                    "placeholder": "ex: Los Angeles",
+                    "required": true,
+                    "type": "text"
+                },
+                "type": [
+                    false,
+                    "string"
+                ]
+            },
+            "country": {
+                "default": "US",
+                "displayName": "Country",
+                "elementType": "select",
+                "index": 4,
+                "props": {
+                    "autoComplete": "country",
+                    "lookup": "countryMap",
+                    "required": true
+                },
+                "type": [
+                    false,
+                    "string"
+                ]
+            },
+            "postal": {
+                "default": "",
+                "displayName": "Zip/Postal Code",
+                "elementType": "input",
+                "index": 5,
+                "props": {
+                    "autoComplete": "postalCode",
+                    "pattern": "^[0-9]{5}(-?[0-9]{4})?$|^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][ -]?[0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9]$",
+                    "placeholder": "ex: 90210",
+                    "type": "text"
+                },
+                "type": [
+                    true,
+                    "string"
+                ]
+            },
+            "state": {
+                "default": "CA",
+                "displayName": "State/Province",
+                "elementType": "select",
+                "index": 3,
+                "props": {
+                    "autoComplete": "state",
+                    "lookup": "provinceMap",
+                    "required": true
+                },
+                "type": [
+                    false,
+                    "string"
+                ]
+            },
+            "street": {
+                "default": "",
+                "displayName": "Street",
+                "elementType": "input",
+                "index": 0,
+                "props": {
+                    "autoComplete": "street",
+                    "placeholder": "ex: 1234 Main St",
+                    "type": "text"
+                },
+                "type": [
+                    true,
+                    "string"
+                ]
+            },
+            "suite": {
+                "default": "",
+                "displayName": "Suite",
+                "elementType": "input",
+                "index": 1,
+                "props": {
+                    "placeholder": "ex: 123-B",
+                    "type": "text"
+                },
+                "type": [
+                    true,
+                    "string"
+                ]
             }
         },
-        {
-            "name": "suite",
-            "displayName": "Suite",
-            "default": "undefined",
-            "type": "string?",
-            "props": {
-                "type": "text"
+        "name": "address",
+        "objectKind": [
+            true
+        ],
+        "sort": [
+            [
+                "state",
+                false
+            ],
+            [
+                "city",
+                false
+            ]
+        ]
+    },
+    "facility": {
+        "fields": {
+            "address": {
+				"index": 2,
+                "type": [
+                    false,
+					"object",
+                    "address"
+                ],
+				"elementType": "fieldset",
+				"displayName": "Address"
+            },
+            "email": {
+				"index": 4,
+                "type": [
+                    true,
+                    "string"
+                ],
+				"elementType": "input",
+				"displayName": "E-mail",
+				"props": {
+					"type": "email"
+				}
+            },
+            "facilityNumber": {
+				"index": 3,
+                "type": [
+                    true,
+                    "string"
+                ],
+				"elementType": "input",
+				"displayName": "Facility Number",
+				"props": {
+					"type": "text"
+				}
+            },
+            "id": {
+                "index": 0,
+                "type": [
+                    false,
+                    "int"
+                ],
+				"elementType": "input",
+				"displayName": "ID",
+				"props": {
+					"required": true,
+					"readOnly": true,
+					"type": "text"
+				}
+            },
+            "phoneNumber": {
+				"index": 5,
+                "type": [
+                    true,
+                    "string"
+                ],
+				"displayName": "Phone Number",
+				"elementType": "input",
+				"format": "(x) => ['(', x.substring(0, 3), ')', x.substring(3, 6), '-', x.substring(6)].join('')",
+				"props": {
+					"type": "tel"
+				}
+            },
+            "selfStorage": {
+				"index": 1,
+				"elementType": "select",
+				"displayName": "Self Storage",
+				"props": {
+					"lookup": "self-storage",
+					"optionMap": "(x) => x.name"
+				},
+				"type": [
+					true,
+					"object",
+					"self-storage"
+				]
             }
         },
-        {
-            "name": "city",
-            "displayName": "City",
-            "type": "string",
-            "default": "''",
-            "props": {
-                "type": "text",
-                "autoComplete": "city",
-                "required": true
+        "name": "facility",
+        "objectKind": [
+            false,
+            "_id"
+        ],
+        "sort": [
+            [
+                "selfStorage.name",
+                false
+            ],
+            [
+                "address.state",
+                false
+            ],
+            [
+                "address.city",
+                false
+            ]
+        ]
+    },
+    "self-storage": {
+        "fields": {
+            "facilities": {
+                "displayName": "Facilities",
+                "elementType": "select",
+                "index": 3,
+                "init": "() => []",
+                "props": {
+                    "lookup": "facility",
+                    "multiple": true,
+                    "size": 4
+                },
+                "type": [
+                    true,
+                    "linkingObjects",
+                    "facility",
+                    "selfStorage"
+                ]
+            },
+            "id": {
+                "default": 0,
+                "displayName": "ID",
+                "elementType": "input",
+                "format": "x => x.padStart('0', 8)",
+                "index": 0,
+                "props": {
+                    "readOnly": true,
+                    "required": true,
+                    "type": "text"
+                },
+                "type": [
+                    false,
+                    "int"
+                ]
+            },
+            "name": {
+                "default": "",
+                "displayName": "Name",
+                "elementType": "input",
+                "index": 1,
+                "props": {
+                    "required": true,
+                    "type": "text"
+                },
+                "type": [
+                    false,
+                    "string"
+                ]
+            },
+            "website": {
+                "default": "() => ''",
+                "displayName": "Website",
+                "elementType": "input",
+                "index": 2,
+                "props": {
+                    "type": "url"
+                },
+                "type": [
+                    true,
+                    "string"
+                ]
             }
         },
-        {
-            "name": "state",
-            "displayName": "State/Province",
-            "type": "string",
-            "default": "CA",
-            "props": {
-                "lookup": "provinceMap",
-                "autoComplete": "state",
-                "required": true
-            }
-        },
-        {
-            "name": "country",
-            "displayName": "Country",
-            "type": "string",
-            "default": "US",
-            "props": {
-                "lookup": "countryMap",
-                "autoComplete": "country",
-                "required": true
-            }
-        },
-        {
-            "name": "postal",
-            "displayName": "Zip/Postal Code",
-            "type": "string?",
-            "default": "undefined",
-            "props": {
-                "type": "text",
-                "autoComplete": "postalCode",
-                "pattern": "^[0-9]{5}(-?[0-9]{4})?$|^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][ -]?[0-9][ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9]$"
-            }
-        }
-    ]
+        "name": "self-storage",
+        "objectKind": [
+            false,
+            "_id"
+        ],
+        "sort": [
+            [
+                "name",
+                false
+            ]
+        ]
+    }
 }

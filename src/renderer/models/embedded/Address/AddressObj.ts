@@ -1,11 +1,9 @@
-import { I$dto$address } from './I$dto$address';
-import { ProvinceCode } from "./ProvinceCode";
-import { CountryCode } from "./CountryCode";
-
-// DTO: $dto$address 
+import { ProvinceCode } from './ProvinceCode';
+import { CountryCode } from './CountryCode';
+import { ROUTES } from '../../junkyard-classes';
 
 const schema = {
-    name: 'address',
+    name: ROUTES.$.ADDRESS,
     embedded: true,
     properties: {
         city: 'string?',
@@ -16,7 +14,9 @@ const schema = {
         suite: 'string?'
     }
 };
-export class $dto$address implements I$dto$address {
+
+// DTO db.$.address
+export class AddressObj {
     static schema = schema;
     public street?: string;
     public suite?: string;

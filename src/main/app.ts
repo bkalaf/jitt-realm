@@ -39,3 +39,12 @@ app.whenReady()
         mainWindow?.webContents.openDevTools();
         mainWindow?.maximize();
     });
+    
+app.on('render-process-gone', (event, webContents, details) => {
+    console.log(event);
+    process.stdout.write(JSON.stringify(event));
+    console.log(webContents);
+    process.stdout.write(JSON.stringify(webContents));
+    console.log(details);
+    process.stdout.write(JSON.stringify(details));
+});

@@ -1,8 +1,9 @@
 import { useLocation } from 'react-router';
 import { DataReader } from '../../common/resource';
+import { Toaster } from '../components/portions/toaster';
 import { Boundary } from '../components/suspense/Boundary';
 import { Menu } from './Menu';
-import { Viewport } from './Viewport';
+import { Viewport } from "./Viewport.1";
 
 export function Frame({ realm }: { realm: DataReader<Realm> }) {
     const location = useLocation();
@@ -18,6 +19,7 @@ export function Frame({ realm }: { realm: DataReader<Realm> }) {
                     <span className='inline-flex py-0.5 px-2 bg-red text-white'>{location.pathname}</span>
                 </div>
             </div>
+            <Toaster />
         </Boundary>
     );
 }

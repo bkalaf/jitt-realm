@@ -1,7 +1,10 @@
 import { useContext, useMemo } from 'react';
-import { useThemeSetting } from '../hooks/useThemeSetting';
-import { ThemeContext } from './ThemeProvider';
+import { useThemeSetting } from './useThemeSetting';
+import { ThemeContext } from '../providers/ThemeProvider';
 
+/**
+ * @deprecated
+ */
 export function useTheme(obj?: Record<string, boolean>, className?: string, ...path: string[]) {
     const theme = useContext(ThemeContext)!;
     const setting = useMemo(() => path.reduce((pv, cv) => pv[cv], theme as Record<string, any>), [path]);

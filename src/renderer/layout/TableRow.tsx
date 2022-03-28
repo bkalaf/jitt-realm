@@ -9,7 +9,7 @@ import { useCallback, useMemo } from 'react';
 import { Cell } from './Cell';
 import { CellSwitcher } from './datatypes/CellSwitcher';
 import { DropdownCell } from './datatypes/DropdownCell';
-import { useTheme } from '../providers/useTheme';
+import { useTheme } from '../hooks/useTheme';
 
 export function TableRow<T extends Objects, TElement extends DataEntryElement>({
     infos,

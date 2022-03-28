@@ -53,6 +53,7 @@ export class LotDTO {
         primaryKey: '_id',
         properties: {
             _id: $$datatypes.objectId,
+            id: $$datatypes.int,
             auctionID: $$datatypes.opt.string,
             auctionSite: $$names.auctions.auctionSite,
             facility: $$names.auctions.facility,

@@ -1,4 +1,4 @@
-import { useTheme } from '../providers/useTheme';
+import { useTheme } from '../hooks/useTheme';
 import { camelToTitleCase } from '../../common/text/camelToTitleCase';
 import { $useControl } from '../hooks/$useControl';
 import { $useThemeClassNames } from './SelfStorage';

@@ -1,4 +1,4 @@
-import { useTheme } from '../../providers/useTheme';
+import { useTheme } from '../../hooks/useTheme';
 
 export function FormButton({ children, ...remain }: { children?: Children } & React.ComponentPropsWithoutRef<'button'>) {
     return (

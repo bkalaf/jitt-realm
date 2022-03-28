@@ -36,6 +36,7 @@ export class FileDTO {
         primaryKey: '_id',
         properties: {
             _id: 'objectId',
+            int: 'int',
             size: 'int',
             createDate: 'date',
             modifiedDate: 'date',

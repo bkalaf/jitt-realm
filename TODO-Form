@@ -1,0 +1,59 @@
+Projects: 
+    JITT: 
+        Data:
+            Routes:
+                ☐ [:type] EntityStack
+                ☐ [index] Grid
+                ☐ [new] Create
+                ☐ [:id] Modify
+        EntityStackContext:
+            + type: string
+            + dotNotation: string[]
+            + realm: Realm
+            useRealm:
+                ☐ @hook
+                + startTransaction(): () => void;
+                + createRecord<T>(type).usingDTO(insertion)
+                + deleteRecord<T>(type).where(predicate)
+                + deleteRecords<T>(type).where(predicate)
+                + updateRecord<T>(type).where(predicate).usingDTO(partial)
+                + updateRecords<T>(type).where(predicate).usingDTO(partial)
+                + queryType<T>(type): LinkedObject<T>[];
+                + queryRecord<T>(type).where(predicate);
+                + queryRecords<T>(type).where(predicate);
+                + queryByPrimaryKey<T>(type)(pk): LinkedObject<T>;
+                + query(type).filter(filtered).sort(sorted).project(projection).page(pageSize);
+                + constructForeignKeyDropDown<T>(type).project(projection).sort(projection);
+                + constructFieldDropDown<T>(type)(columnName)
+                + db.getDTO<T>(type): Ctor;
+                + db.getTypeInfo<T>(type): TypeInfo;
+                + db.getFieldInfoFor<T>(type)(columnName): PropertyInfo;
+                + db.convertPropertyValue<T>(type)(columnName): T;
+                + db.stringifyPropertyValue<T>(type)(columnName): string;
+                + db.orm;
+                + db.loadJSON(): void;
+            TypeInfo:
+                name: string;
+                category: string;
+                pk: string;
+                displayName: string;
+                objectClass: ObjectClass
+                sort: SortDescriptor[]
+                (columnName) => { name: string; displayName: string; parse: (x: any) => any, stringify: (x: any) => any, props: any }
+                (info) => GridHeaders
+                (info) => TableRow 
+                (info) => InsertControls
+                (info) => EditControls
+            FieldInfo:
+                
+            useAutoIncrement:
+                * commit: () => void;
+                * rollback: () => void;
+                * incr: () => number;               
+            useEntityStack:
+                ☐ @hook
+            NewEntityProvider:
+            AddStackProvider:
+                + type: useParams()
+                + context: getPreviousContext()
+

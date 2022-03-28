@@ -257,6 +257,17 @@ Projects:
         ☐ DictionaryControl
         ☐ SetControl
         ☐ 
-    ☐ DTOs
-      ☐ $dto
-        ☐ $address
+    DTOs:
+      $dto:
+        embedded:
+          ✔ $address @done(22-03-19 11:42)
+          ✔ $cost @done(22-03-19 11:43)
+          ✔ $file-location @done(22-03-19 11:45)
+        $auction: 
+          ☐ $auction-lot
+          ☐ $auction-site
+          ☐ $facility
+          ✔ $self-storage @done(22-03-19 15:43)
+        $files:
+          ☐ $file-info
+

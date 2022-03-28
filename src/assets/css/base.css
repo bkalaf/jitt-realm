@@ -79,7 +79,7 @@
     }
 
     th {
-        @apply text-lg font-extrabold leading-loose tracking-wide text-white border-2 border-white rounded-md shadow-lg font-firaSans bg-blue-dark/90;
+        @apply mx-1 text-base font-extrabold leading-loose tracking-wide text-white border-2 border-white rounded-md shadow-lg font-firaSans bg-blue-dark/90;
     }
 
     th[scope='row'] {

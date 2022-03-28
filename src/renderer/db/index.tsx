@@ -7,8 +7,9 @@ import { FileLocationDTO } from '../routes/data/files/fileInfo/fileLocation';
 import { FileDTO } from '../routes/data/files/fileInfo';
 import { CostDTO } from '../routes/embedded/cost';
 import { AddressDTO } from '../dtos/AddressDTO';
+import { Identity } from './Identity';
 
-export const schema: Array<ObjectClass> = [SelfStorageDTO, AddressDTO, FacilityDTO, CostDTO, AuctionSiteDTO, LotDTO, FileLocationDTO, FileDTO];
+export const schema: Array<ObjectClass> = [SelfStorageDTO, AddressDTO, FacilityDTO, CostDTO, AuctionSiteDTO, LotDTO, FileLocationDTO, FileDTO, Identity];
 
 (globalThis as any).schema = schema;
 export const $$Schema: Record<string, JittClass<any>> = {

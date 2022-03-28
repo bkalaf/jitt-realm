@@ -1,16 +1,17 @@
 import Realm from 'realm';
 import config from './../../../config.json';
 import { useAsyncResource } from '../hooks/useAsyncResource';
-import { schema } from '../db/index';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useConnectivityStatus } from '../hooks/useConnectivityStatus';
+import { $$schemaOC, Reflector } from '../models';
+import { createReflection } from '../reflection/Reflection';
 
-function createRealm(app: Realm.App, credentials: string, isConnected: boolean) {
+function createRealm(app: Realm.App, credentials: string, isConnected: boolean): Promise<Realm> {
     try {
         if (isConnected) {
             return app.logIn(eval(credentials)).then((user) =>
                 Realm.open({
-                    schema: schema,
+                    schema: $$schemaOC,
                     path: config.realm.localRealmPath,
                     sync: {
                         user: user,
@@ -29,14 +30,23 @@ function createRealm(app: Realm.App, credentials: string, isConnected: boolean) 
                 })
             );
         }
+        const r = Realm.open({
+            schema: $$schemaOC,
+            path: config.realm.localRealmPath
+        }).then((realm) => {
+            (global as any).Reflector = Reflector.Get(realm, $$schemaOC);
+            console.log('GlobalThis');
+            console.log(((global as any).Reflector == null).toString());
+            (global as any).realm = realm;
+            console.log('DONE');
+            return realm;
+        }).catch(e => alert(e.message));
+        return r as any;
     } catch (error) {
         console.error((error as any).message);
+        alert((error as Error).message);
         throw error;
     }
-    return Realm.open({
-        schema: schema,
-        path: config.realm.localRealmPath
-    });
 }
 export function useProvideRealmContext() {
     const app = useRef(new Realm.App(config.realm.appID));

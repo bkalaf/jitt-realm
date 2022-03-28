@@ -46,7 +46,7 @@ export class EnhNumber {
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
     toLocaleString(locales?: string | string[] | Intl.Locale | Intl.Locale[], options?: Intl.NumberFormatOptions): string;
     toLocaleString(locales?: string | string[] | Intl.Locale | Intl.Locale[], options?: Intl.NumberFormatOptions): string {
-        return this.#value.toLocaleString(locales, options);
+        return this.#value.toLocaleString(locales as any, options as any);
     }
     get val(): number {
         return this.#value;

@@ -1,13 +1,11 @@
-import { Outlet, Route, Routes, useNavigate } from 'react-router';
-import { Boundary } from '../components/suspense/Boundary';
+/* eslint-disable @typescript-eslint/unbound-method */
+import { Outlet, Route, useNavigate } from 'react-router';
 import { useParams } from 'react-router';
 import { NewEmbeddedContext } from '../routes/providers/EmbeddedContext/index';
-import { Form } from '../routes/forms/Form';
-import { Bound } from '../routes/providers/EmbeddedContext/Bound';
 import { $grid, $reference } from './references';
 import { Grid } from '../routes/Grid';
 import { $$names, RowHeadCell } from '../routes/controls';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DynamicNewRoute } from './DynamicNewRoute';
 import { usePreventDefault } from '../hooks/usePreventDefault';
 import { File$, initial } from '../routes/data/files/fileInfo';
@@ -24,6 +22,7 @@ import { SimpleLookup } from '@controls/SimpleLookup';
 import { Lot } from '../routes/data/auctions/lot';
 import { faSquareCheck, faSquareDashed, faSquareQuestion } from '@fortawesome/pro-duotone-svg-icons';
 import { toDate } from './toDate';
+import { GridRoute, RouteBase } from '../viewport/routeBase';
 
 type View = React.FunctionComponent<{
     realm: Realm;
@@ -40,14 +39,6 @@ export function EditForm({ realm }: { realm: Realm }) {
         <div>
             <span>{id}</span>
         </div>
-    );
-}
-
-export function InsertForm(props: { type: string; children: Children; realm: Realm; initial: () => any; convertTo: (x: any, realm?: Realm) => any }) {
-    return (
-        <Bound>
-            <Form {...props} name='insert' drillOnSuccess></Form>;
-        </Bound>
     );
 }
 
@@ -70,35 +61,114 @@ export function DynamicGrid({ realm }: { realm: Realm }) {
     const { type } = useParams();
     return <Grid typeName={type ?? ''} realm={realm} {...$grid[type ?? '']} />;
 }
+
+// FIXME Fix index route to display grid element.
+
+export function toRouting(realm: Realm) {
+    return <Route path=':type' element={<RouteBase realm={realm} />}>
+        <Route path='new' element={<></>}></Route>
+        <Route path=':id' element={<></>}></Route>
+        <Route index element={<GridRoute realm={realm} />}></Route>
+    </Route>;
+}
 export function toRoute(realm: Realm) {
     return (
         <Route path=':type' element={<DynamicRouteBase realm={realm} />}>
             <Route path='new' element={<DynamicNewRoute realm={realm} />} />
             <Route path=':id' element={<EditForm realm={realm} />} />
-            <Route index element={<DynamicGrid realm={realm} />} />
+            <Route index element={<></>} />;
         </Route>
     );
+    // return (
+    //     <Route path=':type' element={<DynamicRouteBase realm={realm} />}>
+    //         <Route path='new' element={<DynamicNewRoute realm={realm} />} />
+    //         <Route path=':id' element={<EditForm realm={realm} />} />
+    //         <Route index element={<DynamicGrid realm={realm} />} />
+    //     </Route>
+    // );
 }
-export function Viewport({ realm }: { realm: Realm }) {
+
+export function DataViewer({
+    Headers,
+    Actions,
+    Body
+}: {
+    Actions: React.FunctionComponent<{ info: TypeData; children: Children }>;
+    Headers: React.FunctionComponent<{ info: TypeData }>;
+    Body: React.FunctionComponent<{ info: TypeData; data?: Realm.Object }>;
+}) {
+    const { type } = useParams();
+    const info = useMemo(() => global.getTypeInfo(type ?? ''), []);
     return (
-        <Boundary fallback={<div>Loading...</div>}>
-            <Routes>
-                <Route path={$$names.tier1.data}>
-                    <Route path='v1'>
-                        <Route path={$$names.tier2.auctions}>{toRoute(realm)}</Route>
-                        <Route path={$$names.tier2.files}>
-                            <Route path='new' element={<FileUpload realm={realm} />} />
-                            <Route index element={<FileGrid realm={realm} />} />
-                        </Route>
-                        <Route index element={<Outlet />} />
-                    </Route>
-                </Route>
-                <Route index element={<Outlet />} />
-            </Routes>
-        </Boundary>
+        <div className='w-full h-full'>
+            <Headers info={info} />
+            <Actions info={info}>
+                <Body info={info} />
+            </Actions>
+        </div>
     );
 }
 
+export function GridContainer({ children, info }: { children: Children; info: TypeData }) {
+    return <>{children}</>;
+}
+
+export function GridCell({ data, name, columnData }: { name: string; data: Realm.Object & Record<string, any>; columnData: ColumnData }) {
+    const {
+        elementType,
+        format,
+        type: [_isOptional, dataType, objectType]
+    } = columnData;
+    const value = useMemo(() => (format ? eval(format)(data[name]) : data[name]), []);
+    switch (elementType) {
+        case 'input':
+            return <td>{value}</td>;
+        case 'select': {
+            if (dataType === 'linkingObjects') {
+                return <td>{value.length}</td>;
+            }
+            return <td>{value}</td>;
+        }
+        case 'fieldset': {
+            const info = global.getTypeInfo(objectType ?? '');
+            return <GridMultiCell info={info} data={value} />;
+        }
+    }
+}
+export function GridMultiCell({ info, data }: { info: TypeData; data: Realm.Object & Record<string, any> }) {
+    const { fields } = info;
+    return (
+        <>
+            {Array.from(fields.entries()).map(([k, v]) => (
+                <GridCell key={v.index} name={k} columnData={v} data={data} />
+            ))}
+        </>
+    );
+}
+export function GridRow({ info, data }: { info: TypeData; data: Realm.Object & Record<string, any> }) {
+    return (
+        <tr>
+            <GridMultiCell info={info} data={data} />
+        </tr>
+    );
+}
+export function UnwrappedHeaders({ info }: { info: TypeData }): JSX.Element {
+    return (
+        <>
+            {Array.from(info.fields.entries())
+                .map(([k, v]) => ({ name: k, ...v }))
+                .sort((x) => x.index)
+                .map((x) => (x.elementType === 'fieldset' ? <UnwrappedHeaders info={global.getTypeInfo(x.type[2] ?? 'n/a')} /> : <th>{x.displayName}</th>))}
+        </>
+    );
+}
+export function GridHeaders({ info }: { info: TypeData }) {
+    return (
+        <tr>
+            <UnwrappedHeaders info={info} />
+        </tr>
+    );
+}
 export function FileHeaders() {
     return (
         <tr>

@@ -1,8 +1,134 @@
+import { IconDefinition } from '@fortawesome/pro-solid-svg-icons';
 import { ObjectId } from 'bson';
 import * as React from 'react';
-import { SortDescriptor } from 'realm';
+import { ObjectClass, SortDescriptor } from 'realm';
+import { AutoComplete } from './renderer/routes/enums/AutoComplete';
 
 declare global {
+    export type Predicate<T> = (x: T) => boolean;
+    /**
+    * @deprecated
+    */
+    export type ColumnType = [isOptional: boolean, type: string, objectType?: string, property?: string]
+    /**
+    * @deprecated
+    */
+    export type ColumnData = {
+            default?: string;
+            displayName: string;
+            elementType: 'input' | 'select' | 'fieldset';
+            index: number;
+            init?: string;
+            props: any;
+            type: ColumnType;
+            format?: string;
+        }
+        /**
+        * @deprecated
+        */
+    export type TypeData = {
+        typeName: string;
+        embedded: boolean;
+        primaryKey: string;
+        properties: Record<string, ObjectSchemaProperty>;
+        fields: Map<string, ColumnData>;
+        objectKind: [isEmbedded: boolean, pk: string];
+        sort: SortDescriptor[];
+    }
+    export type IObject = {
+        kind: 'object';
+        typeName: string;
+        optional: true;
+    }
+    export type ILinkingObject = {
+        kind: 'linkingObjects';
+        objectType: IObject;
+    }
+    export type ICollection = {
+        kind: 'list' | 'set' | 'dictionary';
+        objectType: IPrimitive |  IObject;
+    }
+    type RealmPrimitive = 'objectId' | 'uuid' | 'int' | 'double' | 'float' | 'decimal128' | 'bool' | 'string' | 'data' | 'date';
+
+    export type IPrimitive = {
+        kind: 'primitive';
+        typeName: RealmPrimitive;
+        optional?: boolean;
+    }
+    export type IDataType = ICollection | IPrimitive | ILinkingObject | IObject;
+    export type IElements = 'textbox' | 'checkbox' | 'radiobox' | 'combobox' | 'listbox' | 'dropdown' | 'datalist' | 'meter' | 'attachment' | 'output' | 'keyedlist' | 'tags' | 'textblock' | 'link' | 'image' | 'list' | 'fieldset' | 'hide';
+
+    export interface IFieldInfo {
+        columnName: string;
+        fullName: string;
+        prefix: string[];
+        type: IDataType;
+        props: {
+            lookup?: string;
+            type?: React.HTMLInputTypeAttribute;
+            required?: boolean; 
+            readOnly?: boolean;
+            disabled?: boolean;
+            enum?: Record<string, string>;
+            autoComplete?: AutoComplete;
+            placeholder?: string;
+            multiple?: boolean;
+            size?: number;
+        };
+        displayName?: string;
+        elementType: IElements;
+        index: number;
+        format?: string;
+        preSave?: string;
+        indexed?: boolean;
+        init: (() => string | readonly string[] | number | boolean | object) | (string | readonly string[] | number | boolean | object);
+    }
+   
+    export interface ITypeInfo {
+        typeName: string;
+        fields: Record<string, IFieldInfo>;
+        columns: Omit<IFieldInfo, 'index'>[];
+        ctor: ObjectClass;
+        sort: SortDescriptor[];
+        format?: string;
+    }
+    export interface IEmbeddedTypeInfo extends ITypeInfo {
+        isEmbedded: true;
+        pk: undefined;
+    }
+    export interface IClassTypeInfo extends ITypeInfo {
+        isEmbedded: false;
+        pk: string;
+    }
+    export type IObjectTypeInfo = IClassTypeInfo | IEmbeddedTypeInfo;
+    export type IFieldName = { typeName: string, columnName: string }
+    export type $$ = {
+        realm: Realm;
+        // $$schema: ObjectClass[];
+        // objectSchema: Record<string, ObjectSchema>;
+        // types: Record<string, Omit<IObjectTypeInfo, 'fields' | 'columns'>>;
+        // fields: Record<string, IFieldInfo>;
+        // columns: Record<string, IFieldInfo[]>;
+        // ctors: Record<string, ObjectClass>;
+        getTypeInfo(name: string): IObjectTypeInfo;
+        getFieldInfo(name: string, columnName: string): IFieldInfo;
+        getObjectSchema(name: string): ObjectSchema;
+        getColumns(name: string): IFieldInfo[];
+        getCtor(name: string): ObjectClass;
+        getCells(name: string): IFieldInfo[];
+        getControls(name: string): IFieldInfo[];
+        getNextID(name: string): number;
+        isNested(name: string): boolean;
+    };
+    export function Reflection(): $$;
+    export let JITT: () => $$;
+    export function addToast(title: string, body: string, icon: IconDefinition, iconBg: string, iconText: string): void;
+    export function getTypeInfo(name: string): TypeData;
+    export function pushContent(item: JSX.Element): void;
+    export function popContent(): void;
+    export function getFieldInfo(name: string, colName: string): ColumnData;
+    export function getObjectClass(name: string): ObjectClass;
+    export function autoIncrement(name: string): number;
     export let JITTRegistrar: { 
         getInitial(name: string): () => any;
         getConvert(name: string): (x: any) => any;

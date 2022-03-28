@@ -1,6 +1,6 @@
 import { faBox } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '../providers/useTheme';
+import { useTheme } from '../hooks/useTheme';
 import { useThemeSetting } from '../hooks/useThemeSetting';
 import { HeaderCell } from './HeaderCell';
 

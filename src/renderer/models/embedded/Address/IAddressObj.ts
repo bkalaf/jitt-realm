@@ -1,7 +1,7 @@
 import { CountryCode } from './CountryCode';
 import { ProvinceCode } from './ProvinceCode';
 
-export interface I$dto$address {
+export interface IAddressObj {
     street?: string;
     suite?: string;
     city?: string;
