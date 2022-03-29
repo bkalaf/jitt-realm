@@ -7,25 +7,25 @@ import { AutoComplete } from './renderer/routes/enums/AutoComplete';
 declare global {
     export type Predicate<T> = (x: T) => boolean;
     /**
-    * @deprecated
-    */
-    export type ColumnType = [isOptional: boolean, type: string, objectType?: string, property?: string]
+     * @deprecated
+     */
+    export type ColumnType = [isOptional: boolean, type: string, objectType?: string, property?: string];
     /**
-    * @deprecated
-    */
+     * @deprecated
+     */
     export type ColumnData = {
-            default?: string;
-            displayName: string;
-            elementType: 'input' | 'select' | 'fieldset';
-            index: number;
-            init?: string;
-            props: any;
-            type: ColumnType;
-            format?: string;
-        }
-        /**
-        * @deprecated
-        */
+        default?: string;
+        displayName: string;
+        elementType: 'input' | 'select' | 'fieldset';
+        index: number;
+        init?: string;
+        props: any;
+        type: ColumnType;
+        format?: string;
+    };
+    /**
+     * @deprecated
+     */
     export type TypeData = {
         typeName: string;
         embedded: boolean;
@@ -34,29 +34,48 @@ declare global {
         fields: Map<string, ColumnData>;
         objectKind: [isEmbedded: boolean, pk: string];
         sort: SortDescriptor[];
-    }
+    };
     export type IObject = {
         kind: 'object';
         typeName: string;
         optional: true;
-    }
+    };
     export type ILinkingObject = {
         kind: 'linkingObjects';
         objectType: IObject;
-    }
+    };
     export type ICollection = {
         kind: 'list' | 'set' | 'dictionary';
-        objectType: IPrimitive |  IObject;
-    }
+        objectType: IPrimitive | IObject;
+    };
     type RealmPrimitive = 'objectId' | 'uuid' | 'int' | 'double' | 'float' | 'decimal128' | 'bool' | 'string' | 'data' | 'date';
 
     export type IPrimitive = {
         kind: 'primitive';
         typeName: RealmPrimitive;
         optional?: boolean;
-    }
+    };
     export type IDataType = ICollection | IPrimitive | ILinkingObject | IObject;
-    export type IElements = 'textbox' | 'checkbox' | 'radiobox' | 'combobox' | 'listbox' | 'dropdown' | 'datalist' | 'meter' | 'attachment' | 'output' | 'keyedlist' | 'tags' | 'textblock' | 'link' | 'image' | 'list' | 'fieldset' | 'hide';
+    export type IElements =
+        | 'textbox'
+        | 'checkbox'
+        | 'radiobox'
+        | 'combobox'
+        | 'listbox'
+        | 'dropdown'
+        | 'datalist'
+        | 'meter'
+        | 'attachment'
+        | 'output'
+        | 'record'
+        | 'tags'
+        | 'textblock'
+        | 'link'
+        | 'image'
+        | 'list'
+        | 'fieldset'
+        | 'hide'
+        | 'range';
 
     export interface IFieldInfo {
         columnName: string;
@@ -66,7 +85,7 @@ declare global {
         props: {
             lookup?: string;
             type?: React.HTMLInputTypeAttribute;
-            required?: boolean; 
+            required?: boolean;
             readOnly?: boolean;
             disabled?: boolean;
             enum?: Record<string, string>;
@@ -83,7 +102,7 @@ declare global {
         indexed?: boolean;
         init: (() => string | readonly string[] | number | boolean | object) | (string | readonly string[] | number | boolean | object);
     }
-   
+
     export interface ITypeInfo {
         typeName: string;
         fields: Record<string, IFieldInfo>;
@@ -101,7 +120,7 @@ declare global {
         pk: string;
     }
     export type IObjectTypeInfo = IClassTypeInfo | IEmbeddedTypeInfo;
-    export type IFieldName = { typeName: string, columnName: string }
+    export type IFieldName = { typeName: string; columnName: string };
     export type $$ = {
         realm: Realm;
         // $$schema: ObjectClass[];
@@ -129,7 +148,7 @@ declare global {
     export function getFieldInfo(name: string, colName: string): ColumnData;
     export function getObjectClass(name: string): ObjectClass;
     export function autoIncrement(name: string): number;
-    export let JITTRegistrar: { 
+    export let JITTRegistrar: {
         getInitial(name: string): () => any;
         getConvert(name: string): (x: any) => any;
         getChildren(name: string): JSX.Element[];
@@ -241,11 +260,11 @@ declare global {
         | ((x: T, y: V) => U);
 
     export interface IGetterFunction<T> {
-    <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsaved: string | undefined): () => string;
+        <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsaved: string | undefined): () => string;
     }
 
     export interface IFormSubscribe {
-        (propName: string, value: [React.RefObject<DataEntryElement>, () => boolean, Array<Validator<any>>]): void
+        (propName: string, value: [React.RefObject<DataEntryElement>, () => boolean, Array<Validator<any>>]): void;
     }
     // export interface IStringifyFunction {
     //     <K extends keyof T & string>(x: T[K]): string;
@@ -263,7 +282,7 @@ declare global {
         <K extends keyof T & string>(name: K, parse: IParseFunction, setSaved: StateSetter<string>, addError: (name: string, messages: string[]) => void): (value: string) => void;
     }
     export interface ISavedValueGetterFunction<T> {
-        <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsavedData: string | undefined): () => string; 
+        <K extends keyof T & string>(name: K, stringify: IStringifyFunction, unsavedData: string | undefined): () => string;
     }
     export interface ISetterFunction<T> {
         <K extends keyof T & string>(name: K, parse: IParseFunction): (value: string) => void;
@@ -276,7 +295,7 @@ declare global {
     }
     export type IPredicate<T> = (...x: T) => boolean;
     export type IQuery<TArgs extends any[], T> = (...x: TArgs) => T;
-    export type IBinaryPredicate = IQuery<never[], boolean>
+    export type IBinaryPredicate = IQuery<never[], boolean>;
 
     // export interface Validator2<V> {
     //     (x: V): Result<V>;

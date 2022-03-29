@@ -5,6 +5,7 @@ import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
 import { Reflector } from '../..';
 import { IOptionalProperty } from '../../../../common/types/IOptionalProperty';
+import { IDBAudit } from '../../embedded/Audit/IAuditEntryObj';
 import { CostObj } from '../../embedded/Cost/CostObj';
 import { ROUTES } from '../../junkyard-classes';
 import { DBFacility } from '../DBFacility/DBFacility';
@@ -42,10 +43,12 @@ export class DBAuctionLot {
     unit: IOptionalProperty<string>;
     unitSize: IOptionalProperty<string>;
     static schema = schema;
+    history: IDBAudit[];
     constructor() {
         this._id = new ObjectId();
         this.id = Reflector.$()?.autoIncrement('lot');
         this.closeDate = new Date(Date.now());
         this.cost = new CostObj();
+        this.history = [];
     }
 }

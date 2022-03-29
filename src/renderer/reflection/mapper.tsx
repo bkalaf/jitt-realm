@@ -1,10 +1,133 @@
 import { countryMap } from '../db/enums/CountryISO2';
 import { provinceMap } from '../db/enums/Provinces';
 import { $$schemaOC } from '../models';
+import { EL, JTT, ROUTES, TEXTBOX } from '../models/junkyard-classes';
 import { AutoComplete } from '../routes/enums/AutoComplete';
 
+export function addCommaSep(x: number) {
+    function inner(s: string[]): string[] {
+        if (s.length < 3) return [s.join('')];
+        return [s.slice(0, 3).join(''), ...inner(s.slice(3))];
+    }
+    if (x.toString().length < 3) return x.toString();
+    const remainder = x.toString().length % 3;
+    // console.log(`remainder`, remainder);
+    const text = x.toString().split('');
+    // console.log('text', text);
+    // console.log(`slice1`, text.slice(0, remainder))
+    return [text.slice(0, remainder).join(''), ...inner(text.slice(remainder))].filter((x) => x.length > 0).join(',');
+}
+
 export const MAPPER = {
-    facility: {
+    [JTT.COST]: {
+        typeName: JTT.COST,
+        ctor: 'CostObj',
+        sort: ['bid'],
+        format: 'x => x.bid',
+        fields: {
+            1: {
+                columnName: 'bid',
+                displayName: 'Bid $',
+                init: '0.0',
+                elementType: EL.TEXTBOX,
+                props: {
+                    type: 'number',
+                    min: 0
+                },
+                format: 'x => `${x.toFixed(2)}`',
+                preSave: 'x => replaceAll("$", "")(x)',
+                type: { kind: JTT.$primitive, typeName: JTT.double, optional: false }
+            },
+            2: {
+                columnName: 'depositAmount',
+                displayName: 'Deposit Amount',
+                init: '0.0',
+                elementType: EL.TEXTBOX,
+                props: {
+                    type: 'number',
+                    min: 0
+                },
+                format: 'x => `${x.toFixed(2)}`',
+                preSave: 'x => replaceAll("$", "")(x)',
+                type: { kind: JTT.$primitive, typeName: JTT.double, optional: true }
+            },
+            3: {
+                columnName: 'salesTaxPercent',
+                displayName: 'Sales Tax %',
+                init: '0.0',
+                elementType: EL.TEXTBOX,
+                props: {
+                    type: 'number',
+                    min: 0,
+                    placeholder: 'ex: 7.5% enter as 0.075'
+                },
+                format: 'x => `{(x * 100).toFixed(1)}%`',
+                preSave: 'x => replaceAll("%", "")(x)',
+                type: { kind: JTT.$primitive, typeName: JTT.double, optional: true }
+            },
+            4: {
+                columnName: 'premiumPercent',
+                displayName: 'Premium %',
+                init: '0.0',
+                elementType: EL.TEXTBOX,
+                props: {
+                    type: 'number',
+                    min: 0,
+                    placeholder: 'ex: 7.5% enter as 0.075'
+                },
+                format: 'x => `${(x * 100).toFixed(1)}`',
+                preSave: 'x => replaceAll("%", "")(x)',
+                type: { kind: 'primitive', typeName: 'double', optional: false }
+            },
+            5: {
+                columnName: 'taxExempt',
+                displayName: 'Tax Exempt',
+                init: 'false',
+                elementType: EL.CHECKBOX,
+                props: {
+                    type: 'checkbox'
+                },
+                format: '',
+                preSave: '',
+                type: { kind: 'primitive', typeName: 'bool', optional: false }
+            },
+            6: {
+                columnName: 'salesTaxAmount',
+                displayName: 'Sales Tax $',
+                init: '0.0',
+                elementType: EL.OUTPUT,
+                props: {
+                    type: 'number'
+                },
+                format: 'x => `${x.toFixed(2)}`',
+                type: { kind: JTT.$primitive, typeName: JTT.double, optional: false }
+            },
+            7: {
+                columnName: 'premiumAmount',
+                displayName: 'Premium $',
+                init: '0.0',
+                elementType: 'output',
+                props: {
+                    type: 'number',
+                    min: 0
+                },
+                format: 'x => `${x.toFixed(2)}`',
+                type: { kind: 'primitive', typeName: 'double', optional: false }
+            },
+            8: {
+                columnName: 'totalAmount',
+                displayName: 'Total Cost $',
+                init: '0.0',
+                elementType: 'output',
+                props: {
+                    type: 'number'
+                },
+                format: 'x => `${x.toFixed(2)}`',
+                type: { kind: 'primitive', typeName: 'double', optional: false }
+            }
+        }
+    },
+    [ROUTES.AUCTIONS.FACILITY]: {
         typeName: 'facility',
         ctor: 'FacilityDTO',
         sort: [
@@ -89,7 +212,7 @@ export const MAPPER = {
             }
         }
     },
-    'self-storage': {
+    [ROUTES.AUCTIONS.SELF_STORAGE]: {
         typeName: 'self-storage',
         ctor: undefined as any,
         sort: [['name', false]],
@@ -138,7 +261,7 @@ export const MAPPER = {
             }
         }
     },
-    'auction-site': {
+    [ROUTES.AUCTIONS.AUCTION_SITE]: {
         typeName: 'auction-site',
         ctor: undefined as any,
         sort: [['name', false]],
@@ -170,8 +293,8 @@ export const MAPPER = {
             }
         }
     },
-    baseEntity: {
-        typeName: '',
+    [ROUTES.BASE]: {
+        typeName: ROUTES.BASE,
         ctor: undefined as any,
         sort: [],
         format: '',
@@ -225,11 +348,14 @@ export const MAPPER = {
                 },
                 format: 'x => x?.modified?.toDateString()',
                 type: { kind: 'primitive', optional: false, typeName: 'date' }
+            },
+            99: {
+                columnName: ''
             }
         }
     },
-    address: {
-        typeName: 'address',
+    [ROUTES.$.ADDRESS]: {
+        typeName: ROUTES.$.ADDRESS,
         ctor: $$schemaOC.filter((x) => x.schema.name === 'address'),
         sort: [
             ['state', false],
@@ -282,6 +408,153 @@ export const MAPPER = {
                     type: 'text'
                 },
                 type: { kind: 'primitive', optional: true, typeName: 'string' }
+            }
+        }
+    },
+    [ROUTES.$.FILE_LOCATION]: {
+        typeName: ROUTES.$.FILE_LOCATION,
+        ctor: 'FileLocationObj',
+        sort: [['folder'], ['filename']],
+        format: '',
+        fields: {
+            1: {
+                columnName: 'drive',
+                displayName: 'Drive',
+                init: '',
+                elementType: 'textbox',
+                props: {},
+                type: { kind: 'primitive', typeName: 'string', optional: true }
+            },
+            2: {
+                columnName: 'folder',
+                displayName: 'Folder',
+                init: '',
+                elementType: 'textbox',
+                props: {},
+                format: '',
+                type: { kind: 'primitive', typeName: 'string', optional: false }
+            },
+            3: {
+                columnName: 'filename',
+                displayName: 'File Name',
+                init: '',
+                elementType: 'textbox',
+                props: {},
+                format: '',
+                type: { kind: 'primitive', typeName: 'string', optional: false }
+            }
+        }
+    },
+    [JTT.$FILES.FILE_INFO]: {
+        typeName: JTT.$FILES.FILE_INFO,
+        ctor: 'DBFileInfo',
+        sort: [['location.folder'], ['location.filename']],
+        format: '',
+        fields: {
+            2: {
+                columnName: 'createDate',
+                displayName: 'Creation Date',
+                init: '() => new Date(Date.now())',
+                elementType: EL.TEXTBOX,
+                props: {},
+                format: '(x) => x.toDateString()',
+                preSave: '(x) => new Date(Date.parse(x))',
+                type: { kind: JTT.$primitive, typeName: JTT.date, optional: false }
+            },
+            3: {
+                columnName: 'data',
+                displayName: 'Data',
+                init: '',
+                elementType: 'attachment',
+                props: {
+                    type: 'text'
+                },
+                type: { kind: JTT.$primitive, typeName: JTT.data, optional: true }
+            },
+            4: {
+                columnName: 'hash',
+                displayName: 'Hash',
+                init: '',
+                elementType: 'textbox',
+                props: {
+                    type: 'text'
+                },
+                type: { kind: JTT.$primitive, typeName: JTT.string, optional: false }
+            },
+            5: {
+                columnName: 'isUnassigned',
+                displayName: 'Is Unassigned',
+                init: 'true',
+                elementType: 'checkbox',
+                props: {
+                    type: 'checkbox'
+                },
+                type: { kind: JTT.$primitive, typeName: JTT.bool, optional: false }
+            },
+            6: {
+                columnName: 'itemType',
+                displayName: 'File Item Type',
+                elementType: 'radiobox',
+                props: {
+                    enum: {
+                        invoice: 'invoice',
+                        photo: 'photo',
+                        'product-doc': 'product-doc',
+                        packaging: 'packaging'
+                    }
+                },
+                type: { kind: JTT.$primitive, typeName: JTT.string, optional: true }
+            },
+            7: {
+                columnName: 'location',
+                displayName: 'Full Path',
+                elementType: 'fieldset',
+                props: {},
+                type: { kind: JTT.$object, typeName: JTT.FILE_LOCATION, optional: false }
+            },
+            8: {
+                columnName: 'mimeType',
+                displayName: 'Mime Type',
+                elementType: 'dropdown',
+                props: {
+                    enum: {
+                        pdf: 'application/pdf',
+                        jpg: 'image/jpg'
+                    }
+                },
+                type: { kind: JTT.$primitive, typeName: JTT.string, optional: true }
+            },
+            9: {
+                columnName: 'modifiedDate',
+                displayName: 'Modified Date',
+                init: '() => new Date(Date.now())',
+                elementType: 'textbox',
+                props: {
+                    type: 'text'
+                },
+                format: 'x => x.toDateString()',
+                preSave: 'x => new Date(Date.parse(x))',
+                type: { kind: JTT.$primitive, typeName: JTT.date, optional: true }
+            },
+            10: {
+                columnName: 'size',
+                displayName: 'File Size',
+                init: '0',
+                elementType: 'textbox',
+                props: {
+                    type: 'number'
+                },
+                format: 'x => addCommaSep(x).concat(" bytes")',
+                preSave: 'x => replaceAll(",", "")(replaceAll(" bytes", "")(x))',
+                type: { kind: JTT.$primitive, typeName: JTT.int, optional: true }
+            },
+            11: {
+                columnName: 'type',
+                displayName: 'Type',
+                init: '',
+                elementType: 'textbox',
+                props: {},
+                type: { kind: JTT.$primitive, typeName: JTT.string, optional: true }
             }
         }
     }

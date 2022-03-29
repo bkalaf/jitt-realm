@@ -2,6 +2,9 @@ import { ObjectClass, ObjectSchema, ObjectSchemaProperty, SortDescriptor } from 
 import { $$schemaOC } from '../models';
 import * as fs from 'graceful-fs';
 import { MAPPER } from './mapper';
+import { $delete, $insert, $update, DBAudit } from '../models/embedded/Audit/DBAudit';
+import { ObjectId } from 'bson';
+import { JTT } from '../models/junkyard-classes';
 export const Type = {
     is: {
         aPrimitive: (x: IDataType): x is IPrimitive => x.kind === 'primitive',
@@ -337,14 +340,43 @@ export const createReflection = (realm: Realm, $$schema: ObjectClass[], orm: ORM
     );
     console.log(types);
 
+    // function createAuditEntry(operation: $insert | $delete | $update, user?: string, table?: string, pk?: ObjectId, field?: string, value?: any): Promise<string> {
+    //     return new Promise<string>((resolve, reject) => {
+    //         realm.write(() => {
+    //             const { _id } = realm.create<{ _id: ObjectId }>(JTT.AUDIT, new DBAudit(operation, new ObjectId(), pk, field, table, value, user));
+    //             resolve(_id.toHexString());
+    //         });
+    //     });
+    // }
+    // function onCollectionChange<T extends { _id: ObjectId, history: string[] }>(table: string) {
+    //     const pks = new Map(realm.objects<{ _id: ObjectId }>(table).snapshot().map((x, ix) => [ix, x._id] as [number, ObjectId]));
+    //     return (collection: Realm.Collection<T>, changes: Realm.CollectionChangeSet) => {
+    //         changes.deletions.map(ix => {
+    //             createAuditEntry($delete, '', table, pks.get(ix), '', undefined);
+    //         });
+    //         changes.insertions.map(ix => {
+    //             createAuditEntry($insert, '', table, collection[ix]._id, '', JSON.stringify(collection[ix])).then(entryID => collection[ix].history.push(entryID));
+    //         })
+    //         const snapshot = collection.snapshot();
+    //         changes.newModifications.map(ix => {
+    //             const value = `old: ${JSON.stringify(snapshot[ix])}; new: ${JSON.stringify(collection[ix])}`;
+
+    //             createAuditEntry($update, '', table, collection[ix]._id, '', value).then(entryID => collection[ix].history.push(entryID))
+    //         })
+    //     };
+    // }
+    // Realm
+    // function onDictionaryChange<T>(table: string) {
+    //     return (dict: Realm.Dictionary, changes: Realm.DictionaryChangeSet) => {
+
+    //     }
+    // }
+    // function onObjectChange<T>(table: string) {
+    //     return (obj: Realm.Object, changes: Realm.ObjectChangeSet) => {
+
+    //     }
+
     return {
-        realm,
-        // objectSchema,
-        // $$schema,
-        // ctors,
-        // types,
-        // columns,
-        // fields,
         getCells(name: string) {
             return cells.get(name)!;
         },
@@ -378,3 +410,6 @@ export const createReflection = (realm: Realm, $$schema: ObjectClass[], orm: ORM
 };
 
 fs.writeFileSync(`/home/bobby/jitt/orm-output.json`, JSON.stringify(MAPPER));
+
+
+console.log(new ObjectId().toHexString())

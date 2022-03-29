@@ -3,6 +3,7 @@
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
 import { Reflector } from '../..';
+import { IDBAudit } from '../../embedded/Audit/IAuditEntryObj';
 
 const schema: ObjectSchema = {
     name: 'auction-site',
@@ -21,9 +22,11 @@ export class DBAuctionSite  {
     id: number;
     name: string;
     website?: string;
+    history: IDBAudit[];
     constructor() {
         this._id = new ObjectId();
         this.id = global.autoIncrement('auction-site');
         this.name = '';
+        this.history = [];
     }
 }

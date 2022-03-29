@@ -1,34 +1,22 @@
 import Realm from 'realm';
 import config from './../../../config.json';
 import { useAsyncResource } from '../hooks/useAsyncResource';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useConnectivityStatus } from '../hooks/useConnectivityStatus';
 import { $$schemaOC, Reflector } from '../models';
-import { createReflection } from '../reflection/Reflection';
 
-function createRealm(app: Realm.App, credentials: string, isConnected: boolean): Promise<Realm> {
+async function createRealm(app: Realm.App, credentials: string, isConnected: boolean): Promise<Realm> {
     try {
         if (isConnected) {
-            return app.logIn(eval(credentials)).then((user) =>
-                Realm.open({
-                    schema: $$schemaOC,
-                    path: config.realm.localRealmPath,
-                    sync: {
-                        user: user,
-                        partitionValue: config.realm.partitionValue
-                        // existingRealmFileBehavior: {
-                        //     type: Realm.OpenRealmBehaviorType.,
-                        //     timeOutBehavior: Realm.OpenRealmTimeOutBehavior.OpenLocalRealm,
-                        //     timeOut: 15000
-                        // },
-                        // newRealmFileBehavior: {
-                        //     type: Realm.OpenRealmBehaviorType.DownloadBeforeOpen,
-                        //     timeOutBehavior: Realm.OpenRealmTimeOutBehavior.ThrowException,
-                        //     timeOut: 15000
-                        // }
-                    }
-                })
-            );
+            const user = await app.logIn(eval(credentials));
+            return await Realm.open({
+                schema: $$schemaOC,
+                path: config.realm.localRealmPath,
+                sync: {
+                    user: user,
+                    partitionValue: config.realm.partitionValue
+                }
+            });
         }
         const r = Realm.open({
             schema: $$schemaOC,
@@ -48,6 +36,7 @@ function createRealm(app: Realm.App, credentials: string, isConnected: boolean):
         throw error;
     }
 }
+
 export function useProvideRealmContext() {
     const app = useRef(new Realm.App(config.realm.appID));
     const isConnected = useConnectivityStatus();

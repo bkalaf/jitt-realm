@@ -20,12 +20,15 @@ export class FileLocationObj {
     public drive: string;
     public folder: string;
     public filename: string;
-    constructor(filename = '', folder = '', drive = '/') {
+    constructor(filename = '', folder = '', drive = '') {
         this.drive = drive;
         this.folder = folder;
         this.filename = filename;
     }
     static Of(fullname: string) {
         return new FileLocationObj(path.basename(fullname), replaceAll(config.files.root, '')(path.dirname(fullname)), '/');
+    }
+    get uri(): string {
+        return [this.drive ?? '', this.folder, this.filename].join('/');
     }
 }

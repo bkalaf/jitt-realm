@@ -47,11 +47,11 @@
     div.field>input,
     select,
     textarea {
-        @apply font-firaSans text-base font-semibold py-1 px-3 whitespace-pre before:content-["_"] border border-neutral/75 shadow-lg shadow-blue-dark rounded-lg transition-all duration-700 delay-75 ease-in-out hover:ring-2 hover:ring-amber flex min-w-full placeholder:text-pink-light/50 text-blue-dark hover:scale-105 transform;
+        @apply font-firaSans font-semibold py-1 px-3 whitespace-pre before:content-["_"] border border-neutral/75 shadow-lg shadow-blue-dark rounded-lg transition-all duration-700 delay-75 ease-in-out hover:ring-2 hover:ring-amber flex min-w-full placeholder:text-pink-light/50 text-blue-dark hover:scale-105 transform;
     }
 
     div.field>input.calculated {
-        @apply min-w-full px-3 py-1 text-base font-medium border rounded-lg shadow-lg font-firaSans border-neutral/75 shadow-sky-very-dark bg-cyan-light;
+        @apply min-w-full px-3 py-1 font-medium border rounded-lg shadow-lg font-firaSans border-neutral/75 shadow-sky-very-dark bg-cyan-light;
     }
 
     div.field>small.feedback {
@@ -79,7 +79,7 @@
     }
 
     th {
-        @apply mx-1 text-base font-extrabold leading-loose tracking-wide text-white border-2 border-white rounded-md shadow-lg font-firaSans bg-blue-dark/90;
+        @apply mx-1 font-extrabold leading-loose tracking-wide text-white border-2 border-white rounded-md shadow-lg font-firaSans bg-blue-dark/90;
     }
 
     th[scope='row'] {
@@ -88,7 +88,7 @@
 
 
     tr {
-        @apply text-base font-normal text-white transition-all duration-700 ease-in-out delay-75 border-2 border-black border-double bg-yellow-minimal font-firaSans even:bg-indigo-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light;
+        @apply font-normal text-white transition-all duration-700 ease-in-out delay-75 border-2 border-black border-double bg-yellow-minimal font-firaSans even:bg-indigo-dark even:text-white odd:bg-white odd:text-blue-dark focus:ring-2 focus:ring-red-dark odd:hover:text-black even:hover:text-black odd:hover:bg-amber even:hover:bg-amber odd:hover:border-yellow-light;
     }
 
     td {
@@ -111,12 +111,6 @@
         @apply inline-flex bg-black border text-yellow border-yellow;
     }
 
-    /* details[open] summary {
-        @apply mb-2 border border-b border-l border-r;
-    } */
-    /* th {
-        @apply text-base font-bold tracking-wide text-center capitalize;
-    } */
 
     input {
         @apply text-white rounded-lg read-only:shadow-inner read-only:bg-neutral-light read-only:ring read-only:ring-slate-very-dark;
@@ -140,7 +134,10 @@
     td>table>thead>tr>th,
     td>table>tbody>tr>td,
     td>table {
-        @apply text-base font-medium font-firaSans;
+        @apply font-medium font-firaSans;
     }
 
+    html, td, th, table, input, select, textarea {
+        font-size: 12px;
+    }
 }

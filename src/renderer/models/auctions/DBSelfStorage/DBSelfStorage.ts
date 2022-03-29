@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson';
 import { Reflector } from '../..';
 import { IOptionalProperty } from '../../../../common/types/IOptionalProperty';
+import { IDBAudit } from '../../embedded/Audit/IAuditEntryObj';
 import { ILinkingObjects, ObjectSchema, ROUTES, $toPropName } from '../../junkyard-classes';
 
 const schema: ObjectSchema = {
@@ -27,11 +28,13 @@ export class DBSelfStorage {
     public name: string;
     public website: IOptionalProperty<string>;
     public facilities: ILinkingObjects;
+    history: IDBAudit[];
     constructor() {
         this._id = new ObjectId();
         this.name = '';
         this.website = undefined;
         this.facilities = [];
         this.id = Reflector.$()?.autoIncrement('self-storage');
+        this.history = [];
     }
 }

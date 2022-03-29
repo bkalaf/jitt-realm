@@ -25,8 +25,8 @@ export function Grid<T>({
         setData(query as any);
     }, [realm, sort, typeName]);
     return (
-        <main className=''>
-            <table id={id} className='w-full overflow-x-scroll overflow-y-scroll'>
+        <main className='w-full h-full p-2 overflow-scroll border border-black rounded-2xl bg-black/50'>
+            <table id={id} className='w-full'>
                 <GridHeaders />
                 <tbody>
                     {(data ?? []).map((x, ix) => {

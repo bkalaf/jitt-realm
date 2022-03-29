@@ -7,6 +7,7 @@ import { AddressObj } from '../../embedded/Address/AddressObj';
 import { IDTOFacility } from './IDTOFacility';
 import { IOptionalProperty } from '../../../../common/types/IOptionalProperty';
 import { ILinkingObjects, ROUTES } from '../../junkyard-classes';
+import { IDBAudit } from '../../embedded/Audit/IAuditEntryObj';
 
 const schema = {
     name: ROUTES.AUCTIONS.FACILITY,
@@ -36,11 +37,13 @@ export class DBFacility implements IDTOFacility {
     phoneNumber: IOptionalProperty<string>;
     public selfStorage: IOptionalProperty<DBSelfStorage>;
     public lots: Realm.Object[];
+    history: IDBAudit[];
     constructor() {
         this._id = new ObjectId();
         this.id = Reflector.$()?.autoIncrement('facility');
         this.address = new AddressObj();
         this.lots = [];
+        this.history = [];
     }
 
 }

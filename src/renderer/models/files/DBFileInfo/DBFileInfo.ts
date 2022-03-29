@@ -3,6 +3,7 @@
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'realm';
 import { Reflector } from '../..';
+import { IDBAudit } from '../../embedded/Audit/IAuditEntryObj';
 import { FileLocationObj } from '../../embedded/FileLocation/FileLocationObj';
 import { ROUTES } from '../../junkyard-classes';
 import { IDBFileInfo } from './IDBFileInfo';
@@ -27,6 +28,7 @@ const schema: ObjectSchema = {
     }
 };
 
+export type FileType = 'invoice' | 'document'
 export class DBFileInfo implements IDBFileInfo {
     static schema = schema;
     _id: ObjectId;
@@ -36,15 +38,17 @@ export class DBFileInfo implements IDBFileInfo {
     hash?: string;
     ids: Record<string, string>;
     isUnassigned?: boolean; 
-    itemType?: string;
+    itemType?: FileType;
     location?: FileLocationObj;
     mimeType?: string;
     modifiedDate?: Date; 
     size?: number;
     type?: string;
+    history: IDBAudit[];
     constructor() {
         this._id = new ObjectId();
         this.id = Reflector.$()?.autoIncrement(ROUTES.FILES.FILE_INFO);
         this.ids = {};
+        this.history = []
     }
 }
